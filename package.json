@@ -1,0 +1,12 @@
+{
+  "contributors": [
+    "Tristan McNab <tristan.j.mcnab@gmail.com>"
+  ],
+  "dependencies": {
+    "concurrently": "^4.0.1"
+  },
+  "name": "localsoft",
+  "private": true,
+  "repository": "https://github.com/tmcnab/localsoft",
+  "version": "0.0.0"
+}
