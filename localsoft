@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 
-(cd client && yarn)
-(cd server && yarn)
+# Create the data directory if not exists.
+mkdir -p .data .data/files
 
+# Install dependencies.
+(cd client && yarn -s)
+(cd server && yarn -s)
+
+# Start either branch depending on production flag
 if [ "$1" == "--production" ]
 then
     export NODE_ENV="production"
-    (cd client && yarn build)
+    (cd client && yarn build && mv build ../.build)
     cd server
-    yarn start
+    yarn -s start
 else
-    yarn
+    yarn -s
     node_modules/.bin/concurrently "cd client && yarn start" "cd server && yarn start"
 fi

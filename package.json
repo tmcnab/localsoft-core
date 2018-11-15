@@ -3,7 +3,8 @@
     "Tristan McNab <tristan.j.mcnab@gmail.com>"
   ],
   "dependencies": {
-    "concurrently": "^4.0.1"
+    "concurrently": "^4.0.1",
+    "uuid": "^3.3.2"
   },
   "name": "localsoft",
   "private": true,
