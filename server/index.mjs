@@ -1,3 +1,4 @@
+import compression from 'compression'
 import cookieSession from 'cookie-session'
 import config from './config'
 import express from 'express'
@@ -16,6 +17,7 @@ app.set('trust proxy', config.PRODUCTION)
 
 
 // Register middlewares.
+app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieSession({
