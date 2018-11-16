@@ -1,6 +1,7 @@
 import cookieSession from 'cookie-session'
 import config from './config'
 import express from 'express'
+import helmet from 'helmet'
 import http from 'http'
 import path from 'path'
 
@@ -21,6 +22,8 @@ app.use(cookieSession({
     secret: config.SECRET,
     secure: config.PRODUCTION,      // true in production
 }))
+app.use(helmet())
+
 
 // In production we serve the build directory from static
 if (config.PRODUCTION) {
