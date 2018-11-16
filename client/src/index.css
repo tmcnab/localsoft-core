@@ -1,1 +1,22 @@
 @import '~antd/dist/antd.css';
+
+.ant-breadcrumb {
+    font-size: 21px;
+}
+
+.ant-layout-sider .brand {
+    color: rgba(255,255,255,.65);
+    font-variant: small-caps;
+    margin: 1rem;
+    text-align: center;
+}
+
+/* Adjustment / Helpers */
+
+.align-r { text-align: right }
+
+.mb0 { margin-bottom: 0rem !important }
+.mb1 { margin-bottom: 1rem !important }
+.mb2 { margin-bottom: 2rem !important }
+
+.mr1 { margin-right:  1rem !important }
