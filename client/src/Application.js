@@ -1,8 +1,7 @@
-import {BrowserRouter, Route} from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom'
 import {Layout} from 'antd'
-import DashboardPage from 'pages/DashboardPage'
-import PeopleListPage from 'pages/PeopleListPage/PeopleListPage'
 import React, { Component } from 'react';
+import Routes from 'structure/Routes'
 import Sidebar from 'structure/Sidebar'
 
 
@@ -14,8 +13,7 @@ export default class Application extends Component {
                 <Sidebar />
                 <Layout>
                     <Layout.Content style={{padding: '1rem'}}>
-                        <Route component={DashboardPage} exact path='/!/' />
-                        <Route component={PeopleListPage} exact path='/!/people' />
+                        <Routes />
                     </Layout.Content>
                 </Layout>
             </Layout>

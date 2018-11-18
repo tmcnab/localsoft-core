@@ -2,11 +2,11 @@ import {Page} from 'components'
 import React from 'react'
 
 
-export default class DashboardPage extends Page {
+export default class UpdatesPage extends Page {
 
     render = () =>
         <>
-            <Page.Header title='Dashboard' />
+            <Page.Header title='Updates' />
             <Page.NotImplemented />
         </>
 

@@ -16,6 +16,11 @@ export default class Sidebar extends Component {
                         <Icon type='appstore' /> Dashboard
                     </Link>
                 </Menu.Item>
+                <Menu.Item key='updates'>
+                    <Link to='/!/updates/'>
+                        <Icon type='notification' /> Updates
+                    </Link>
+                </Menu.Item>
                 <Menu.Item key='chat'>
                     <Link to='/!/chat/'>
                         <Icon type='message' /> Chat
