@@ -6,6 +6,9 @@
     "concurrently": "^4.0.1",
     "uuid": "^3.3.2"
   },
+  "eslintConfig": {
+    "extends": "eslint:recommended"
+  },
   "name": "localsoft",
   "private": true,
   "repository": "https://github.com/tmcnab/localsoft",

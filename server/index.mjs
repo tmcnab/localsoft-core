@@ -2,16 +2,14 @@ import compression from 'compression'
 import cookieSession from 'cookie-session'
 import config from './config'
 import express from 'express'
+import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
 import http from 'http'
-import path from 'path'
+import schema from './schema'
 
 
+// Create app and configure settings.
 const app = express()
-const port = 3001
-
-
-// Configuration app settings.
 app.set('port', config.PORT)
 app.set('trust proxy', config.PRODUCTION)
 
@@ -25,6 +23,10 @@ app.use(cookieSession({
     secure: config.PRODUCTION,      // true in production
 }))
 app.use(helmet())
+app.use('/graphql', expressGraphQL({
+    graphiql: !config.PRODUCTION,
+    schema,
+}))
 
 
 // In production we serve the build directory from static
@@ -33,4 +35,6 @@ if (config.PRODUCTION) {
 }
 
 
-http.createServer(app).listen(config.PORT)
+const server = http.createServer(app).listen(config.PORT)
+process.on('SIGNERM', () => server.close())
+process.on('SIGINT', () => server.close())
