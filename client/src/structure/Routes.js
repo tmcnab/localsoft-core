@@ -15,15 +15,15 @@ export default class Routes extends Component {
 
     render = () =>
         <>
-            <Route component={ChatPage}       exact path='/!/chat/' />
-            <Route component={DashboardPage}  exact path='/!/' />
-            <Route component={EmailPage}      exact path='/!/email/' />
-            <Route component={EventsPage}     exact path='/!/events/' />
-            <Route component={FilesPage}      exact path='/!/files/' />
-            <Route component={PagesPage}      exact path='/!/pages/' />
-            <Route component={PeopleListPage} exact path='/!/people/' />
-            <Route component={SettingsPage}   exact path='/!/settings/' />
-            <Route component={UpdatesPage}    exact path='/!/updates/' />
+            <Route component={ChatPage}       exact path='/chat/' />
+            <Route component={DashboardPage}  exact path='/' />
+            <Route component={EmailPage}      exact path='/email/' />
+            <Route component={EventsPage}     exact path='/events/' />
+            <Route component={FilesPage}      exact path='/files/' />
+            <Route component={PagesPage}      exact path='/pages/' />
+            <Route component={PeopleListPage} exact path='/people/' />
+            <Route component={SettingsPage}   exact path='/settings/' />
+            <Route component={UpdatesPage}    exact path='/updates/' />
         </>
 
 }
