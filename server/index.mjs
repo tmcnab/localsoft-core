@@ -1,3 +1,4 @@
+import {init} from './files'
 import compression from 'compression'
 import cookieSession from 'cookie-session'
 import config from './config'
@@ -5,12 +6,11 @@ import express from 'express'
 import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
 import http from 'http'
-import mkdirp from 'mkdirp'
 import schema from './schema'
 
 
 // Create data directory if not exists
-mkdirp.sync(config.DATA_DIR)
+init()
 
 // Create app and configure settings.
 const app = express()

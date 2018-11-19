@@ -3,6 +3,7 @@ import ChatPage from 'pages/ChatPage'
 import DashboardPage from 'pages/DashboardPage'
 import EmailPage from 'pages/EmailPage'
 import EventsPage from 'pages/EventsPage'
+import ForumsPage from 'pages/ForumsPage'
 import FilesPage from 'pages/FilesPage'
 import PageEditPage from 'pages/PageEditPage'
 import PageListPage from 'pages/PageListPage'
@@ -21,6 +22,7 @@ export default class Routes extends Component {
             <Route component={EmailPage}      path='/email/' />
             <Route component={EventsPage}     path='/events/' />
             <Route component={FilesPage}      path='/files/' />
+            <Route component={ForumsPage}     path='/forums/' />
             <Route component={PageEditPage}   path='/pages/:id' />
             <Route component={PageListPage}   exact path='/pages/' />
             <Route component={PeopleListPage} path='/people/' />

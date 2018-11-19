@@ -26,6 +26,11 @@ export default class Sidebar extends Component {
                         <Icon type='message' /> Chat
                     </Link>
                 </Menu.Item>
+                <Menu.Item key='forums'>
+                    <Link to='/forums/'>
+                        <Icon type='solution' /> Forums
+                    </Link>
+                </Menu.Item>
                 <Menu.Item key='people'>
                     <Link to='/people/'>
                         <Icon type='team' /> People
