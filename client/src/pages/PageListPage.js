@@ -4,7 +4,7 @@ import React from 'react'
 import uuid from 'uuid'
 
 
-export default class PagesListPage extends Page {
+export default class PageListPage extends Page {
 
     columns = [
         { dataIndex: 'name', key: 'name', title: 'Name' },

@@ -8,6 +8,7 @@ import FilesPage from 'pages/FilesPage'
 import PageEditPage from 'pages/PageEditPage'
 import PageListPage from 'pages/PageListPage'
 // import PeopleListPage from 'pages/PeopleListPage/PeopleListPage'
+import PersonEditPage from 'pages/PersonEditPage'
 import PersonListPage from 'pages/PersonListPage'
 import React, { Component } from 'react';
 import SettingsPage from 'pages/SettingsPage'
@@ -24,9 +25,10 @@ export default class Routes extends Component {
             <Route component={EventsPage}     path='/events/' />
             <Route component={FilesPage}      path='/files/' />
             <Route component={ForumsPage}     path='/forums/' />
-            <Route component={PageEditPage}   path='/pages/:id' />
+            <Route component={PageEditPage}   path='/pages/:identifier' />
             <Route component={PageListPage}   exact path='/pages/' />
-            <Route component={PersonListPage} path='/people/' />
+            <Route component={PersonEditPage} path='/people/:identifier' />
+            <Route component={PersonListPage} exact path='/people/' />
             <Route component={SettingsPage}   path='/settings/' />
             <Route component={UpdatesPage}    path='/updates/' />
         </>

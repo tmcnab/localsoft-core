@@ -3,16 +3,18 @@ import {ConfigButton, HelpButton, Page} from 'components'
 import React from 'react'
 
 
-export default class PageEditPage extends Page {
+export default class PersonEditPage extends Page {
 
-    // TODO https://remark.js.org/
+    state = {
+        person: null,
+    }
 
     onAbandonClick = () =>
-        this.props.history.push('/pages/')
+        this.props.history.push('/people/')
 
     render = () =>
         <>
-            <Page.Header title='Editing Page'>
+            <Page.Header title='Editing Person'>
                 <Button className='mr1' icon='check' type='primary'>
                     Save
                 </Button>
