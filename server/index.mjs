@@ -5,8 +5,12 @@ import express from 'express'
 import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
 import http from 'http'
+import mkdirp from 'mkdirp'
 import schema from './schema'
 
+
+// Create data directory if not exists
+mkdirp.sync(config.DATA_DIR)
 
 // Create app and configure settings.
 const app = express()
