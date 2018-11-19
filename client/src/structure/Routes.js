@@ -7,7 +7,8 @@ import ForumsPage from 'pages/ForumsPage'
 import FilesPage from 'pages/FilesPage'
 import PageEditPage from 'pages/PageEditPage'
 import PageListPage from 'pages/PageListPage'
-import PeopleListPage from 'pages/PeopleListPage/PeopleListPage'
+// import PeopleListPage from 'pages/PeopleListPage/PeopleListPage'
+import PersonListPage from 'pages/PersonListPage'
 import React, { Component } from 'react';
 import SettingsPage from 'pages/SettingsPage'
 import UpdatesPage from 'pages/UpdatesPage'
@@ -25,7 +26,7 @@ export default class Routes extends Component {
             <Route component={ForumsPage}     path='/forums/' />
             <Route component={PageEditPage}   path='/pages/:id' />
             <Route component={PageListPage}   exact path='/pages/' />
-            <Route component={PeopleListPage} path='/people/' />
+            <Route component={PersonListPage} path='/people/' />
             <Route component={SettingsPage}   path='/settings/' />
             <Route component={UpdatesPage}    path='/updates/' />
         </>
