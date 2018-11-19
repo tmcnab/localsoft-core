@@ -4,7 +4,8 @@ import DashboardPage from 'pages/DashboardPage'
 import EmailPage from 'pages/EmailPage'
 import EventsPage from 'pages/EventsPage'
 import FilesPage from 'pages/FilesPage'
-import PagesPage from 'pages/PagesPage'
+import PageEditPage from 'pages/PageEditPage'
+import PageListPage from 'pages/PageListPage'
 import PeopleListPage from 'pages/PeopleListPage/PeopleListPage'
 import React, { Component } from 'react';
 import SettingsPage from 'pages/SettingsPage'
@@ -15,15 +16,16 @@ export default class Routes extends Component {
 
     render = () =>
         <>
-            <Route component={ChatPage}       exact path='/chat/' />
+            <Route component={ChatPage}       path='/chat/' />
             <Route component={DashboardPage}  exact path='/' />
-            <Route component={EmailPage}      exact path='/email/' />
-            <Route component={EventsPage}     exact path='/events/' />
-            <Route component={FilesPage}      exact path='/files/' />
-            <Route component={PagesPage}      exact path='/pages/' />
-            <Route component={PeopleListPage} exact path='/people/' />
-            <Route component={SettingsPage}   exact path='/settings/' />
-            <Route component={UpdatesPage}    exact path='/updates/' />
+            <Route component={EmailPage}      path='/email/' />
+            <Route component={EventsPage}     path='/events/' />
+            <Route component={FilesPage}      path='/files/' />
+            <Route component={PageEditPage}   path='/pages/:id' />
+            <Route component={PageListPage}   exact path='/pages/' />
+            <Route component={PeopleListPage} path='/people/' />
+            <Route component={SettingsPage}   path='/settings/' />
+            <Route component={UpdatesPage}    path='/updates/' />
         </>
 
 }
