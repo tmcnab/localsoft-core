@@ -21,14 +21,14 @@ export default class Sidebar extends Component {
                         <Icon type='notification' /> Updates
                     </Link>
                 </Menu.Item>
-                <Menu.Item key='chat'>
-                    <Link to='/chat/'>
-                        <Icon type='message' /> Chat
-                    </Link>
-                </Menu.Item>
                 <Menu.Item key='forums'>
                     <Link to='/forums/'>
                         <Icon type='solution' /> Forums
+                    </Link>
+                </Menu.Item>
+                <Menu.Item key='conversations'>
+                    <Link to='/conversations/'>
+                        <Icon type='message' /> Conversations
                     </Link>
                 </Menu.Item>
                 <Menu.Item key='people'>

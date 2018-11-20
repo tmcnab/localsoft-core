@@ -1,5 +1,5 @@
 import {Route} from 'react-router-dom'
-import ChatPage from 'pages/ChatPage'
+import ConversationsPage from 'pages/ConversationsPage'
 import DashboardPage from 'pages/DashboardPage'
 import EmailPage from 'pages/EmailPage'
 import EventsPage from 'pages/EventsPage'
@@ -19,18 +19,18 @@ export default class Routes extends Component {
 
     render = () =>
         <>
-            <Route component={ChatPage}       path='/chat/' />
-            <Route component={DashboardPage}  exact path='/' />
-            <Route component={EmailPage}      path='/email/' />
-            <Route component={EventsPage}     path='/events/' />
-            <Route component={FilesPage}      path='/files/' />
-            <Route component={ForumsPage}     path='/forums/' />
-            <Route component={PageEditPage}   path='/pages/:identifier' />
-            <Route component={PageListPage}   exact path='/pages/' />
-            <Route component={PersonEditPage} path='/people/:identifier' />
-            <Route component={PersonListPage} exact path='/people/' />
-            <Route component={SettingsPage}   path='/settings/' />
-            <Route component={UpdatesPage}    path='/updates/' />
+            <Route component={ConversationsPage}       path='/conversations/' />
+            <Route component={DashboardPage}     exact path='/' />
+            <Route component={EmailPage}               path='/email/' />
+            <Route component={EventsPage}              path='/events/' />
+            <Route component={FilesPage}               path='/files/' />
+            <Route component={ForumsPage}              path='/forums/' />
+            <Route component={PageEditPage}            path='/pages/:identifier' />
+            <Route component={PageListPage}      exact path='/pages/' />
+            <Route component={PersonEditPage}          path='/people/:identifier' />
+            <Route component={PersonListPage}    exact path='/people/' />
+            <Route component={SettingsPage}            path='/settings/' />
+            <Route component={UpdatesPage}             path='/updates/' />
         </>
 
 }
