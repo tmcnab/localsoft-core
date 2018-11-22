@@ -1,4 +1,3 @@
-import {Button} from 'antd'
 import {ConfigButton, HelpButton, Page} from 'components'
 import React from 'react'
 
