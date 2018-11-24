@@ -12,7 +12,19 @@ const DATA_DIR = path.join(__dirname, '..', '.data')
 // Create the data directory (if not exists).
 mkdirp.sync(DATA_DIR)
 
+
+// Set default configuration in data store.
 export const db = lowdb(new FileSync(path.join(DATA_DIR, 'config.json')))
+db.defaults({
+    conversations: {},
+    email: [],
+    events: [],
+    files: [],
+    forums: {},
+    people: [],
+    pages: [],
+    settings: {},
+}).write()
 
 export default ({
     BUILD_DIR: path.join(__dirname, '..', '.build'),

@@ -1,6 +1,6 @@
 import compression from 'compression'
 import cookieSession from 'cookie-session'
-import config, {db} from './config'
+import config from './config'
 import express from 'express'
 import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
@@ -28,24 +28,9 @@ app.use('/graphql', expressGraphQL({
     schema,
 }))
 
-// Set default configuration in data store.
-db.defaults({
-    conversations: {},
-    email: [],
-    events: [],
-    files: [],
-    forums: {},
-    people: [],
-    pages: [],
-    settings: {},
-}).write()
-
-
 // In production we serve the build directory from static
 if (config.PRODUCTION) {
     app.use(express.static(config.BUILD_DIR))
 }
 
-const server = http.createServer(app).listen(config.PORT)
-process.on('SIGNERM', () => server.close())
-process.on('SIGINT', () => server.close())
+http.createServer(app).listen(config.PORT)

@@ -2,21 +2,38 @@ import s2s from 'graphql-s2s'
 import tools from 'graphql-tools'
 
 import Person from './Person'
-import Query from './Query'
 
 
 const schema = `
+	type Mutation {
+
+	}
+
+	type Query {
+
+	}
+
 	type Thing {
 		description: String
 		identifier: ID!
 	}
+
 	${Person.schema}
-	${Query.schema}
+
+	schema {
+		query: Query
+		mutation: Mutation
+	}
 `
 
 const resolvers = {
 	Person: Person.resolvers,
-    Query: Query.resolvers,
+	Mutation: {
+		...Person.mutations,
+	},
+    Query: {
+		...Person.queries,
+	},
 }
 
 
