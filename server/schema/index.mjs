@@ -1,21 +1,22 @@
+import Person from './Person'
 import s2s from 'graphql-s2s'
 import tools from 'graphql-tools'
 
-import Person from './Person'
-
 
 const schema = `
+	enum Role {
+		ANONYMOUS
+		MEMBER
+		STAFF
+		ADMINISTRATOR
+	}
+
 	type Mutation {
 
 	}
 
 	type Query {
 
-	}
-
-	type Thing {
-		description: String
-		identifier: ID!
 	}
 
 	${Person.schema}
@@ -27,12 +28,18 @@ const schema = `
 `
 
 const resolvers = {
-	Person: Person.resolvers,
 	Mutation: {
 		...Person.mutations,
 	},
-    Query: {
+	Person: Person.resolvers,
+	Query: {
 		...Person.queries,
+	},
+	Role: {
+		ANONYMOUS: 'ANONYMOUS',
+		MEMBER: 'MEMBER',
+		STAFF: 'STAFF',
+		ADMINISTRATOR: 'ADMINISTRATOR',
 	},
 }
 

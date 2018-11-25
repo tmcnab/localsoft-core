@@ -61,6 +61,11 @@ export default class Sidebar extends Component {
                         <Icon type='setting' /> Settings
                     </Link>
                 </Menu.Item>
+                <Menu.Item key='authentication'>
+                    <Link to='/enter/'>
+                        <Icon type='login' /> Enter
+                    </Link>
+                </Menu.Item>
             </Menu>
         </Layout.Sider>
 

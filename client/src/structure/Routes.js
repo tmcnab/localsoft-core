@@ -1,4 +1,5 @@
 import {Route} from 'react-router-dom'
+import AuthenticationPage from 'pages/AuthenticationPage'
 import ConversationsPage from 'pages/ConversationsPage'
 import DashboardPage from 'pages/DashboardPage'
 import EmailPage from 'pages/EmailPage'
@@ -18,6 +19,7 @@ export default class Routes extends Component {
 
     render = () =>
         <>
+            <Route component={AuthenticationPage}      path='/enter/' />
             <Route component={ConversationsPage}       path='/conversations/' />
             <Route component={DashboardPage}     exact path='/' />
             <Route component={EmailPage}               path='/email/' />

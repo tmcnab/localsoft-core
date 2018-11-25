@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt'
 import FileSync from 'lowdb/adapters/FileSync'
 import lowdb from 'lowdb'
 import mkdirp from 'mkdirp'
@@ -8,6 +9,7 @@ import uuid from 'uuid/v4'
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const DATA_DIR = path.join(__dirname, '..', '.data')
+
 
 // Create the data directory (if not exists).
 mkdirp.sync(DATA_DIR)
@@ -25,6 +27,18 @@ db.defaults({
     pages: [],
     settings: {},
 }).write()
+
+// If there are no administrators then add the default one.
+const administrators = db.get('people').filter({ role: 'ADMINISTRATOR' }).value()
+if (!administrators.length) {
+    db.get('people').push({
+        email: 'user@domain.tld',
+        identifier: uuid(),
+        hash: bcrypt.hashSync('password', 10),
+        role: 'ADMINISTRATOR',
+    }).write()
+}
+
 
 export default ({
     BUILD_DIR: path.join(__dirname, '..', '.build'),
