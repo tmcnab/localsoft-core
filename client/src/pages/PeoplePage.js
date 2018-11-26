@@ -42,7 +42,7 @@ export default class PeoplePage extends Page {
     }
 
     personList = async () => {
-        const {data} = await gql(`
+        const {people} = await gql(`
             query {
                 people {
                     name {
@@ -56,7 +56,7 @@ export default class PeoplePage extends Page {
             }
         `)
 
-        this.setState({ dataSource: data.people })
+        this.setState({ dataSource: people })
     }
 
     componentDidMount = () =>

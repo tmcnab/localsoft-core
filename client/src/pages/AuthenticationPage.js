@@ -18,23 +18,24 @@ export default class AuthenticationPage extends Page {
 
     onSubmit = async (event) => {
         event.preventDefault()
-        const {data} = await gql(`
+        const {authenticate} = await gql(`
             mutation {
                 authenticate(email:"${this.state.email}", password:"${this.state.password}") {
-                    identifier,
+                    identifier
                     role
                 }
             }
         `)
 
         // If there is no auth data passed back the email or password was bad.
-        if (!data.authenticate) {
+        if (!authenticate) {
             return message.error('There was an error with your email or password')
         }
 
-        sessionStorage.setItem('identifier', data.identifier)
-        sessionStorage.setItem('role', data.role)
-        this.props.history.push('/conversations/')
+        console.log(authenticate)
+        sessionStorage.setItem('identifier', authenticate.identifier)
+        sessionStorage.setItem('role', authenticate.role)
+        this.props.history.push('/dashboard/')
     }
 
     render = () =>

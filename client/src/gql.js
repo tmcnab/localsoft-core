@@ -1,12 +1,17 @@
-
+import {get} from 'lodash'
 
 export default async (query, variables) => {
-    return await window.fetch('/graphql', {
+    const configuration = {
         body: JSON.stringify({ query, variables }),
         credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json',
         },
         method: 'POST',
-    }).then(response => response.json())
+    }
+
+    return await window.fetch('/graphql', configuration)
+        .then(response => response.json())
+        .then(response => get(response, 'data', null))
+        .catch(response => get(response, 'errors', null))
 }

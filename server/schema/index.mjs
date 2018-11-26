@@ -1,9 +1,12 @@
+import File from './File'
 import Person from './Person'
 import s2s from 'graphql-s2s'
 import tools from 'graphql-tools'
 
 
 const schema = `
+	scalar Date
+
 	enum Role {
 		ANONYMOUS
 		MEMBER
@@ -19,6 +22,7 @@ const schema = `
 
 	}
 
+	${File.schema}
 	${Person.schema}
 
 	schema {
@@ -28,11 +32,14 @@ const schema = `
 `
 
 const resolvers = {
+	File: File.resolvers,
 	Mutation: {
+		...File.mutations,
 		...Person.mutations,
 	},
 	Person: Person.resolvers,
 	Query: {
+		...File.queries,
 		...Person.queries,
 	},
 	Role: {

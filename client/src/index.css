@@ -15,6 +15,8 @@
 
 .align-r { text-align: right }
 
+.inline-block { display: inline-block !important }
+
 .mb0 { margin-bottom: 0rem !important }
 .mb2 { margin-bottom: 2rem !important }
 

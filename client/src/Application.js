@@ -15,12 +15,12 @@ export default class Application extends Component {
     }
 
     componentDidMount = async () => {
-        const {data} = await gql(`{
+        const {currentUser} = await gql(`{
             currentUser { role }
         }`)
 
         this.setState({
-            viewerRole: get(data, 'currentUser.role', Roles.ANONYMOUS)
+            viewerRole: get(currentUser, 'role', Roles.ANONYMOUS)
         })
     }
 
