@@ -1,4 +1,5 @@
 import {BrowserRouter} from 'react-router-dom'
+import {get} from 'lodash'
 import {Layout} from 'antd'
 import {Roles} from './enums'
 import gql from 'gql'
@@ -17,20 +18,19 @@ export default class Application extends Component {
         const {data} = await gql(`{
             currentUser { role }
         }`)
+
         this.setState({
-            viewerRole: data.currentUser
-                ? data.currentUser.role
-                : Roles.ANONYMOUS
+            viewerRole: get(data, 'currentUser.role', Roles.ANONYMOUS)
         })
     }
 
     render = () =>
         <BrowserRouter>
             <Layout>
-                <Sidebar role={this.state.viewerRole} />
+                <Sidebar onExitClick={this.onExitClick} viewerRole={this.state.viewerRole} />
                 <Layout>
-                    <Layout.Content style={{padding: '1rem'}}>
-                        <Routes role={this.state.viewerRole} />
+                    <Layout.Content className='p1'>
+                        <Routes viewerRole={this.state.viewerRole} />
                     </Layout.Content>
                 </Layout>
             </Layout>

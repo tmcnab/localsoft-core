@@ -21,7 +21,7 @@ export default class Routes extends Component {
         <>
             <Route component={AuthenticationPage}      path='/enter/' />
             <Route component={ConversationsPage}       path='/conversations/' />
-            <Route component={DashboardPage}     exact path='/' />
+            <Route component={DashboardPage}           path='/dashboard/' />
             <Route component={EmailPage}               path='/email/' />
             <Route component={EventsPage}              path='/events/' />
             <Route component={FilesPage}               path='/files/' />

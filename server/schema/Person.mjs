@@ -10,24 +10,24 @@ export default ({
             // Fetch person and if doesn't exists return nothing, no error.
             const person = db.get('people').find({ email }).value()
             if (!person) {
-                console.log('no person found')
                 return null
             }
 
             // If the password doesn't match, return nothing, no error.
             if (!await bcrypt.compare(args.password, person.hash)) {
-                console.log('password failed to match')
                 return null
             }
 
-            // Set session+cookie and return record.
+            // Set session+cookie and return record
             req.session = {
                 identifier: person.identifier,
                 role: person.role,
             }
-
-            console.log(person)
             return person
+        },
+        deauthenticate: async (root, args, req) => {
+            req.session = null
+            return true
         },
     },
     queries: {
@@ -61,6 +61,7 @@ export default ({
 
         extend type Mutation {
             authenticate (email: String!, password: String!): Person
+            deauthenticate: Boolean
         }
 
         extend type Query {

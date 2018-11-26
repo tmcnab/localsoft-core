@@ -1,71 +1,60 @@
-import {Link} from 'react-router-dom'
 import {Icon, Layout, Menu} from 'antd'
+import {Link} from 'react-router-dom'
+import {role} from 'propTypes'
+import {Roles} from 'enums'
 import React, { Component } from 'react';
 
 
+// NOTE: in the future these permissions will be more granular.
+const { ANONYMOUS, MEMBER, STAFF, ADMINISTRATOR } = Roles
+const MENU_ITEMS = [
+    { key: 'dashboard',     icon: 'appstore',     label: 'Dashboard',     viewers: [MEMBER, STAFF], },
+    { key: 'conversations', icon: 'message',      label: 'Conversations', viewers: [MEMBER, STAFF], },
+    { key: 'forums',        icon: 'solution',     label: 'Forums',        viewers: [MEMBER, STAFF], },
+    { key: 'events',        icon: 'calendar',     label: 'Events',        viewers: [MEMBER, STAFF], },
+    { key: 'people',        icon: 'team',         label: 'People',        viewers: [STAFF],         },
+    { key: 'pages',         icon: 'book',         label: 'Pages',         viewers: [STAFF],         },
+    { key: 'updates',       icon: 'notification', label: 'Updates',       viewers: [STAFF],         },
+    { key: 'email',         icon: 'mail',         label: 'Email',         viewers: [STAFF],         },
+    { key: 'files',         icon: 'cloud',        label: 'Files',         viewers: [STAFF],         },
+    { key: 'settings',      icon: 'setting',      label: 'Settings',      viewers: [],              },
+]
+
+
 export default class Sidebar extends Component {
+
+    static propTypes = {
+        viewerRole: role.isRequired,
+    }
 
     render = () =>
         <Layout.Sider style={{minHeight: '100vh'}}>
             <div className='brand'>
                 instance name
             </div>
-            <Menu mode="vertical" theme="dark" >
-                <Menu.Item key='dashboard'>
-                    <Link to='/'>
-                        <Icon type='appstore' /> Dashboard
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='updates'>
-                    <Link to='/updates/'>
-                        <Icon type='notification' /> Updates
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='forums'>
-                    <Link to='/forums/'>
-                        <Icon type='solution' /> Forums
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='conversations'>
-                    <Link to='/conversations/'>
-                        <Icon type='message' /> Conversations
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='people'>
-                    <Link to='/people/'>
-                        <Icon type='team' /> People
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='pages'>
-                    <Link to='/pages/'>
-                        <Icon type='book' /> Pages
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='email'>
-                    <Link to='/email/'>
-                        <Icon type='mail' /> Email
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='events'>
-                    <Link to='/events/'>
-                        <Icon type='calendar' /> Events
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='files'>
-                    <Link to='/files/'>
-                        <Icon type='cloud' /> Files
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='settings'>
-                    <Link to='/settings/'>
-                        <Icon type='setting' /> Settings
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='authentication'>
+            <Menu mode='vertical' theme='dark' >
+            {MENU_ITEMS.map(item => {
+                const {viewerRole} = this.props
+                const canView = viewerRole === ADMINISTRATOR || item.viewers.includes(viewerRole)
+                return canView ? (
+                    <Menu.Item key={item.key}>
+                        <Link to={`/${item.key}/`}>
+                            <Icon type={item.icon} /> {item.label}
+                        </Link>
+                    </Menu.Item>
+                ) : null
+            })}
+            {this.props.viewerRole === ANONYMOUS ? (
+                <Menu.Item key='enter'>
                     <Link to='/enter/'>
                         <Icon type='login' /> Enter
                     </Link>
                 </Menu.Item>
+            ) : (
+                <Menu.Item key='exit'>
+                    <Icon type='logout' /> Leave
+                </Menu.Item>
+            )}
             </Menu>
         </Layout.Sider>
 
