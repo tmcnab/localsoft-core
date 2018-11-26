@@ -40,7 +40,7 @@ export default ({
         people: async (root, args, req) => {
             const { role } = req.session
             if (['STAFF', 'ADMINISTRATOR'].includes(role)) {
-                return db.get('people')
+                return db.get('people').value()
             } else {
                 throw new Error('Unauthorized')
             }
