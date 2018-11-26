@@ -1,17 +1,17 @@
-import {Button, Popconfirm, Table} from 'antd'
+import {Button, Popconfirm, Table, Tooltip} from 'antd'
 import {ConfigButton, HelpButton, Page} from 'components'
-import React from 'react'
-import uuid from 'uuid'
 import gql from 'gql'
+import PersonEditDrawer from 'drawers/PersonEditDrawer'
+import React from 'react'
 
 
 export default class PeoplePage extends Page {
 
     columns = [{
-        dataIndex: 'givenName',
+        dataIndex: 'name.given',
         title: 'Given Name',
     }, {
-        dataIndex: 'familyName',
+        dataIndex: 'name.family',
         title: 'Family Name',
     }, {
         dataIndex: 'email',
@@ -32,6 +32,7 @@ export default class PeoplePage extends Page {
 
     state = {
         dataSource: [],
+        editDrawerVisible: false,
         loading: false,
     }
 
@@ -44,9 +45,11 @@ export default class PeoplePage extends Page {
         const {data} = await gql(`
             query {
                 people {
+                    name {
+                        family
+                        given
+                    }
                     identifier
-                    givenName
-                    familyName
                     email
                     role
                 }
@@ -60,14 +63,21 @@ export default class PeoplePage extends Page {
         this.personList()
 
     onAddPerson = () =>
-        this.props.history.push(`/people/${uuid.v4()}`)
+        this.setState({ editDrawerVisible: true })
+
+    onDrawerClose = (didSaveRecord) => {
+        this.personList()
+        this.setState({
+            editDrawerVisible: false,
+        })
+    }
 
     render = () =>
         <>
             <Page.Header title='People'>
-                <Button className='mr1' icon='user-add' onClick={this.onAddPerson} type='primary'>
-                    Add
-                </Button>
+                <Tooltip placement='right' title='Add a person'>
+                    <Button className='mr1' icon='user-add' onClick={this.onAddPerson} shape='circle' type='primary' />
+                </Tooltip>
                 <ConfigButton />
                 <HelpButton />
             </Page.Header>
@@ -82,6 +92,7 @@ export default class PeoplePage extends Page {
                     showHeader={Boolean(this.state.dataSource.length)}
                 />
             </main>
+            <PersonEditDrawer onClose={this.onDrawerClose} visible={this.state.editDrawerVisible} />
         </>
 
 }

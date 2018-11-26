@@ -44,17 +44,42 @@ export default ({
             } else {
                 throw new Error('Unauthorized')
             }
+        },
+        person: async (root, {identifier}, {session}) => {
+            if (['STAFF', 'ADMINISTRATOR'].includes(session.role)) {
+                return db.get('people').find({identifier}).value()
+            } else {
+                throw new Error('Unauthorized')
+            }
         }
     },
     resolvers: {},
     schema: `
+        type Address {
+            country: String
+            locality: String
+            postalCode: String
+            region: String
+            streetAddress: String
+        }
+
+        type Name {
+            additional: String
+            family: String
+            given: String
+        }
+
+        type Preferences {
+            email: Boolean
+        }
+
         type Person {
-            additionalName: String
+            address: Address
+            affiliation: [String]
             email: String
-            familyName: String
-            givenName: String
             identifier: ID!
-            memberOf: [String]
+            name: Name
+            preferences: Preferences!
             role: Role!
             telephone: String
         }
@@ -66,6 +91,7 @@ export default ({
 
         extend type Query {
             people: [Person]
+            person(identifier:ID!): Person
             currentUser: Person
         }
     `

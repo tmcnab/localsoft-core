@@ -35,6 +35,9 @@ if (!administrators.length) {
         email: 'user@domain.tld',
         identifier: uuid(),
         hash: bcrypt.hashSync('password', 10),
+        preferences: {
+            email: false,
+        },
         role: 'ADMINISTRATOR',
     }).write()
 }
