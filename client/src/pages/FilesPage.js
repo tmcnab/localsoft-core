@@ -1,5 +1,6 @@
 import {Button, message, Table, Tooltip, Upload} from 'antd'
 import {HelpButton, Page, RoleTag} from 'components'
+import FileEditDrawer from 'drawers/FileEditDrawer'
 import FilesHelpDrawer from 'drawers/FilesHelpDrawer'
 import prettyBytes from 'pretty-bytes'
 import React from 'react'
@@ -33,7 +34,8 @@ export default class FilesPage extends Page {
 
     state = {
         dataSource: [],
-        helpDrawerVisible: false,
+        editVisible: false,
+        helpVisible: false,
         loading: false,
         uploading: false,
     }
@@ -67,11 +69,16 @@ export default class FilesPage extends Page {
         })
     }
 
-    onDrawerClose = () =>
-        this.setState({ helpDrawerVisible: false })
+    onClickHelp = () =>
+        this.setState({ helpVisible: true })
 
-    onHelpClick = () =>
-        this.setState({ helpDrawerVisible: true })
+    onCloseEdit = () =>
+        this.setState({ editVisible: false })
+
+    onCloseHelp = () =>
+        this.setState({ helpVisible: false })
+
+
 
     // SEE: https://ant.design/components/upload/#onChange
     onUploadChange = ({event, file, fileList}) => {
@@ -103,20 +110,24 @@ export default class FilesPage extends Page {
                         </Upload>
                     </div>
                 </Tooltip>
-                <HelpButton onClick={this.onHelpClick} />
+                <HelpButton onClick={this.onClickHelp} />
             </Page.Header>
             <main>
-            <Table
-                bordered
-                columns={this.columns}
-                dataSource={this.state.dataSource}
-                loading={this.state.loading}
-                locale={this.locale}
-                rowKey='identifier'
-                showHeader={Boolean(this.state.dataSource.length)}
-            />
+                <Table
+                    bordered
+                    columns={this.columns}
+                    dataSource={this.state.dataSource}
+                    loading={this.state.loading}
+                    locale={this.locale}
+                    onRow={record => ({
+                        onClick: () => console.log(record)
+                    })}
+                    rowKey='identifier'
+                    showHeader={Boolean(this.state.dataSource.length)}
+                />
             </main>
-            <FilesHelpDrawer onClose={this.onDrawerClose} visible={this.state.helpDrawerVisible} />
+            <FileEditDrawer identifier={this.state.identifier} onClose={this.onCloseEdit} visible={this.state.editVisible} />
+            <FilesHelpDrawer onClose={this.onCloseHelp} visible={this.state.helpVisible} />
         </>
 
 }

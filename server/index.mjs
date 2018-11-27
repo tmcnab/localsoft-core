@@ -6,6 +6,7 @@ import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
 import http from 'http'
 import multer from 'multer'
+import path from 'path'
 import schema from './schema'
 import uuid from 'uuid/v4'
 
@@ -50,12 +51,14 @@ const onlyStaffAndAdmins = (req, res, next) => {
     }
     next()
 }
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => cb(null, config.DATA_DIR),
         filename: (req, file, cb) => cb(null, uuid())
     })
 })
+
 app.post('/upload', onlyStaffAndAdmins, upload.any(), (request, response) => {
     const access = request.session.role === 'STAFF' ? 'STAFF' : 'ADMINISTRATOR'
     request.files.forEach(file => {
@@ -72,6 +75,24 @@ app.post('/upload', onlyStaffAndAdmins, upload.any(), (request, response) => {
     })
     response.status(201).json({status: 'success'})
 })
+
+// Ability for users to download files.
+app.get('/files/:identifier', (request, response) => {
+    const {identifier} = request.params
+    const record = db.get('files').find({identifier}).value()
+
+    // No record? 404.
+    if (!record) {
+        return response.sendStatus(404)
+    }
+
+    // Where file is located on disk.
+    const file = path.join(config.DATA_DIR, identifier)
+
+    // TODO: restrict by role on record/request.session.role (404 to prevent leakage)
+    response.download(file, file.name)
+})
+
 
 // In production we serve the build directory from static
 if (config.PRODUCTION) {
