@@ -46,8 +46,9 @@ if (!administrators.length) {
 export default ({
     BUILD_DIR: path.join(__dirname, '..', '.build'),
     DATA_DIR,
+    INSTANCE_NAME: process.env.INSTANCE_NAME || 'Dev Instance',
     PRODUCTION,
     PORT: 3001,
     SECRET: PRODUCTION ? uuid()  : 'secret',
-    STORAGE_QUOTA: 0.5 * 1000 * 1000 * 1000,        // TODO: sales shit         
+    STORAGE_QUOTA: 0.5 * 1000 * 1000 * 1000,        // TODO: sales shit
 })

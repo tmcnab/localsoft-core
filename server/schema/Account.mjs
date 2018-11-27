@@ -6,16 +6,18 @@ export default ({
     mutations: {},
     queries: {
         account: async (root, args, req) => {
+            const result = {
+                name: config.INSTANCE_NAME,
+            }
+
             if (['STAFF', 'ADMINISTRATOR'].includes(req.session.role)) {
-                return {
-                    storage: {
-                        total: config.STORAGE_QUOTA.toString(),
-                        usage: fsUtils.fsizeSync(config.DATA_DIR).toString(),
-                    }
+                result.storage = {
+                    total: config.STORAGE_QUOTA.toString(),
+                    usage: fsUtils.fsizeSync(config.DATA_DIR).toString(),
                 }
             }
 
-            throw new Error('Unauthorized')
+            return result
         },
     },
     resolvers: {},
@@ -26,6 +28,7 @@ export default ({
         }
 
         type Account {
+            name: String!
             storage: Quota<String>!
         }
 

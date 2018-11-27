@@ -31,6 +31,7 @@ export default ({
         },
     },
     queries: {
+        // TODO: this should return a person instead of null, but only field is role=ANONYMOUS [@tmcnab]
         currentUser: async (root, args, req) => {
             const { identifier } = req.session
             return identifier

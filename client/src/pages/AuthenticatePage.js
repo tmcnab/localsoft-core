@@ -1,5 +1,6 @@
 import {Button, Card, Col, Form, Input, message, Row} from 'antd'
 import {HelpButton, Page} from 'components'
+import AuthenticateHelpDrawer from 'drawers/AuthenticateHelpDrawer'
 import gql from 'gql'
 import React from 'react'
 
@@ -8,6 +9,7 @@ export default class AuthenticationPage extends Page {
 
     state = {
         email: null,
+        helpVisible: false,
         password: null,
     }
 
@@ -16,12 +18,17 @@ export default class AuthenticationPage extends Page {
         this.setState({ [name]: value })
     }
 
+    onClickHelp = () =>
+        this.setState({helpVisible: true})
+
+    onCloseHelp = () =>
+        this.setState({helpVisible: false})
+
     onSubmit = async (event) => {
         event.preventDefault()
         const {authenticate} = await gql(`
             mutation {
                 authenticate(email:"${this.state.email}", password:"${this.state.password}") {
-                    identifier
                     role
                 }
             }
@@ -32,16 +39,17 @@ export default class AuthenticationPage extends Page {
             return message.error('There was an error with your email or password')
         }
 
-        console.log(authenticate)
-        sessionStorage.setItem('identifier', authenticate.identifier)
-        sessionStorage.setItem('role', authenticate.role)
-        this.props.history.push('/dashboard/')
+        window.application.setState({
+            viewerRole: authenticate.role,
+        }, () => {
+            this.props.history.push('/dashboard/')
+        })
     }
 
     render = () =>
         <>
             <Page.Header title='Enter'>
-                <HelpButton />
+                <HelpButton onClick={this.onClickHelp} />
             </Page.Header>
             <Row>
                 <Col span={8} />
@@ -68,6 +76,7 @@ export default class AuthenticationPage extends Page {
                 </Col>
                 <Col span={8} />
             </Row>
+            <AuthenticateHelpDrawer onClose={this.onCloseHelp} visible={this.state.helpVisible} />
         </>
 
 }

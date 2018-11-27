@@ -1,7 +1,8 @@
-import {Icon, Layout, Menu} from 'antd'
+import {Col, Icon, Layout, Menu, Row} from 'antd'
 import {Link} from 'react-router-dom'
-import {role} from 'propTypes'
+import {role, string} from 'propTypes'
 import {Roles} from 'enums'
+import gql from 'gql'
 import React, { Component } from 'react';
 
 
@@ -25,14 +26,33 @@ const MENU_ITEMS = [
 export default class Sidebar extends Component {
 
     static propTypes = {
+        instanceName: string.isRequired,
         viewerRole: role.isRequired,
+    }
+
+    onClickExit = async () => {
+        const {deauthenticate} = await gql(`mutation { deauthenticate }`)
+        if (deauthenticate) {
+            window.application.setState({
+                viewerRole: Roles.ANONYMOUS,
+            }, () => {
+                window.location.assign('/')
+            })
+        }
     }
 
     render = () =>
         <Layout.Sider style={{minHeight: '100vh'}}>
-            <div className='brand'>
-                instance name
-            </div>
+            <header className='font-large p1 text-white'>
+                <Row>
+                    <Col span={4}>
+                        <Icon type='ant-design' />
+                    </Col>
+                    <Col span={20}>
+                        {this.props.instanceName}
+                    </Col>
+                </Row>
+            </header>
             <Menu mode='vertical' theme='dark' >
             {MENU_ITEMS.map(item => {
                 const {viewerRole} = this.props
@@ -52,7 +72,7 @@ export default class Sidebar extends Component {
                     </Link>
                 </Menu.Item>
             ) : (
-                <Menu.Item key='exit'>
+                <Menu.Item key='exit' onClick={this.onClickExit}>
                     <Icon type='logout' /> Leave
                 </Menu.Item>
             )}

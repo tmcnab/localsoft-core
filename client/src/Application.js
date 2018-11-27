@@ -10,24 +10,39 @@ import Sidebar from 'structure/Sidebar'
 
 export default class Application extends Component {
 
+    constructor (props) {
+        super(props)
+        window.application = this;
+    }
+
     state = {
+        instanceName: "",
         viewerRole: Roles.ANONYMOUS,
     }
 
     componentDidMount = async () => {
-        const {currentUser} = await gql(`{
+        const {account, currentUser} = await gql(`{
+            account { name }
             currentUser { role }
         }`)
 
         this.setState({
+            instanceName: account.name,
             viewerRole: get(currentUser, 'role', Roles.ANONYMOUS)
         })
     }
 
+    componentDidUpdate = (prevProps, prevState, snapshot) => {
+        if (this.state.instanceName !== prevState.instanceName) {
+            window.document.title = this.state.instanceName
+        }
+    }
+
+
     render = () =>
         <BrowserRouter>
             <Layout>
-                <Sidebar onExitClick={this.onExitClick} viewerRole={this.state.viewerRole} />
+                <Sidebar instanceName={this.state.instanceName} viewerRole={this.state.viewerRole} />
                 <Layout>
                     <Layout.Content className='p1'>
                         <Routes viewerRole={this.state.viewerRole} />

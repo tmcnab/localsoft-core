@@ -9,18 +9,6 @@ export default class Page extends Component {
         title: string,
     }
 
-    constructor (props) {
-        super(props)
-
-        // TODO get intance name from settings
-        const {pageTitle} = this.constructor
-        if (pageTitle) {
-            document.title = `${pageTitle} • instance name`
-        } else {
-            document.title = `instance name`
-        }
-    }
-
     static Header = class Header extends Component {
 
         static displayName = 'Page.Header'
