@@ -752,6 +752,11 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+module-require@*:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/module-require/-/module-require-1.4.5.tgz#633df0833443c9ad8596f4c42e5237348355af88"
+  integrity sha1-Yz3wgzRDya2FlvTELlI3NINVr4g=
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -815,6 +820,13 @@ node-pre-gyp@0.11.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
+
+nodejs-fs-utils@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/nodejs-fs-utils/-/nodejs-fs-utils-1.1.2.tgz#bcde2ee061d581413b8b5430b71215adfaaa82e2"
+  integrity sha512-9ZT2qCCiwBXGt265oYVMIPzuKIcrKXMzYFj9GdQ1C3ZOaPJ1p32lrbgxPSoBbseNMXo3KYnnARL+L/L0jJfJJg==
+  dependencies:
+    module-require "*"
 
 nopt@^4.0.1:
   version "4.0.1"

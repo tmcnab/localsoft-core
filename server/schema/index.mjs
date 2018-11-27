@@ -1,3 +1,4 @@
+import Account from './Account'
 import File from './File'
 import Person from './Person'
 import s2s from 'graphql-s2s'
@@ -22,6 +23,7 @@ const schema = `
 
 	}
 
+	${Account.schema}
 	${File.schema}
 	${Person.schema}
 
@@ -32,13 +34,16 @@ const schema = `
 `
 
 const resolvers = {
+	Account: Account.resolvers,
 	File: File.resolvers,
 	Mutation: {
+		...Account.mutations,
 		...File.mutations,
 		...Person.mutations,
 	},
 	Person: Person.resolvers,
 	Query: {
+		...Account.queries,
 		...File.queries,
 		...Person.queries,
 	},

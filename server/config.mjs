@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import FileSync from 'lowdb/adapters/FileSync'
+import fsUtils from 'nodejs-fs-utils'
 import lowdb from 'lowdb'
-import mkdirp from 'mkdirp'
 import path from 'path'
 import uuid from 'uuid/v4'
 
@@ -12,7 +12,7 @@ const DATA_DIR = path.join(__dirname, '..', '.data')
 
 
 // Create the data directory (if not exists).
-mkdirp.sync(DATA_DIR)
+fsUtils.mkdirsSync(DATA_DIR)
 
 
 // Set default configuration in data store.
@@ -48,5 +48,6 @@ export default ({
     DATA_DIR,
     PRODUCTION,
     PORT: 3001,
-    SECRET: PRODUCTION ? uuid()  : 'secret'
+    SECRET: PRODUCTION ? uuid()  : 'secret',
+    STORAGE_QUOTA: 0.5 * 1000 * 1000 * 1000,        // TODO: sales shit         
 })

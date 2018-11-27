@@ -1,5 +1,6 @@
 import {Button, message, Table, Tooltip, Upload} from 'antd'
-import {ConfigButton, HelpButton, Page, RoleTag} from 'components'
+import {HelpButton, Page, RoleTag} from 'components'
+import FilesHelpDrawer from 'drawers/FilesHelpDrawer'
 import prettyBytes from 'pretty-bytes'
 import React from 'react'
 import gql from 'gql'
@@ -32,6 +33,7 @@ export default class FilesPage extends Page {
 
     state = {
         dataSource: [],
+        helpDrawerVisible: false,
         loading: false,
         uploading: false,
     }
@@ -65,6 +67,12 @@ export default class FilesPage extends Page {
         })
     }
 
+    onDrawerClose = () =>
+        this.setState({ helpDrawerVisible: false })
+
+    onHelpClick = () =>
+        this.setState({ helpDrawerVisible: true })
+
     // SEE: https://ant.design/components/upload/#onChange
     onUploadChange = ({event, file, fileList}) => {
         switch (file.status) {
@@ -95,8 +103,7 @@ export default class FilesPage extends Page {
                         </Upload>
                     </div>
                 </Tooltip>
-                <ConfigButton />
-                <HelpButton />
+                <HelpButton onClick={this.onHelpClick} />
             </Page.Header>
             <main>
             <Table
@@ -109,6 +116,7 @@ export default class FilesPage extends Page {
                 showHeader={Boolean(this.state.dataSource.length)}
             />
             </main>
+            <FilesHelpDrawer onClose={this.onDrawerClose} visible={this.state.helpDrawerVisible} />
         </>
 
 }

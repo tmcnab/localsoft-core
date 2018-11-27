@@ -13,7 +13,11 @@
 
 /* Adjustment / Helpers */
 
-.align-r { text-align: right }
+.align-c { text-align: center  }
+.align-j { text-align: justify }
+.align-r { text-align: right   }
+
+.bold { font-weight: bold }
 
 .inline-block { display: inline-block !important }
 
