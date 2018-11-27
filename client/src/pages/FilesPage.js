@@ -99,7 +99,7 @@ export default class FilesPage extends Page {
                 <Tooltip placement='right' title='Upload one or more files'>
                     <div className='inline-block mr1'>
                         <Upload action='/upload' multiple onChange={this.onUploadChange} showUploadList={false} withCredentials >
-                            <Button icon='upload' loading={this.state.uploading} shape='circle' type='primary' />
+                            <Button icon='upload' loading={this.state.uploading} size='large' shape='circle' type='primary' />
                         </Upload>
                     </div>
                 </Tooltip>

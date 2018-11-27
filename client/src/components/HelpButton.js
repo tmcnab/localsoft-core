@@ -6,7 +6,7 @@ export default class HelpButton extends Component {
 
     render = () =>
         <Tooltip placement='bottomRight' title='View additional information about this feature.'>
-            <Button icon='question' onClick={this.props.onClick} shape='circle' />
+            <Button icon='question' onClick={this.props.onClick} size='large' shape='circle' />
         </Tooltip>
 
 }
