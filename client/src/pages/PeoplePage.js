@@ -1,5 +1,6 @@
 import {Button, Popconfirm, Table, Tooltip} from 'antd'
-import {ConfigButton, HelpButton, Page} from 'components'
+import {HelpButton, Page} from 'components'
+import {RoleTag} from 'components'
 import gql from 'gql'
 import PersonEditDrawer from 'drawers/PersonEditDrawer'
 import React from 'react'
@@ -18,6 +19,7 @@ export default class PeoplePage extends Page {
         title: 'Email',
     }, {
         dataIndex: 'role',
+        render: (role) => <RoleTag role={role} />,
         title: 'Role',
     }, {
         render: (item) =>
@@ -33,6 +35,7 @@ export default class PeoplePage extends Page {
     state = {
         dataSource: [],
         editDrawerVisible: false,
+        identifier: null,
         loading: false,
     }
 
@@ -62,7 +65,7 @@ export default class PeoplePage extends Page {
     componentDidMount = () =>
         this.personList()
 
-    onAddPerson = () =>
+    onCloseAdd = () =>
         this.setState({ editDrawerVisible: true })
 
     onDrawerClose = (didSaveRecord) => {
@@ -75,10 +78,9 @@ export default class PeoplePage extends Page {
     render = () =>
         <>
             <Page.Header title='People'>
-                <Tooltip placement='right' title='Add a person'>
-                    <Button className='mr1' icon='user-add' onClick={this.onAddPerson} shape='circle' type='primary' />
+                <Tooltip placement='left' title='Add a person'>
+                    <Button className='mr1' icon='user-add' onClick={this.onCloseAdd} shape='circle' size='large' type='primary' />
                 </Tooltip>
-                <ConfigButton />
                 <HelpButton />
             </Page.Header>
             <main>
@@ -88,11 +90,21 @@ export default class PeoplePage extends Page {
                     dataSource={this.state.dataSource}
                     loading={this.state.loading}
                     locale={this.locale}
+                    onRow={(record) => ({
+                        onClick: () => this.setState({
+                            editDrawerVisible: true,
+                            identifier: record.identifier,
+                        })
+                    })}
                     rowKey='identifier'
                     showHeader={Boolean(this.state.dataSource.length)}
                 />
             </main>
-            <PersonEditDrawer onClose={this.onDrawerClose} visible={this.state.editDrawerVisible} />
+            <PersonEditDrawer
+                identifier={this.state.identifier}
+                onClose={this.onDrawerClose}
+                visible={this.state.editDrawerVisible}
+            />
         </>
 
 }

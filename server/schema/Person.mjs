@@ -76,7 +76,6 @@ export default ({
 
         type Person {
             address: Address
-            affiliation: [String]
             email: String
             identifier: ID!
             name: Name

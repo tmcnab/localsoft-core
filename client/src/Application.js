@@ -34,7 +34,7 @@ export default class Application extends Component {
 
     componentDidUpdate = (prevProps, prevState, snapshot) => {
         if (this.state.instanceName !== prevState.instanceName) {
-            window.document.title = this.state.instanceName
+            window.document.title = `${this.state.instanceName} • localsoft`
         }
     }
 

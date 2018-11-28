@@ -18,7 +18,6 @@ export default class FilesHelpDrawer extends Component {
 
     componentDidMount = async () => {
         const {identifier} = this.props
-        console.log()
         if (identifier) {
             const {file} = await gql(`
                 query {
@@ -33,7 +32,6 @@ export default class FilesHelpDrawer extends Component {
                     }
                 }
             `)
-            console.log(file)
             this.setState({file})
         }
     }

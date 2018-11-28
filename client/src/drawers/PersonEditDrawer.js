@@ -1,11 +1,11 @@
 import {bool, func, string} from 'propTypes'
-import {Col, Divider, Drawer, Form, Input, Row} from 'antd'
-import {cloneDeep} from 'lodash'
-import {get, set} from 'lodash'
+import {Button, Col, Drawer, Form, Input, Row, Select, Tooltip} from 'antd'
+import {cloneDeep, get, set} from 'lodash'
+import gql from 'gql'
 import React, {Component} from 'react'
 
 
-const EMPTY_PERSON = Object.seal({
+const BLANK_RECORD = Object.seal({
     address: {
         country: '',
         locality: '',
@@ -55,43 +55,85 @@ export default class PersonEditDrawer extends Component {
         visible: bool.isRequired,
     }
 
-    state = {
-        edited: null,
-        record: null,
+    constructor (props) {
+        super(props)
+        this.state = {
+            person: cloneDeep(BLANK_RECORD),
+            saving: false,
+        }
+        this.state.person.identifier = props.identifier
     }
 
-    title = 'Editing Person'
+    title = () =>
+        <Row>
+            <Col span={8}>
+                <h3 className='mb0'>{this.props.identifier ? 'Editing' : 'Creating'} Person</h3>
+            </Col>
+            <Col className='align-r' span={16}>
+                <Tooltip placement='left' title='Save'>
+                    <Button className='mr1' icon='check' onClick={this.onClickSave} shape='circle' type='primary' />
+                </Tooltip>
+                <Tooltip placement='bottom' title='Abandon'>
+                    <Button icon='cross' onClick={this.props.onClose} shape='circle' type='danger' />
+                </Tooltip>
+            </Col>
+        </Row>
 
-    onClose = () => {
-        this.props.onClose(true)
-    }
-
-    onInputChange = (event) => {
-        console.log(event.target)
-        // TODO
-    }
-
-    componentDidMount = async () => {
-        if (this.props.identifier) {
-            // TODO use gql query here
-        } else {
-            this.setState({
-                edited: cloneDeep(EMPTY_PERSON),
-                record: cloneDeep(EMPTY_PERSON),
-            })
+    componentDidUpdate = (prevProps) => {
+        if (this.props.identifier !== prevProps.identifier) {
+            if (this.props.identifier) {
+                this.retrieve()
+            }
         }
     }
 
-    inputFor = (name) => {
-        const onChange = ({target}) => this.setState({edited: set(this.state.edited, name, target.value)})
-        const placeholder = PLACEHOLDERS[name]
-        const type = INPUT_TYPES[name] || 'text'
-        const value = get(this.state.edited, name, '')
-        return <Input name={name} onChange={onChange} placeholder={placeholder} type={type} value={value} />
+    inputFor = (path) => {
+        const onChange = ({target}) => this.update(path, target.value)
+        const placeholder = PLACEHOLDERS[path]
+        const type = INPUT_TYPES[path] || 'text'
+        const value = get(this.state.person, path, '')
+        return <Input name={path} onChange={onChange} placeholder={placeholder} type={type} value={value} />
+    }
+
+    onClickSave = () => {
+        console.info('PersonEditDrawer.onClickSave', this.state.person)
+    }
+
+    retrieve = async () => {
+        const {person} = await gql(`{
+            person(identifier:"8e172a7d-66dc-4520-bd01-98436658f6ee") {
+                address {
+                    country
+                    locality
+                    postalCode
+                    region
+                    streetAddress
+                }
+                email
+                identifier
+                name {
+                    additional
+                    family
+                    given
+                }
+                preferences {
+                    email
+                }
+                role
+                telephone
+            }
+        }`)
+        this.setState({person})
+    }
+
+    update = (path, value) => {
+        const person = cloneDeep(this.state.person)
+        set(person, path, value)
+        this.setState({person})
     }
 
     render = () =>
-        <Drawer onClose={this.onClose} placement='right' title={this.title} visible={this.props.visible} width={768}>
+        <Drawer closable={false} onClose={this.props.onClose} maskClosable={false} placement='right' title={this.title()} visible={this.props.visible} width={768}>
             <Form layout='vertical' onSubmit={this.onSubmit}>
                 <Form.Item label='Name'>
                     <Row gutter={8}>
@@ -117,17 +159,35 @@ export default class PersonEditDrawer extends Component {
                         <Col span={12}>{this.inputFor('address.country')}</Col>
                     </Row>
                 </Form.Item>
-                <Divider />
-                <Form.Item label='Access'>
-                    <Row gutter={8}>
-                        <Col span={12}>{this.inputFor('role')}</Col>
-                    </Row>
-                </Form.Item>
+
+                <Row className='mt1' gutter={16}>
+                    <Col span={6}>
+                        <Form.Item label='Role'>
+                            <Select defaultValue={this.state.person.role} name='role' onChange={value => this.update('role', value)}>
+                                <Select.Option value='ANONYMOUS'>
+                                    None
+                                </Select.Option>
+                                <Select.Option value='MEMBER'>
+                                    Member
+                                </Select.Option>
+                                <Select.Option value='STAFF'>
+                                    Staff
+                                </Select.Option>
+                                <Select.Option value='ADMINISTRATOR'>
+                                    Administrator
+                                </Select.Option>
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col span={18}>
+                        <Form.Item label='Tags'>
+                            <p>Coming Soon</p>
+                        </Form.Item>
+                    </Col>
+
+                </Row>
                 <Form.Item label='Preferences'>
-                    <p>Preferences TODO</p>
-                </Form.Item>
-                <Form.Item label='Categories'>
-                    Tags input here
+                    <p>Coming Soon</p>
                 </Form.Item>
             </Form>
         </Drawer>
