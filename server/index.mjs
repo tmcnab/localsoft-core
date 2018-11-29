@@ -41,6 +41,13 @@ app.use('/graphql', expressGraphQL({
     schema,
 }))
 
+
+app.post('/people/:identifier', (request, response) => {
+    // TODO role permissions
+    const {identifier} = request.params
+    db.get('people').find({identifier}).merge(request.body).write()
+})
+
 // Configure uploads.
 const onlyStaffAndAdmins = (req, res, next) => {
     const {role} = req.session

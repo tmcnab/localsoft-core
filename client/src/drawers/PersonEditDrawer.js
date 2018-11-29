@@ -1,8 +1,9 @@
 import {bool, func, string} from 'propTypes'
 import {Button, Col, Drawer, Form, Input, Row, Select, Tooltip} from 'antd'
 import {cloneDeep, get, set} from 'lodash'
+import api from 'api'
 import gql from 'gql'
-import React, {Component} from 'react'
+import React, {Component, createRef} from 'react'
 
 
 const BLANK_RECORD = Object.seal({
@@ -64,6 +65,9 @@ export default class PersonEditDrawer extends Component {
         this.state.person.identifier = props.identifier
     }
 
+    formRef =
+        createRef()
+
     title = () =>
         <Row>
             <Col span={8}>
@@ -95,8 +99,8 @@ export default class PersonEditDrawer extends Component {
         return <Input name={path} onChange={onChange} placeholder={placeholder} type={type} value={value} />
     }
 
-    onClickSave = () => {
-        console.info('PersonEditDrawer.onClickSave', this.state.person)
+    onClickSave = async () => {
+        await api.post(`/people/${this.props.identifier}`)
     }
 
     retrieve = async () => {
@@ -134,7 +138,7 @@ export default class PersonEditDrawer extends Component {
 
     render = () =>
         <Drawer closable={false} onClose={this.props.onClose} maskClosable={false} placement='right' title={this.title()} visible={this.props.visible} width={768}>
-            <Form layout='vertical' onSubmit={this.onSubmit}>
+            <Form layout='vertical' onSubmit={this.onSubmit} ref={this.formRef}>
                 <Form.Item label='Name'>
                     <Row gutter={8}>
                         <Col span={8}>{this.inputFor('name.given')}</Col>
