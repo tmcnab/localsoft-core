@@ -1,7 +1,6 @@
 import {bool, func, string} from 'propTypes'
 import {Button, Col, Drawer, Form, Input, Row, Select, Tooltip} from 'antd'
 import {cloneDeep, get, set} from 'lodash'
-import api from 'api'
 import gql from 'gql'
 import React, {Component, createRef} from 'react'
 
@@ -100,12 +99,12 @@ export default class PersonEditDrawer extends Component {
     }
 
     onClickSave = async () => {
-        await api.post(`/people/${this.props.identifier}`)
+        // TODO: figure best way to do this, either GQL or a PATCH
     }
 
     retrieve = async () => {
         const {person} = await gql(`{
-            person(identifier:"8e172a7d-66dc-4520-bd01-98436658f6ee") {
+            person(identifier:"${this.props.identifier}") {
                 address {
                     country
                     locality
@@ -163,7 +162,6 @@ export default class PersonEditDrawer extends Component {
                         <Col span={12}>{this.inputFor('address.country')}</Col>
                     </Row>
                 </Form.Item>
-
                 <Row className='mt1' gutter={16}>
                     <Col span={6}>
                         <Form.Item label='Role'>
@@ -188,7 +186,6 @@ export default class PersonEditDrawer extends Component {
                             <p>Coming Soon</p>
                         </Form.Item>
                     </Col>
-
                 </Row>
                 <Form.Item label='Preferences'>
                     <p>Coming Soon</p>
