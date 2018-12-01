@@ -6,6 +6,7 @@ import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
 import http from 'http'
 import multer from 'multer'
+import patch from './routes/patch'
 import path from 'path'
 import schema from './schema'
 import uuid from 'uuid/v4'
@@ -42,11 +43,8 @@ app.use('/graphql', expressGraphQL({
 }))
 
 
-app.post('/people/:identifier', (request, response) => {
-    // TODO role permissions
-    const {identifier} = request.params
-    db.get('people').find({identifier}).merge(request.body).write()
-})
+app.patch('/:resource/', patch)
+
 
 // Configure uploads.
 const onlyStaffAndAdmins = (req, res, next) => {

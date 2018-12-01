@@ -1,8 +1,8 @@
 import {bool, func, string} from 'propTypes'
 import {Button, Col, Drawer, Form, Input, Row, Select, Tooltip} from 'antd'
 import {cloneDeep, get, set} from 'lodash'
-import gql from 'gql'
-import React, {Component, createRef} from 'react'
+import gql, {patch} from 'gql'
+import React, {Component} from 'react'
 
 
 const BLANK_RECORD = Object.seal({
@@ -64,9 +64,6 @@ export default class PersonEditDrawer extends Component {
         this.state.person.identifier = props.identifier
     }
 
-    formRef =
-        createRef()
-
     title = () =>
         <Row>
             <Col span={8}>
@@ -99,7 +96,8 @@ export default class PersonEditDrawer extends Component {
     }
 
     onClickSave = async () => {
-        // TODO: figure best way to do this, either GQL or a PATCH
+        await patch('people', this.state.person)
+        this.props.onClose()
     }
 
     retrieve = async () => {
