@@ -120,7 +120,10 @@ export default class FilesPage extends Page {
                     loading={this.state.loading}
                     locale={this.locale}
                     onRow={record => ({
-                        onClick: () => console.log(record)
+                        onClick: () => this.setState({
+                            editVisible: true,
+                            identifier: record.identifier,
+                        }),
                     })}
                     rowKey='identifier'
                     showHeader={Boolean(this.state.dataSource.length)}
