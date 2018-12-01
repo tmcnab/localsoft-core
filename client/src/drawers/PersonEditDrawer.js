@@ -21,14 +21,13 @@ const BLANK_RECORD = Object.seal({
         given: '',
     },
     preferences: {
-        email: false,
+        email: true,
         telephone: true,
     },
     role: 'ANONYMOUS',
     tags: [],
     telephone: '',
 })
-
 
 const PLACEHOLDERS = {
     'address.country': 'Country',
@@ -49,7 +48,6 @@ const INPUT_TYPES = {
     email: 'email',
     telephone: 'tel',
 }
-
 
 export default class PersonEditDrawer extends Component {
 
@@ -206,16 +204,12 @@ export default class PersonEditDrawer extends Component {
                         <Col span={12}>{this.checkboxFor('preferences.telephone')}</Col>
                     </Row>
                 </Form.Item>
+                {this.props.identifier ? (
                 <Form.Item label='Actions'>
-                    <Row className='mt1' gutter={8}>
-                        <Col span={12}>
-                            Reset Password
-                        </Col>
-                        <Col span={12}>
-                            Delete
-                        </Col>
-                    </Row>
+                    <Button className='mr1' disabled onClick={this.onClickResetPassword}>Reset Password</Button>
+                    <Button disabled onClick={this.onClickDelete} type='danger'>Delete Person</Button>
                 </Form.Item>
+                ) : null}
             </Form>
         </Drawer>
 
