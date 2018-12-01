@@ -1,5 +1,5 @@
 import {bool, func, string} from 'propTypes'
-import {Button, Col, Drawer, Form, Input, Row, Select, Tooltip} from 'antd'
+import {Button, Checkbox, Col, Drawer, Form, Input, Row, Select, Tooltip} from 'antd'
 import {cloneDeep, get, set} from 'lodash'
 import gql, {patch} from 'gql'
 import React, {Component} from 'react'
@@ -21,9 +21,11 @@ const BLANK_RECORD = Object.seal({
         given: '',
     },
     preferences: {
-        email: true,
+        email: false,
+        telephone: true,
     },
     role: 'ANONYMOUS',
+    tags: [],
     telephone: '',
 })
 
@@ -38,6 +40,8 @@ const PLACEHOLDERS = {
     'name.additional': 'Additional',
     'name.family': 'Given',
     'name.given': 'Given',
+    'preferences.email': 'Contact via Email',
+    'preferences.telephone': 'Contact via Telephone',
     'telephone': 'Phone +1 (123) 456-7890',
 }
 
@@ -79,6 +83,13 @@ export default class PersonEditDrawer extends Component {
             </Col>
         </Row>
 
+    checkboxFor = (path) => {
+        const checked = get(this.state.person, path, false)
+        const label = PLACEHOLDERS[path]
+        const onChange = ({target}) => this.update(path, target.checked)
+        return <Checkbox checked={checked} onChange={onChange}>{label}</Checkbox>
+    }
+
     componentDidUpdate = (prevProps) => {
         if (this.props.identifier !== prevProps.identifier) {
             if (this.props.identifier) {
@@ -119,8 +130,10 @@ export default class PersonEditDrawer extends Component {
                 }
                 preferences {
                     email
+                    telephone
                 }
                 role
+                tags
                 telephone
             }
         }`)
@@ -163,7 +176,7 @@ export default class PersonEditDrawer extends Component {
                 <Row className='mt1' gutter={16}>
                     <Col span={6}>
                         <Form.Item label='Role'>
-                            <Select defaultValue={this.state.person.role} name='role' onChange={value => this.update('role', value)}>
+                            <Select name='role' onChange={value => this.update('role', value)} value={this.state.person.role}>
                                 <Select.Option value='ANONYMOUS'>
                                     None
                                 </Select.Option>
@@ -181,12 +194,27 @@ export default class PersonEditDrawer extends Component {
                     </Col>
                     <Col span={18}>
                         <Form.Item label='Tags'>
-                            <p>Coming Soon</p>
+                            <Select mode='tags' onChange={value => this.update('tags', value)} value={this.state.person.tags}>
+                                {this.state.person.tags.map(tag => <Select.Option key={tag}>{tag}</Select.Option>)}
+                            </Select>
                         </Form.Item>
                     </Col>
                 </Row>
                 <Form.Item label='Preferences'>
-                    <p>Coming Soon</p>
+                    <Row className='mt1' gutter={8}>
+                        <Col span={12}>{this.checkboxFor('preferences.email')}</Col>
+                        <Col span={12}>{this.checkboxFor('preferences.telephone')}</Col>
+                    </Row>
+                </Form.Item>
+                <Form.Item label='Actions'>
+                    <Row className='mt1' gutter={8}>
+                        <Col span={12}>
+                            Reset Password
+                        </Col>
+                        <Col span={12}>
+                            Delete
+                        </Col>
+                    </Row>
                 </Form.Item>
             </Form>
         </Drawer>

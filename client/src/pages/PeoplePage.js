@@ -1,4 +1,4 @@
-import {Button, Table, Tooltip} from 'antd'
+import {Button, Table, Tag, Tooltip} from 'antd'
 import {HelpButton, Page} from 'components'
 import {RoleTag} from 'components'
 import gql from 'gql'
@@ -29,6 +29,7 @@ export default class PeoplePage extends Page {
         title: 'Role',
     }, {
         dataIndex: 'tags',
+        render: (tags) => tags.map(tag => <Tag key={tag}>{tag}</Tag>),
         title: 'Tags',
     }]
 
@@ -72,21 +73,21 @@ export default class PeoplePage extends Page {
     componentDidMount = () =>
         this.personList()
 
-    onCloseAdd = () =>
-        this.setState({ editDrawerVisible: true })
+    onClickAdd = () =>
+        this.setState({
+            editDrawerVisible: true,
+        })
 
-    onDrawerClose = (didSaveRecord) => {
-        this.personList()
+    onDrawerClose = () =>
         this.setState({
             editDrawerVisible: false,
-        })
-    }
+        }, () => this.personList())
 
     render = () =>
         <main>
             <Page.Header title='People'>
                 <Tooltip placement='left' title='Add a person'>
-                    <Button className='mr1' icon='user-add' onClick={this.onCloseAdd} shape='circle' size='large' type='primary' />
+                    <Button className='mr1' icon='user-add' onClick={this.onClickAdd} shape='circle' size='large' type='primary' />
                 </Tooltip>
                 <HelpButton />
             </Page.Header>

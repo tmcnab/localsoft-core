@@ -72,6 +72,7 @@ export default ({
 
         type Preferences {
             email: Boolean
+            telephone: Boolean
         }
 
         type Person {

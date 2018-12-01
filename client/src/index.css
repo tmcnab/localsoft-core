@@ -11,6 +11,10 @@
     text-align: center;
 }
 
+.ant-form-item-label {
+    font-weight: 500;
+}
+
 /* Adjustment / Helpers */
 
 .align-c { text-align: center  }
