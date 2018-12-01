@@ -81,6 +81,7 @@ export default ({
             name: Name
             preferences: Preferences!
             role: Role!
+            tags: [String!]!
             telephone: String
         }
 

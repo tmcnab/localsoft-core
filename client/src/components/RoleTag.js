@@ -23,7 +23,7 @@ export default class RoleTag extends Component {
     }
 
     labels = {
-        [Roles.ANONYMOUS]: 'PUBLIC',
+        [Roles.ANONYMOUS]: 'None',
         [Roles.ADMINISTRATOR]: 'Admin',
         [Roles.MEMBER]: 'Members',
         [Roles.STAFF]: 'Staff'
