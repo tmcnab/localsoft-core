@@ -38,7 +38,6 @@ export default class Application extends Component {
         }
     }
 
-
     render = () =>
         <BrowserRouter>
             <Layout>

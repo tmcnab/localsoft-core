@@ -1,4 +1,4 @@
-import {Col, Icon, Layout, Menu, Row} from 'antd'
+import {Button, Col, Form, Icon, Input, Layout, Menu, message, Row} from 'antd'
 import {Link} from 'react-router-dom'
 import {role, string} from 'propTypes'
 import {Roles} from 'enums'
@@ -30,6 +30,16 @@ export default class Sidebar extends Component {
         viewerRole: role.isRequired,
     }
 
+    state = {
+        email: null,
+        password: null,
+    }
+
+    onChange = (event) => {
+        const {name, value} = event.target
+        this.setState({ [name]: value })
+    }
+
     onClickExit = async () => {
         const {deauthenticate} = await gql(`mutation { deauthenticate }`)
         if (deauthenticate) {
@@ -41,9 +51,29 @@ export default class Sidebar extends Component {
         }
     }
 
+    onSubmit = async (event) => {
+        event.preventDefault()
+        const {authenticate} = await gql(`
+            mutation {
+                authenticate(email:"${this.state.email}", password:"${this.state.password}") {
+                    role
+                }
+            }
+        `)
+
+        // If there is no auth data passed back the email or password was bad.
+        if (!authenticate) {
+            return message.error('There was an error with your email or password')
+        }
+
+        window.application.setState({
+            viewerRole: authenticate.role,
+        })
+    }
+
     render = () =>
-        <Layout.Sider style={{minHeight: '100vh'}}>
-            <header className='font-large p1 text-white'>
+        <Layout.Sider style={{minHeight: '100vh'}} theme='light' width={256}>
+            <header className='font-large p1'>
                 <Row>
                     <Col span={4}>
                         <Icon type='ant-design' />
@@ -53,7 +83,7 @@ export default class Sidebar extends Component {
                     </Col>
                 </Row>
             </header>
-            <Menu mode='vertical' theme='dark' >
+            <Menu mode='vertical'>
             {MENU_ITEMS.map(item => {
                 const {viewerRole} = this.props
                 const canView = viewerRole === ADMINISTRATOR || item.viewers.includes(viewerRole)
@@ -65,18 +95,30 @@ export default class Sidebar extends Component {
                     </Menu.Item>
                 ) : null
             })}
-            {this.props.viewerRole === ANONYMOUS ? (
-                <Menu.Item key='enter'>
-                    <Link to='/enter/'>
-                        <Icon type='login' /> Enter
-                    </Link>
-                </Menu.Item>
-            ) : (
+            {this.props.viewerRole === ANONYMOUS ? null : (
                 <Menu.Item key='exit' onClick={this.onClickExit}>
                     <Icon type='logout' /> Leave
                 </Menu.Item>
             )}
             </Menu>
+            {this.props.viewerRole === ANONYMOUS ? (
+                <Form className='p1' hideRequiredMark onSubmit={this.onSubmit}>
+                    <Form.Item colon={false} label='Email'>
+                        <Input name='email' onChange={this.onChange} required type='email' />
+                    </Form.Item>
+                    <Form.Item colon={false} label='Password'>
+                        <Input name='password' onChange={this.onChange} required type='password' />
+                    </Form.Item>
+                    <Row gutter={8}>
+                        <Col span={12}>
+                            <Button block htmlType='submit' type='primary'>Enter</Button>
+                        </Col>
+                        <Col span={12}>
+                            <Button block onClick={this.onForgotClick}>I Forgot</Button>
+                        </Col>
+                    </Row>
+                </Form>
+            ) : null}
         </Layout.Sider>
 
 }
