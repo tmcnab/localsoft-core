@@ -11,7 +11,10 @@ export default async (request, response, next) => {
     // TODO: schema validation probably
 
     if (identifier) {
-        db.get(resource).find({identifier}).assign(request.body).write()
+        db.get(resource).find({identifier}).assign({
+            ...db.get(resource).find({identifier}).value(),
+            ...request.body,
+        }).write()
     } else {
         db.get(resource).push({
             ...request.body,
