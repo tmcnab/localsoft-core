@@ -6,7 +6,8 @@ import EventsPage from 'pages/EventsPage'
 import FilesPage from 'pages/FilesPage'
 import NotFoundPage from 'pages/NotFoundPage'
 import PeoplePage from 'pages/PeoplePage'
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import SplashPage from 'pages/SplashPage'
 
 
 export default class Routes extends Component {
@@ -19,6 +20,7 @@ export default class Routes extends Component {
             <Route component={EventsPage}       exact path='/events/' />
             <Route component={FilesPage}        exact path='/files/' />
             <Route component={PeoplePage}       exact path='/people/' />
+            <Route component={SplashPage}       exact path='/' />
             <Route component={NotFoundPage} />
         </Switch>
 
