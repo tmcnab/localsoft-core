@@ -6,7 +6,7 @@ import gql from 'gql'
 import React, {Component} from 'react'
 
 
-export default class FilesHelpDrawer extends Component {
+export default class FilesInfoDrawer extends Component {
 
     static propTypes = {
         onClose: func.isRequired,

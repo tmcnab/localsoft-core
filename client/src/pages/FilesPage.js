@@ -1,10 +1,10 @@
 import {Button, message, Table, Tooltip, Upload} from 'antd'
 import {HelpButton, Page, RoleTag} from 'components'
 import FileEditDrawer from 'drawers/FileEditDrawer'
-import FilesHelpDrawer from 'drawers/FilesHelpDrawer'
+import FilesInfoDrawer from 'drawers/FilesInfoDrawer'
+import gql from 'gql'
 import prettyBytes from 'pretty-bytes'
 import React from 'react'
-import gql from 'gql'
 
 
 export default class FilesPage extends Page {
@@ -35,7 +35,7 @@ export default class FilesPage extends Page {
     state = {
         dataSource: [],
         editVisible: false,
-        helpVisible: false,
+        infoVisible: false,
         loading: false,
         uploading: false,
     }
@@ -70,15 +70,13 @@ export default class FilesPage extends Page {
     }
 
     onClickHelp = () =>
-        this.setState({ helpVisible: true })
+        this.setState({ infoVisible: true })
 
     onCloseEdit = () =>
         this.setState({ editVisible: false })
 
-    onCloseHelp = () =>
-        this.setState({ helpVisible: false })
-
-
+    onCloseInfo = () =>
+        this.setState({ infoVisible: false })
 
     // SEE: https://ant.design/components/upload/#onChange
     onUploadChange = ({event, file, fileList}) => {
@@ -129,8 +127,15 @@ export default class FilesPage extends Page {
                     showHeader={Boolean(this.state.dataSource.length)}
                 />
             </main>
-            <FileEditDrawer identifier={this.state.identifier} onClose={this.onCloseEdit} visible={this.state.editVisible} />
-            <FilesHelpDrawer onClose={this.onCloseHelp} visible={this.state.helpVisible} />
+            <FileEditDrawer
+                identifier={this.state.identifier}
+                onClose={this.onCloseEdit}
+                visible={this.state.editVisible}
+            />
+            <FilesInfoDrawer
+                onClose={this.onCloseInfo}
+                visible={this.state.infoVisible}
+            />
         </>
 
 }

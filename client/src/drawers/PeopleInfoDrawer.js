@@ -3,7 +3,7 @@ import {bool, func} from 'propTypes'
 import React, {Component} from 'react'
 
 
-export default class PersonHelpDrawer extends Component {
+export default class PeopleInfoDrawer extends Component {
 
     static propTypes = {
         onClose: func.isRequired,

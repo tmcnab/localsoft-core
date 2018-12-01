@@ -58,8 +58,15 @@ export default class EventsPage extends Page {
                 <HelpButton onClick={this.onClickInfo} />
             </Page.Header>
             <Calendar onSelect={this.onSelect} />
-            <EventEditDrawer identifier={this.state.identifier} onClose={this.onCloseEdit} visible={this.state.editVisible} />
-            <EventInfoDrawer onClose={this.onCloseInfo} visible={this.state.infoVisible} />
+            <EventEditDrawer
+                identifier={this.state.identifier}
+                onClose={this.onCloseEdit}
+                visible={this.state.editVisible}
+            />
+            <EventInfoDrawer
+                onClose={this.onCloseInfo}
+                visible={this.state.infoVisible}
+            />
         </main>
 
 }

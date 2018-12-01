@@ -3,7 +3,7 @@ import {HelpButton, Page} from 'components'
 import {RoleTag} from 'components'
 import gql from 'gql'
 import PersonEditDrawer from 'drawers/PersonEditDrawer'
-import PersonHelpDrawer from 'drawers/PersonHelpDrawer'
+import PeopleInfoDrawer from 'drawers/PeopleInfoDrawer'
 import React from 'react'
 
 
@@ -41,7 +41,7 @@ export default class PeoplePage extends Page {
     state = {
         dataSource: [],
         editVisible: false,
-        helpVisible: false,
+        infoVisible: false,
         identifier: null,
         loading: false,
     }
@@ -82,7 +82,7 @@ export default class PeoplePage extends Page {
 
     onClickHelp = () =>
         this.setState({
-            helpVisible: true,
+            infoVisible: true,
         })
 
     onCloseEdit = () =>
@@ -90,9 +90,9 @@ export default class PeoplePage extends Page {
             editVisible: false,
         }, () => this.personList())
 
-    onCloseHelp = () =>
+    onCloseInfo = () =>
         this.setState({
-            helpVisible: false,
+            infoVisible: false,
         })
 
     render = () =>
@@ -123,9 +123,9 @@ export default class PeoplePage extends Page {
                 onClose={this.onCloseEdit}
                 visible={this.state.editVisible}
             />
-            <PersonHelpDrawer
-                onClose={this.onCloseHelp}
-                visible={this.state.helpVisible}
+            <PeopleInfoDrawer
+                onClose={this.onCloseInfo}
+                visible={this.state.infoVisible}
             />
         </main>
 
