@@ -3,6 +3,7 @@ import {HelpButton, Page} from 'components'
 import {RoleTag} from 'components'
 import gql from 'gql'
 import PersonEditDrawer from 'drawers/PersonEditDrawer'
+import PersonHelpDrawer from 'drawers/PersonHelpDrawer'
 import React from 'react'
 
 
@@ -39,7 +40,8 @@ export default class PeoplePage extends Page {
 
     state = {
         dataSource: [],
-        editDrawerVisible: false,
+        editVisible: false,
+        helpVisible: false,
         identifier: null,
         loading: false,
     }
@@ -75,13 +77,23 @@ export default class PeoplePage extends Page {
 
     onClickAdd = () =>
         this.setState({
-            editDrawerVisible: true,
+            editVisible: true,
         })
 
-    onDrawerClose = () =>
+    onClickHelp = () =>
         this.setState({
-            editDrawerVisible: false,
+            helpVisible: true,
+        })
+
+    onCloseEdit = () =>
+        this.setState({
+            editVisible: false,
         }, () => this.personList())
+
+    onCloseHelp = () =>
+        this.setState({
+            helpVisible: false,
+        })
 
     render = () =>
         <main>
@@ -89,7 +101,7 @@ export default class PeoplePage extends Page {
                 <Tooltip placement='left' title='Add a person'>
                     <Button className='mr1' icon='user-add' onClick={this.onClickAdd} shape='circle' size='large' type='primary' />
                 </Tooltip>
-                <HelpButton />
+                <HelpButton onClick={this.onClickHelp} />
             </Page.Header>
             <Table
                 bordered
@@ -99,7 +111,7 @@ export default class PeoplePage extends Page {
                 locale={this.locale}
                 onRow={(record) => ({
                     onClick: () => this.setState({
-                        editDrawerVisible: true,
+                        editVisible: true,
                         identifier: record.identifier,
                     })
                 })}
@@ -108,8 +120,12 @@ export default class PeoplePage extends Page {
             />
             <PersonEditDrawer
                 identifier={this.state.identifier}
-                onClose={this.onDrawerClose}
-                visible={this.state.editDrawerVisible}
+                onClose={this.onCloseEdit}
+                visible={this.state.editVisible}
+            />
+            <PersonHelpDrawer
+                onClose={this.onCloseHelp}
+                visible={this.state.helpVisible}
             />
         </main>
 
