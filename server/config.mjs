@@ -45,6 +45,7 @@ if (!administrators.length) {
 
 export default ({
     BUILD_DIR: path.join(__dirname, '..', '.build'),
+    CUSTOM_THEME: false,
     DATA_DIR,
     INSTANCE_NAME: process.env.INSTANCE_NAME || 'Dev Instance',
     PRODUCTION,
