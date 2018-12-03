@@ -1,4 +1,4 @@
-import {Button, Tooltip} from 'antd'
+import {Button, Table, Tooltip} from 'antd'
 import {HelpButton, Page} from 'components'
 import {Roles} from 'enums'
 import EmailEditDrawer from 'drawers/EmailEditDrawer'
@@ -13,10 +13,38 @@ export default class EmailPage extends Page {
         Roles.ADMINISTRATOR,
     ]
 
+    columns = [{
+        dataIndex: 'name',
+        sorter: (a, b) => a.name.length - b.name.length,
+        title: 'Name',
+    }, {
+        dataIndex: 'date',
+        title: 'Send Date',
+    }, {
+        dataIndex: 'targets',
+        title: 'Targets',
+    }, {
+        dataIndex: 'recipients',
+        title: 'Recipients',
+    }, {
+        dataIndex: 'bounced',
+        title: 'Bounced',
+    }]
+
+    locale = {
+        emptyText: 'No emails.'
+    }
+
     state = {
+        dataSource: [],
         editVisible: false,
         identifier: null,
         infoVisible: false,
+        loading: false,
+    }
+
+    fetchRecords = async () => {
+        // TODO:
     }
 
     onClickCreate = () =>
@@ -42,6 +70,21 @@ export default class EmailPage extends Page {
                 </Tooltip>
                 <HelpButton onClick={this.onClickInfo} />
             </Page.Header>
+            <Table
+                bordered
+                columns={this.columns}
+                dataSource={this.state.dataSource}
+                loading={this.state.loading}
+                locale={this.locale}
+                onRow={record => ({
+                    onClick: () => this.setState({
+                        editVisible: true,
+                        identifier: record.identifier,
+                    }),
+                })}
+                rowKey='identifier'
+                showHeader={Boolean(this.state.dataSource.length)}
+            />
             <EmailEditDrawer
                 identifier={this.state.identifier}
                 onClose={this.onCloseEdit}
