@@ -8,6 +8,7 @@ import helmet from 'helmet'
 import http from 'http'
 import patch from './routes/patch'
 import schema from './schema'
+import unsubscribe from './routes/unsubscribe'
 import upload from './routes/upload'
 
 
@@ -43,7 +44,8 @@ app.use('/graphql', expressGraphQL({
 // Register custom route handlers.
 app.patch('/:resource/', patch)
 app.get('/files/:identifier', download)
-app.post('/upload', upload)
+app.post('/upload/', upload)
+app.get('/unsubscribe/', unsubscribe)
 
 
 // In production we serve the build directory from static
