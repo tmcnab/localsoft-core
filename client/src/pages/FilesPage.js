@@ -99,7 +99,7 @@ export default class FilesPage extends Page {
     }
 
     render = () =>
-        <>
+        <main>
             <Page.Header title='Files'>
                 <Tooltip placement='right' title='Upload one or more files'>
                     <div className='inline-block mr1'>
@@ -110,23 +110,21 @@ export default class FilesPage extends Page {
                 </Tooltip>
                 <HelpButton onClick={this.onClickHelp} />
             </Page.Header>
-            <main>
-                <Table
-                    bordered
-                    columns={this.columns}
-                    dataSource={this.state.dataSource}
-                    loading={this.state.loading}
-                    locale={this.locale}
-                    onRow={record => ({
-                        onClick: () => this.setState({
-                            editVisible: true,
-                            identifier: record.identifier,
-                        }),
-                    })}
-                    rowKey='identifier'
-                    showHeader={Boolean(this.state.dataSource.length)}
-                />
-            </main>
+            <Table
+                bordered
+                columns={this.columns}
+                dataSource={this.state.dataSource}
+                loading={this.state.loading}
+                locale={this.locale}
+                onRow={record => ({
+                    onClick: () => this.setState({
+                        editVisible: true,
+                        identifier: record.identifier,
+                    }),
+                })}
+                rowKey='identifier'
+                showHeader={Boolean(this.state.dataSource.length)}
+            />
             <FileEditDrawer
                 identifier={this.state.identifier}
                 onClose={this.onCloseEdit}
@@ -136,6 +134,6 @@ export default class FilesPage extends Page {
                 onClose={this.onCloseInfo}
                 visible={this.state.infoVisible}
             />
-        </>
+        </main>
 
 }
