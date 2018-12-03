@@ -19,7 +19,7 @@ fsUtils.mkdirsSync(DATA_DIR)
 export const db = lowdb(new FileSync(path.join(DATA_DIR, 'config.json')))
 db.defaults({
     conversations: {},
-    email: [],
+    emails: [],
     events: [],
     files: [],
     forums: {},

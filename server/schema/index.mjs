@@ -1,4 +1,5 @@
 import Account from './Account'
+import Email from './Email'
 import File from './File'
 import Person from './Person'
 import s2s from 'graphql-s2s'
@@ -24,6 +25,7 @@ const schema = `
 	}
 
 	${Account.schema}
+	${Email.schema}
 	${File.schema}
 	${Person.schema}
 
@@ -35,15 +37,18 @@ const schema = `
 
 const resolvers = {
 	Account: Account.resolvers,
+	Email: Email.resolvers,
 	File: File.resolvers,
 	Mutation: {
 		...Account.mutations,
+		...Email.mutations,
 		...File.mutations,
 		...Person.mutations,
 	},
 	Person: Person.resolvers,
 	Query: {
 		...Account.queries,
+		...Email.queries,
 		...File.queries,
 		...Person.queries,
 	},
