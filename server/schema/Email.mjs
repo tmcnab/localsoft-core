@@ -16,20 +16,18 @@ export default ({
     resolvers: {},
     schema: `
         type Email {
-            # Attachments that should be sent out with this email.
-            attachments: [ID!]!
             # The markdown content of this email.
             content: String!
             # A unique identifier for this record.
             identifier: ID!
             # A user-provided name for the email.
             name: String!
-            # People who are intended to receive this email.
-            recipients: [ID!]!
+            # Tags of People who are intended to receive this email.
+            recipients: [String!]!
             # The date and time the email will be sent out.
             sendAt: Date!
-            # People with tags specified here will receive this email.
-            targets: [String!]!
+            # Tags associated with this email.
+            tags: [String!]!
         }
 
         extend type Query {
