@@ -1,5 +1,5 @@
 import {Button, message, Table, Tooltip, Upload} from 'antd'
-import {HelpButton, Page, RoleTag} from 'components'
+import {InfoButton, Page, RoleTag} from 'components'
 import FileEditDrawer from 'drawers/FileEditDrawer'
 import FilesInfoDrawer from 'drawers/FilesInfoDrawer'
 import gql from 'gql'
@@ -108,7 +108,7 @@ export default class FilesPage extends Page {
                         </Upload>
                     </div>
                 </Tooltip>
-                <HelpButton onClick={this.onClickHelp} />
+                <InfoButton onClick={this.onClickHelp} />
             </Page.Header>
             <Table
                 bordered

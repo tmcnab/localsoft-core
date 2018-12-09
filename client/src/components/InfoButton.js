@@ -2,7 +2,7 @@ import {Button, Tooltip} from 'antd'
 import React, {Component} from 'react'
 
 
-export default class HelpButton extends Component {
+export default class InfoButton extends Component {
 
     render = () =>
         <Tooltip placement='bottomRight' title='View additional information about this feature.'>

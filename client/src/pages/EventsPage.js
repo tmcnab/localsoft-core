@@ -1,5 +1,5 @@
 import {Button, Calendar, Tooltip} from 'antd'
-import {HelpButton, Page} from 'components'
+import {InfoButton, Page} from 'components'
 import EventEditDrawer from 'drawers/EventEditDrawer'
 import EventInfoDrawer from 'drawers/EventInfoDrawer'
 import React from 'react'
@@ -55,7 +55,7 @@ export default class EventsPage extends Page {
                 <Tooltip placement='right' title='Create a new event'>
                     <Button className='mr1' icon='plus' onClick={this.onClickCreate} size='large' shape='circle' type='primary' />
                 </Tooltip>
-                <HelpButton onClick={this.onClickInfo} />
+                <InfoButton onClick={this.onClickInfo} />
             </Page.Header>
             <Calendar onSelect={this.onSelect} />
             <EventEditDrawer

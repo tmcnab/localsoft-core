@@ -1,5 +1,5 @@
 import {Button, Table, Tag, Tooltip} from 'antd'
-import {HelpButton, Page} from 'components'
+import {InfoButton, Page} from 'components'
 import {RoleTag} from 'components'
 import gql from 'gql'
 import PersonEditDrawer from 'drawers/PersonEditDrawer'
@@ -101,7 +101,7 @@ export default class PeoplePage extends Page {
                 <Tooltip placement='left' title='Add a person'>
                     <Button className='mr1' icon='user-add' onClick={this.onClickAdd} shape='circle' size='large' type='primary' />
                 </Tooltip>
-                <HelpButton onClick={this.onClickHelp} />
+                <InfoButton onClick={this.onClickHelp} />
             </Page.Header>
             <Table
                 bordered

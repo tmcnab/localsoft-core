@@ -1,5 +1,5 @@
 import {Button, Table, Tooltip} from 'antd'
-import {HelpButton, Page} from 'components'
+import {InfoButton, Page} from 'components'
 import {Roles} from 'enums'
 import EmailEditDrawer from 'drawers/EmailEditDrawer'
 import EmailsInfoDrawer from 'drawers/EmailsInfoDrawer'
@@ -68,7 +68,7 @@ export default class EmailPage extends Page {
                 <Tooltip placement='right' title='Create a new email'>
                     <Button className='mr1' icon='plus' onClick={this.onClickCreate} size='large' shape='circle' type='primary' />
                 </Tooltip>
-                <HelpButton onClick={this.onClickInfo} />
+                <InfoButton onClick={this.onClickInfo} />
             </Page.Header>
             <Table
                 bordered
