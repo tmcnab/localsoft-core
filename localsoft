@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-# Create the data directory if not exists.
-mkdir -p .data .data/files
+# Create runtime directories if not exist.
+mkdir -p .data .data
+
+# If jekyll directory does not exist, create new jekyll install
+if [ ! -d "$DIRECTORY" ]; then
+    jekyll new .jekyll
+    (cd .jekyll && jekyll b)
+fi
 
 # Install dependencies.
 (cd client && yarn -s)

@@ -6,6 +6,7 @@ import path from 'path'
 import uuid from 'uuid/v4'
 
 
+// eslint-disable-next-line
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const DATA_DIR = path.join(__dirname, '..', '.data')
@@ -48,6 +49,7 @@ export default ({
     CUSTOM_THEME: false,
     DATA_DIR,
     INSTANCE_NAME: process.env.INSTANCE_NAME || 'Dev Instance',
+    JEKYLL_DIR: path.join(__dirname, '..', '.jekyll', '_site'),
     PRODUCTION,
     PORT: 3001,
     SECRET: PRODUCTION ? uuid()  : 'secret',
