@@ -55,29 +55,51 @@ if (pageCount === 0) {
     db.get('pages')
         .push({
             author: [],
-            content: `
-Welcome
-=======
-
-This is the default index page of your localsoft instance.
-`,
+            content: `This is the default index page of your localsoft instance.`,
             created: timestamp,
             description: '',
             identifier: uuid(),
+            name: 'index',
             modified: timestamp,
             path: '/',
+            post: false,
             published: timestamp,
             tags: [],
             title: 'Welcome'
+        })
+        .push({
+            author: [],
+            content: `This is an example about page`,
+            created: timestamp,
+            description: '',
+            identifier: uuid(),
+            name: 'about',
+            modified: timestamp,
+            path: '/about',
+            post: false,
+            published: timestamp,
+            tags: [],
+            title: 'About'
+        })
+        .push({
+            author: [],
+            content: `This is an example blog post.`,
+            created: timestamp,
+            description: '',
+            identifier: uuid(),
+            name: 'new-post',
+            modified: timestamp,
+            path: `/posts/${timestamp.split('T')[0]}/new-post`,
+            post: true,
+            published: timestamp,
+            tags: [],
+            title: 'New Post'
         })
         .write()
 }
 
 //-------------------------------------------------------------------------------------------------------------------//
 // Rebuild jekyll static site:
-//  - delete .md files
-//  - write out Page(s) from database
-//  - rebuild
 ;(async () => {
     await jekyll()
 })()

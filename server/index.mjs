@@ -2,6 +2,7 @@ import './init'
 import compression from 'compression'
 import config from './config'
 import cookieSession from 'cookie-session'
+import db from './db'
 import download from './routes/download'
 import express from 'express'
 import expressGraphQL from 'express-graphql'
@@ -62,6 +63,30 @@ app.use(express.static(config.BUILD_DIR))
 const reactIndexFile = path.join(config.BUILD_DIR, 'index.html')
 app.get(['/events', '/people', '/dashboard'], (request, response) => response.sendFile(reactIndexFile))
 
-app.get('/*', (request, response) => response.sendFile(jekyllIndexFile))
+// If there is a page, serve it up
+const pagePaths = db
+    .get('pages')
+    .value()
+    .map(page => `${page.path}`)
+console.log(pagePaths)
+
+app.get(pagePaths, (request, response) => {
+    const requestPath = request.path.endsWith('/') ? request.path.slice(0, -1) : request.path
+    const page = db
+        .get('pages')
+        .find({path: requestPath})
+        .value()
+
+    const name = page.post ? `posts/${page.published.split('T')[0]}/${page.name}.html` : `${page.name}.html`
+    const file = path.join(config.JEKYLL_DIR, name)
+    console.log(file)
+    response.sendFile(file)
+})
+
+// Error Handler.
+app.use((error, request, response, next) => {
+    const file = path.join(config.JEKYLL_DIR, '404.html')
+    response.status(404).sendFile(file)
+})
 
 http.createServer(app).listen(config.PORT)

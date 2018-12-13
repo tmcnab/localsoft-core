@@ -18,19 +18,24 @@ export default {
     schema: `
         type Page {
             author: [Person!]!
+            content: String!
             created: Date!
             description: String
             identifier: ID!
+            name: String!
             modified: Date
             path: String!
+            post: Boolean!
             published: Date!
             tags: [String!]!
             title: String!
         }
 
         input PageInput {
+            content: String!
             description: String
             identifier: ID!
+            name: String!
             path: String!
             published: Date!
             tags: [String!]!
