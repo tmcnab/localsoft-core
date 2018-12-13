@@ -6,16 +6,22 @@
  * Person's identifier and the email identifier
  *
  */
-import {db} from '../config'
-
+import db from '../db'
 
 export default (request, response) => {
     const email = request.query.trim().toLowerCase()
-    const record = db.get('people').find({email}).value()
+    const record = db
+        .get('people')
+        .find({email})
+        .value()
+
     if (record) {
         record.preferences.email = false
-        db.get('people').find({email}).assign(record).write()
+        db.get('people')
+            .find({email})
+            .assign(record)
+            .write()
     }
 
     response.render('unsubscribe')
- }
+}

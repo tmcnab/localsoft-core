@@ -6,7 +6,6 @@ mkdir -p .data .data
 # If jekyll directory does not exist, create new jekyll install
 if [ ! -d "$DIRECTORY" ]; then
     jekyll new .jekyll
-    (cd .jekyll && jekyll b)
 fi
 
 # Install dependencies.

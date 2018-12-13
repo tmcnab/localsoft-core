@@ -1,45 +1,51 @@
-import {db} from '../config'
 import bcrypt from 'bcrypt'
+import db from '../db'
 
-
-export default ({
+export default {
     mutations: {
         authenticate: async (root, args, req) => {
             const email = args.email.toLowerCase()
 
             // Fetch person and if doesn't exists return nothing, no error.
-            const person = db.get('people').find({ email }).value()
+            const person = db
+                .get('people')
+                .find({email})
+                .value()
             if (!person) {
                 return null
             }
 
             // If the password doesn't match, return nothing, no error.
-            if (!await bcrypt.compare(args.password, person.hash)) {
+            const challengeSucceeded = await bcrypt.compare(args.password, person.hash)
+            if (!challengeSucceeded) {
                 return null
             }
 
             // Set session+cookie and return record
             req.session = {
                 identifier: person.identifier,
-                role: person.role,
+                role: person.role
             }
             return person
         },
         deauthenticate: async (root, args, req) => {
             req.session = null
             return true
-        },
+        }
     },
     queries: {
         // TODO: this should return a person instead of null, but only field is role=ANONYMOUS [@tmcnab]
         currentUser: async (root, args, req) => {
-            const { identifier } = req.session
+            const {identifier} = req.session
             return identifier
-                ? db.get('people').find({ identifier }).value()
+                ? db
+                      .get('people')
+                      .find({identifier})
+                      .value()
                 : null
         },
         people: async (root, args, req) => {
-            const { role } = req.session
+            const {role} = req.session
             if (['STAFF', 'ADMINISTRATOR'].includes(role)) {
                 return db.get('people').value()
             } else {
@@ -48,7 +54,10 @@ export default ({
         },
         person: async (root, {identifier}, {session}) => {
             if (['STAFF', 'ADMINISTRATOR'].includes(session.role)) {
-                return db.get('people').find({identifier}).value()
+                return db
+                    .get('people')
+                    .find({identifier})
+                    .value()
             } else {
                 throw new Error('Unauthorized')
             }
@@ -97,4 +106,4 @@ export default ({
             currentUser: Person
         }
     `
-})
+}

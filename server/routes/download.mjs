@@ -1,10 +1,13 @@
-import config, {db} from '../config'
+import config from '../config'
+import db from '../db'
 import path from 'path'
-
 
 export default (request, response) => {
     const {identifier} = request.params
-    const record = db.get('files').find({identifier}).value()
+    const record = db
+        .get('files')
+        .find({identifier})
+        .value()
 
     // No record? 404.
     if (!record) {

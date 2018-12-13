@@ -1,6 +1,7 @@
 import Account from './Account'
 import Email from './Email'
 import File from './File'
+import Page from './Page'
 import Person from './Person'
 import s2s from 'graphql-s2s'
 import tools from 'graphql-tools'
@@ -27,6 +28,7 @@ const schema = `
 	${Account.schema}
 	${Email.schema}
 	${File.schema}
+	${Page.schema}
 	${Person.schema}
 
 	schema {
@@ -43,13 +45,16 @@ const resolvers = {
 		...Account.mutations,
 		...Email.mutations,
 		...File.mutations,
+		...Page.mutations,
 		...Person.mutations,
 	},
+	Page: Page.resolvers,
 	Person: Person.resolvers,
 	Query: {
 		...Account.queries,
 		...Email.queries,
 		...File.queries,
+		...Page.queries,
 		...Person.queries,
 	},
 	Role: {

@@ -1,7 +1,7 @@
-import config, {db} from '../config'
+import config from '../config'
+import db from '../db'
 import multer from 'multer'
 import uuid from 'uuid/v4'
-
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -9,7 +9,6 @@ const upload = multer({
         filename: (req, file, cb) => cb(null, uuid())
     })
 }).any()
-
 
 export default (request, response, next) => {
     const {role} = request.session
@@ -21,7 +20,7 @@ export default (request, response, next) => {
         return next(error)
     }
 
-    upload(request, response, (err) => {
+    upload(request, response, err => {
         if (err instanceof multer.MulterError) {
             // TODO: A Multer error occurred when uploading.
         } else if (err) {
@@ -29,16 +28,18 @@ export default (request, response, next) => {
         } else {
             const access = role === 'STAFF' ? 'STAFF' : 'ADMINISTRATOR'
             request.files.forEach(file => {
-                db.get('files').push({
-                    access,
-                    description: "",
-                    identifier: file.filename,
-                    mimeType: file.mimetype,
-                    name: file.originalname,
-                    size: file.size,
-                    tags: [],
-                    uploaded: new Date().toISOString(),
-                }).write()
+                db.get('files')
+                    .push({
+                        access,
+                        description: '',
+                        identifier: file.filename,
+                        mimeType: file.mimetype,
+                        name: file.originalname,
+                        size: file.size,
+                        tags: [],
+                        uploaded: new Date().toISOString()
+                    })
+                    .write()
             })
             response.status(201).json({status: 'success'})
         }

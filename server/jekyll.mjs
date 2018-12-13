@@ -8,8 +8,6 @@ import {exec} from 'child_process'
 export default (themeFile = null) => {
     // TODO: check for zipFileName
     new Promise((resolve, reject) => {
-        exec('cd ../.jekyll && jekyll build', error =>
-            error ? reject(error) : resolve()
-        )
+        exec('cd ../.jekyll && jekyll build', error => error ? reject(error) : resolve())
     })
 }

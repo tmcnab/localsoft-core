@@ -1,0 +1,6 @@
+{
+    "rules": {
+        "no-extra-parens": "error",
+        "sort-imports": "error"
+    }
+}

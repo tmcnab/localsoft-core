@@ -1,4 +1,4 @@
-import {db} from '../config'
+import db from '../db'
 import uuid from 'uuid/v4'
 
 

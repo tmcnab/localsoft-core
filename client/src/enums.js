@@ -15,12 +15,7 @@ export const Features = toEnumObject(
     'PAGES',
     'PEOPLE',
     'SETTINGS',
-    'UPDATES',
+    'UPDATES'
 )
 
-export const Roles = toEnumObject(
-    'ANONYMOUS',
-    'MEMBER',
-    'STAFF',
-    'ADMINISTRATOR',
-)
+export const Roles = toEnumObject('ANONYMOUS', 'MEMBER', 'STAFF', 'ADMINISTRATOR')

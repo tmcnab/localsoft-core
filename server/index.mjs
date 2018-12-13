@@ -1,6 +1,7 @@
+import './init'
 import compression from 'compression'
-import cookieSession from 'cookie-session'
 import config from './config'
+import cookieSession from 'cookie-session'
 import download from './routes/download'
 import express from 'express'
 import expressGraphQL from 'express-graphql'
@@ -59,9 +60,7 @@ app.use(express.static(config.JEKYLL_DIR))
 app.use(express.static(config.BUILD_DIR))
 
 const reactIndexFile = path.join(config.BUILD_DIR, 'index.html')
-app.get(['/events', '/people', '/dashboard'], (request, response) =>
-    response.sendFile(reactIndexFile)
-)
+app.get(['/events', '/people', '/dashboard'], (request, response) => response.sendFile(reactIndexFile))
 
 app.get('/*', (request, response) => response.sendFile(jekyllIndexFile))
 

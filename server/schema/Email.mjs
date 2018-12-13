@@ -1,7 +1,6 @@
-import {db} from '../config'
+import db from '../db'
 
-
-export default ({
+export default {
     mutations: {},
     queries: {
         emails: async (root, args, req) => {
@@ -11,7 +10,7 @@ export default ({
             }
 
             return db.get('emails').value()
-        },
+        }
     },
     resolvers: {},
     schema: `
@@ -34,4 +33,4 @@ export default ({
             emails: [Email!]!
         }
     `
-})
+}
