@@ -1,7 +1,7 @@
 import {Button, Table, Tooltip} from 'antd'
 import {InfoButton, Page} from 'components'
-// import PageEditDrawer from 'drawers/PageEditDrawer'
-// import PageInfoDrawer from 'drawers/PageInfoDrawer'
+import PageEditDrawer from 'drawers/PageEditDrawer'
+import PageInfoDrawer from 'drawers/PageInfoDrawer'
 import React from 'react'
 
 
@@ -31,6 +31,9 @@ export default class FilesPage extends Page {
             loading: false,
         })
     }
+
+    onClickAdd = () =>
+        this.setState({ editVisible: true, indentifier: null })
 
     onClickHelp = () =>
         this.setState({ infoVisible: true })
@@ -64,7 +67,6 @@ export default class FilesPage extends Page {
                 rowKey='identifier'
                 showHeader={Boolean(this.state.dataSource.length)}
             />
-            {/*
             <PageEditDrawer
                 identifier={this.state.identifier}
                 onClose={this.onCloseEdit}
@@ -74,7 +76,6 @@ export default class FilesPage extends Page {
                 onClose={this.onCloseInfo}
                 visible={this.state.infoVisible}
             />
-            */}
         </main>
 
 }

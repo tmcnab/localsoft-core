@@ -1,6 +1,9 @@
 {
+    "extends": "eslint:recommended",
+    "plugins": ["prettier"],
     "rules": {
         "no-extra-parens": "error",
+        "prettier/prettier": "error",
         "sort-imports": "error"
     }
 }

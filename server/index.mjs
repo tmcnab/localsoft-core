@@ -8,7 +8,6 @@ import express from 'express'
 import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
 import http from 'http'
-import jekyll from './jekyll'
 import patch from './routes/patch'
 import path from 'path'
 import schema from './schema'
@@ -68,7 +67,6 @@ const pagePaths = db
     .get('pages')
     .value()
     .map(page => `${page.path}`)
-console.log(pagePaths)
 
 app.get(pagePaths, (request, response) => {
     const requestPath = request.path.endsWith('/') ? request.path.slice(0, -1) : request.path
@@ -79,12 +77,11 @@ app.get(pagePaths, (request, response) => {
 
     const name = page.post ? `posts/${page.published.split('T')[0]}/${page.name}.html` : `${page.name}.html`
     const file = path.join(config.JEKYLL_DIR, name)
-    console.log(file)
     response.sendFile(file)
 })
 
 // Error Handler.
-app.use((error, request, response, next) => {
+app.use((error, request, response) => {
     const file = path.join(config.JEKYLL_DIR, '404.html')
     response.status(404).sendFile(file)
 })
