@@ -6,4 +6,10 @@ import path from 'path'
 const file = path.join(config.DATA_DIR, 'localsoft.json')
 const adapter = new FileSync(file)
 
-export default lowdb(adapter)
+const db = lowdb(adapter)
+
+Object.defineProperties(db, {
+    pages: {get: () => db.get('pages')}
+})
+
+export default db
