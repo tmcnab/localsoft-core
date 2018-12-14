@@ -33,10 +33,9 @@ export default {
 
         input PageInput {
             content: String!
-            description: String
-            identifier: ID!
-            name: String!
+            identifier: ID
             path: String!
+            post: Boolean!
             published: Date!
             tags: [String!]!
             title: String!

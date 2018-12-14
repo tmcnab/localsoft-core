@@ -48,7 +48,7 @@ export default class FilesPage extends Page {
         <main>
             <Page.Header title='Pages'>
                 <Tooltip placement='left' title='Create a Page'>
-                    <Button className='mr1' icon='add' onClick={this.onClickAdd} shape='circle' size='large' type='primary' />
+                    <Button className='mr1' icon='plus' onClick={this.onClickAdd} shape='circle' size='large' type='primary' />
                 </Tooltip>
                 <InfoButton onClick={this.onClickHelp} />
             </Page.Header>
