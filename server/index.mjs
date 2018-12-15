@@ -1,4 +1,3 @@
-import './init'
 import compression from 'compression'
 import config from './config'
 import cookieSession from 'cookie-session'
@@ -13,6 +12,7 @@ import path from 'path'
 import schema from './schema'
 import unsubscribe from './routes/unsubscribe'
 import upload from './routes/upload'
+import './init'
 
 // Create app and configure settings.
 const app = express()
