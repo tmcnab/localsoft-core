@@ -3,6 +3,10 @@ import db from '../db'
 import jekyll from '../jekyll'
 import uuid from 'uuid/v4'
 
+
+const CRUD_ROLES = [Roles.STAFF, Roles.ADMINISTRATOR]
+
+
 export default {
     mutations: {
         savePage: async (root, args, req) => {
@@ -33,16 +37,18 @@ export default {
         }
     },
     queries: {
-        page: async (root, args, req) => {
-            // TODO: implement
+        page: async (root, {identifier}, {session}) => {
+            return session.hasRole(...CRUD_ROLES) ? db.pages.find({identifier}).value() : []
         },
-        pages: async (root, {identifier}, {session}) => {
-            // TODO: implement
+        pages: async (root, args, {session}) => {
+            return session.hasRole(...CRUD_ROLES) ? db.pages.value() : []
         }
     },
     resolvers: {
-        author: (obj, args, context, info) => {
-            // TODO: implement
+        author: async (obj) => {
+            return db.people.intersectionBy(
+                obj.author.map(identifier => ({identifier})), 'identifier'
+            ).value()
         }
     },
     schema: `
@@ -84,7 +90,7 @@ export default {
         }
 
         extend type Query {
-            page(id: ID!): Page
+            page(identifier: ID!): Page
             pages: [Page]!
         }
     `

@@ -9,7 +9,8 @@ const adapter = new FileSync(file)
 const db = lowdb(adapter)
 
 Object.defineProperties(db, {
-    pages: {get: () => db.get('pages')}
+    pages: {get: () => db.get('pages')},
+    people: {get: () => db.get('people')}
 })
 
 export default db

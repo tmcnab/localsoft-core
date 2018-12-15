@@ -35,6 +35,7 @@ app.use(
 app.use((req, res, next) => {
     // Make sure every session has a role, even if ANONYMOUS
     req.session.role = req.session.role || 'ANONYMOUS'
+    req.session.hasRole = (...roles) => roles.includes(req.session.role)
     next()
 })
 
