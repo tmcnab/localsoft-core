@@ -1,19 +1,39 @@
-import {Button, Table, Tooltip} from 'antd'
+import {Button, Table, Tag, Tooltip} from 'antd'
 import {InfoButton, Page} from 'components'
 import PageEditDrawer from 'drawers/PageEditDrawer'
 import PageInfoDrawer from 'drawers/PageInfoDrawer'
 import React from 'react'
+import gql from 'gql'
 
 
-export default class FilesPage extends Page {
+export default class PagesPage extends Page {
 
-    columns = [
-        // TODO: name, url, edited?
-    ]
+    columns = [{
+        dataIndex: 'title',
+        title: 'Title',
+    }, {
+        dataIndex: 'author',
+        render: (author) => author.map(person => person.email),
+        title: 'Author(s)',
+    }, {
+        dataIndex: 'published',
+        title: 'Publish Date',
+    }, {
+        dataIndex: 'post',
+        title: 'Post',
+    }, {
+        dataIndex: 'path',
+        title: 'Path',
+    }, {
+        dataIndex: 'tags',
+        render: (tags) => tags.map(tag => <Tag key={tag}>{tag}</Tag>),
+        title: 'Tags',
+    }]
 
     state = {
         dataSource: [],
         editVisible: false,
+        identifier: null,
         infoVisible: false,
         loading: false,
     }
@@ -26,8 +46,24 @@ export default class FilesPage extends Page {
             loading: true,
         })
 
+        const {pages} = await gql(`
+            query {
+                pages {
+                    author {
+                        email
+                    }
+                    identifier
+                    path
+                    post
+                    published
+                    tags
+                    title
+                }
+            }
+        `)
+
         this.setState({
-            dataSource: [], // TODO
+            dataSource: pages,
             loading: false,
         })
     }
@@ -38,8 +74,12 @@ export default class FilesPage extends Page {
     onClickHelp = () =>
         this.setState({ infoVisible: true })
 
-    onCloseEdit = () =>
-        this.setState({ editVisible: false })
+    onCloseEdit = (saved) =>
+        this.setState({editVisible: false}, () => {
+            if (saved) {
+                this.listPages()
+            }
+        })
 
     onCloseInfo = () =>
         this.setState({ infoVisible: false })
@@ -53,7 +93,7 @@ export default class FilesPage extends Page {
                 <InfoButton onClick={this.onClickHelp} />
             </Page.Header>
             <Table
-                bordered
+
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 loading={this.state.loading}

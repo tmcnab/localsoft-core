@@ -11,18 +11,18 @@ export default {
     mutations: {
         savePage: async (root, args, req) => {
             if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
-                const {page} = args
-                const record = page.identifier ? db.pages.find({ identifier: page.identifier }).value() : null
+                const identifier = args.input.identifier
+                const record = identifier ? db.pages.find({identifier}).value() : null
 
                 if (record) {
                     db.pages.find({identifier}).assign({
                         ...record,
-                        ...page,
+                        ...args.input,
                         author: Array.from(new Set([record.author, req.session.identifier ]))
                     }).write()
                 } else {
                     db.pages.push({
-                        ...page,
+                        ...args.input,
                         author: [req.session.identifier],
                         created: new Date().toISOString(),
                         identifier: uuid(),
@@ -86,7 +86,7 @@ export default {
         }
 
         extend type Mutation {
-            savePage(page: PageInput!): Boolean!
+            savePage(input: PageInput!): Boolean!
         }
 
         extend type Query {

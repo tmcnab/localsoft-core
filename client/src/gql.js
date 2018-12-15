@@ -5,6 +5,7 @@ export default async (query, variables) => {
         body: JSON.stringify({ query, variables }),
         credentials: 'same-origin',
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
         method: 'POST',
