@@ -1,5 +1,5 @@
 import {Button, Table, Tag, Tooltip} from 'antd'
-import {InfoButton, Page} from 'components'
+import {Formatter, InfoButton, Page} from 'components'
 import PageEditDrawer from 'drawers/PageEditDrawer'
 import PageInfoDrawer from 'drawers/PageInfoDrawer'
 import React from 'react'
@@ -17,6 +17,7 @@ export default class PagesPage extends Page {
         title: 'Author(s)',
     }, {
         dataIndex: 'published',
+        render: (published) => <Formatter format='fromNow' value={published} />,
         title: 'Publish Date',
     }, {
         dataIndex: 'post',

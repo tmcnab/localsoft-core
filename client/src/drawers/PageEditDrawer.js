@@ -79,11 +79,13 @@ export default class PageEditDrawer extends Component {
             }
         `, {input: this.state.input})
 
-        if (result.savePage) {
-            this.props.onClose(true)
-        } else {
-            message.error('There was an error saving.')
-        }
+        this.setState({saving: false}, () => {
+            if (result.savePage) {
+                this.props.onClose(true)
+            } else {
+                message.error('There was an error saving.')
+            }
+        })
     }
 
     title = () =>
