@@ -1,12 +1,12 @@
 import {bool, func} from 'propTypes'
 import {Button, Drawer, Form, Icon, Input, message, Tooltip} from 'antd'
-import {cloneDeep, get, set, throttle} from 'lodash'
+import {cloneDeep, get, set} from 'lodash'
 import {DrawerTitle} from 'components'
 import gql from 'gql'
 import React, {Component} from 'react'
 import {Roles} from 'enums'
 
-
+// TODO: instead of triggering save with Input::onBlur, set a throttled timeout when user stops typing. [@tmcnab]
 export default class PageInfoDrawer extends Component {
 
     static propTypes = {
@@ -102,7 +102,9 @@ export default class PageInfoDrawer extends Component {
     render = () =>
         <Drawer closable={false} onClose={this.props.onClose} placement='right' title={this.title()} visible={this.props.visible} width={512}>
             <p>
-                This section allows you to create static pages and blog posts. Behind the scenes we use <a href='https://jekyllrb.com/'>Jekyll <Icon type='link' /></a> to render <a href="https://kramdown.gettalong.org/quickref.html">Kramdown-flavored Markdown <Icon type='link' /></a>.
+                This section allows you to create static pages and blog posts. Behind the scenes we use
+                &nbsp;<a href='https://jekyllrb.com/'>Jekyll <Icon type='link' /></a> to render&nbsp;
+                <a href="https://kramdown.gettalong.org/quickref.html">Kramdown/Markdown <Icon type='link' /></a>.
             </p>
         {this.state.role === Roles.ADMINISTRATOR ? (
             <>
@@ -120,7 +122,6 @@ export default class PageInfoDrawer extends Component {
                 </Form>
             </>
         ) : null}
-
         </Drawer>
 
 }

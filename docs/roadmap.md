@@ -2,8 +2,15 @@ Roadmap
 =======
 
 ## R1 ##
-- [ ] FEATURE: People lists, categories etc (Shitty Address Book)
-- [ ] FEATURE: Emailing to tagged people (Shitty Transactional Email)
-- [ ] FEATURE: Uploading files via UI (Shitty S3)
-- [ ] FEATURE: Simple tracking of events (Shitty Calendar)
+- [x] FEATURE: People management
+- [x] FEATURE: Uploading Files
+- [x] FEATURE: Pages & Posts
+- [ ] FEATURE: Emailing to tagged people
 - [x] GENERAL: Simple roles (Anon, Member, Staff, Admin)
+
+## R2 ##
+- [ ] FEATURE: Calendar/Events
+
+## Rx ##
+- [ ] FEATURE: Data Import
+- [ ] FEATURE: Data Export

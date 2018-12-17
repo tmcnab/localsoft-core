@@ -2,8 +2,8 @@ Authentication & Authorization
 ==============================
 
 - Authentication consists of a simple email/password challenge
-- User ID (`Person.Identifier`) is SHA1 Base64-encoded lowercase email
-- Authorization is (currently) four access levels:
+- User ID (`Person::identifier`) is just a v4 UUID
+- Authorization is (currently) role based with four access levels:
     1. Anonymous: only public-facing resources may be read, no write
     2. Member: public facing read, selected read on private, can comment
     3. Staff: public/private read/write
