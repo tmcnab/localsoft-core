@@ -40,7 +40,7 @@ const writePages = async () => {
         }))
         .forEach(file => {
             try {
-                fs.writeFileSync(path.join(config.JEKYLL_DIR, '..', file.name), file.content)
+                fs.writeFileSync(path.join(config.JEKYLL_DIR, file.name), file.content)
             } catch (error) {
                 console.error(error)
             }

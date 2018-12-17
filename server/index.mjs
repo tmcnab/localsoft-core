@@ -54,13 +54,13 @@ app.get('/files/:identifier', download)
 app.post('/upload/', upload)
 app.get('/unsubscribe/', unsubscribe)
 
-const jekyllIndexFile = path.join(config.JEKYLL_DIR, 'index.html')
+const jekyllIndexFile = path.join(config.JEKYLL_BUILD_DIR, 'index.html')
 app.get('/', (request, response) => response.sendFile(jekyllIndexFile))
 
-app.use(express.static(config.JEKYLL_DIR))
-app.use(express.static(config.BUILD_DIR))
+app.use(express.static(config.JEKYLL_BUILD_DIR))
+app.use(express.static(config.REACT_BUILD_DIR))
 
-const reactIndexFile = path.join(config.BUILD_DIR, 'index.html')
+const reactIndexFile = path.join(config.REACT_BUILD_DIR, 'index.html')
 app.get(['/events', '/people', '/dashboard'], (request, response) => response.sendFile(reactIndexFile))
 
 // If there is a page, serve it up
@@ -77,13 +77,13 @@ app.get(pagePaths, (request, response) => {
         .value()
 
     const name = page.post ? `posts/${page.published.split('T')[0]}/${page.name}.html` : `${page.name}.html`
-    const file = path.join(config.JEKYLL_DIR, name)
+    const file = path.join(config.JEKYLL_BUILD_DIR, name)
     response.sendFile(file)
 })
 
 // Error Handler.
 app.use((error, request, response) => {
-    const file = path.join(config.JEKYLL_DIR, '404.html')
+    const file = path.join(config.JEKYLL_BUILD_DIR, '404.html')
     response.status(404).sendFile(file)
 })
 

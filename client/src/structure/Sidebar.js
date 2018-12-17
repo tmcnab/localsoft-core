@@ -13,7 +13,7 @@ const MENU_ITEMS = [
     { key: 'dashboard',     icon: 'appstore',     label: 'Dashboard',     viewers: [MEMBER, STAFF], },
     // { key: 'conversations', icon: 'message',      label: 'Conversations', viewers: [MEMBER, STAFF], },
     // { key: 'forums',        icon: 'solution',     label: 'Forums',        viewers: [MEMBER, STAFF], },
-    { key: 'events',        icon: 'calendar',     label: 'Events',        viewers: [MEMBER, STAFF], },
+    // { key: 'events',        icon: 'calendar',     label: 'Events',        viewers: [MEMBER, STAFF], },
     { key: 'people',        icon: 'team',         label: 'People',        viewers: [STAFF],         },
     { key: 'pages',         icon: 'book',         label: 'Pages',         viewers: [STAFF],         },
     // { key: 'updates',       icon: 'notification', label: 'Updates',       viewers: [STAFF],         },

@@ -1,7 +1,6 @@
 import {Route, Switch} from 'react-router-dom'
 import DashboardPage from 'pages/DashboardPage'
 import EmailPage from 'pages/EmailPage'
-import EventsPage from 'pages/EventsPage'
 import FilesPage from 'pages/FilesPage'
 import NotFoundPage from 'pages/NotFoundPage'
 import PagesPage from 'pages/PagesPage'
@@ -16,7 +15,6 @@ export default class Routes extends Component {
         <Switch>
             <Route component={DashboardPage}    exact path='/dashboard/' />
             <Route component={EmailPage}        exact path='/email/' />
-            <Route component={EventsPage}       exact path='/events/' />
             <Route component={FilesPage}        exact path='/files/' />
             <Route component={PagesPage}        exact path='/pages/' />
             <Route component={PeoplePage}       exact path='/people/' />

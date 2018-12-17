@@ -14,8 +14,7 @@ export const Features = toEnumObject(
     'FORUMS',
     'PAGES',
     'PEOPLE',
-    'SETTINGS',
-    'UPDATES'
+    'SETTINGS'
 )
 
 export const Roles = toEnumObject('ANONYMOUS', 'MEMBER', 'STAFF', 'ADMINISTRATOR')
