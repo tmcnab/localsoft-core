@@ -1,14 +1,13 @@
 import compression from 'compression'
 import config from './config'
 import cookieSession from 'cookie-session'
-import db from './db'
 import download from './routes/download'
+import dynamicPages from './routes/dynamicPages'
 import express from 'express'
 import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
 import http from 'http'
 import patch from './routes/patch'
-import path from 'path'
 import schema from './schema'
 import unsubscribe from './routes/unsubscribe'
 import upload from './routes/upload'
@@ -53,38 +52,6 @@ app.patch('/:resource/', patch)
 app.get('/files/:identifier', download)
 app.post('/upload/', upload)
 app.get('/unsubscribe/', unsubscribe)
-
-const jekyllIndexFile = path.join(config.JEKYLL_BUILD_DIR, 'index.html')
-app.get('/', (request, response) => response.sendFile(jekyllIndexFile))
-
-app.use(express.static(config.JEKYLL_BUILD_DIR))
-app.use(express.static(config.REACT_BUILD_DIR))
-
-const reactIndexFile = path.join(config.REACT_BUILD_DIR, 'index.html')
-app.get(['/events', '/people', '/dashboard'], (request, response) => response.sendFile(reactIndexFile))
-
-// If there is a page, serve it up
-const pagePaths = db
-    .get('pages')
-    .value()
-    .map(page => `${page.path}`)
-
-app.get(pagePaths, (request, response) => {
-    const requestPath = request.path.endsWith('/') ? request.path.slice(0, -1) : request.path
-    const page = db
-        .get('pages')
-        .find({path: requestPath})
-        .value()
-
-    const name = page.post ? `posts/${page.published.split('T')[0]}/${page.name}.html` : `${page.name}.html`
-    const file = path.join(config.JEKYLL_BUILD_DIR, name)
-    response.sendFile(file)
-})
-
-// Error Handler.
-app.use((error, request, response) => {
-    const file = path.join(config.JEKYLL_BUILD_DIR, '404.html')
-    response.status(404).sendFile(file)
-})
+dynamicPages(app)
 
 http.createServer(app).listen(config.PORT)

@@ -14,6 +14,9 @@ export default {
                 const identifier = args.input.identifier
                 const record = identifier ? db.pages.find({identifier}).value() : null
 
+                // TODO: put posts in drafts directory if before publish date, set cronjob to move + rebuild on publish date
+                // https://www.npmjs.com/package/agenda
+
                 if (record) {
                     db.pages.find({identifier}).assign({
                         ...record,

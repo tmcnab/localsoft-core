@@ -17,4 +17,11 @@ export const Features = toEnumObject(
     'SETTINGS'
 )
 
+export const FeaturePaths = {
+    [Features.EMAIL]: '/email',
+    [Features.FILES]: '/files',
+    [Features.PAGES]: '/pages',
+    [Features.PEOPLE]: '/people'
+}
+
 export const Roles = toEnumObject('ANONYMOUS', 'MEMBER', 'STAFF', 'ADMINISTRATOR')
