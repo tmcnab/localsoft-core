@@ -1,9 +1,9 @@
-import {Roles} from './enums'
 import bcrypt from 'bcrypt'
 import config from './config'
 import db from './db'
 import fsUtils from 'nodejs-fs-utils'
 import jekyll from './jekyll'
+import {Roles} from './enums'
 import uuid from 'uuid/v4'
 
 // Create the data directory (if not exists).
@@ -12,14 +12,16 @@ fsUtils.mkdirsSync(config.DATA_DIR)
 //-------------------------------------------------------------------------------------------------------------------//
 // Write default collections.
 db.defaults({
-    conversations: {},
+    account: {
+        site_description: '',
+        site_title: 'My localsoft instance',
+        twitter_username: ''
+    },
     emails: [],
     events: [],
     files: [],
-    forums: {},
     people: [],
-    pages: [],
-    settings: {}
+    pages: []
 }).write()
 
 //-------------------------------------------------------------------------------------------------------------------//

@@ -22,12 +22,12 @@ export default class Application extends Component {
 
     componentDidMount = async () => {
         const {account, currentUser} = await gql(`{
-            account { name }
+            account { site_title }
             currentUser { role }
         }`)
 
         this.setState({
-            instanceName: account.name,
+            instanceName: account.site_title,
             viewerRole: get(currentUser, 'role', Roles.ANONYMOUS)
         })
     }

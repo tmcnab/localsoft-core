@@ -17,6 +17,13 @@ const schema = `
 		ADMINISTRATOR
 	}
 
+	type Record {
+		created: Date!
+		identifier: ID!
+		modified: Date
+		tags: [String!]!
+	}
+
 	type Mutation {
 
 	}

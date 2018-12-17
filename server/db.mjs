@@ -9,6 +9,7 @@ const adapter = new FileSync(file)
 const db = lowdb(adapter)
 
 Object.defineProperties(db, {
+    account: {get: () => db.get('account')},
     pages: {get: () => db.get('pages')},
     people: {get: () => db.get('people')}
 })
