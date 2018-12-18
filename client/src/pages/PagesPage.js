@@ -40,16 +40,14 @@ export default class PagesPage extends Page {
     }
 
     componentDidMount = () =>
-        this.listPages()
+        this.query()
 
-    listPages = async () => {
-        this.setState({
-            loading: true,
-        })
+    query = async () => {
+        this.setState({loading: true})
 
-        const {pages} = await gql(`
+        const {dataSource} = await gql(`
             query {
-                pages {
+                dataSource: pages {
                     author {
                         email
                     }
@@ -63,10 +61,7 @@ export default class PagesPage extends Page {
             }
         `)
 
-        this.setState({
-            dataSource: pages,
-            loading: false,
-        })
+        this.setState({dataSource, loading: false})
     }
 
     onClickAdd = () =>
@@ -78,7 +73,7 @@ export default class PagesPage extends Page {
     onCloseEdit = (saved) =>
         this.setState({editVisible: false}, () => {
             if (saved) {
-                this.listPages()
+                this.query()
             }
         })
 
@@ -94,7 +89,6 @@ export default class PagesPage extends Page {
                 <InfoButton onClick={this.onClickHelp} />
             </Page.Header>
             <Table
-
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 loading={this.state.loading}

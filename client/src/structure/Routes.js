@@ -6,7 +6,6 @@ import NotFoundPage from 'pages/NotFoundPage'
 import PagesPage from 'pages/PagesPage'
 import PeoplePage from 'pages/PeoplePage'
 import React, { Component } from 'react'
-import SplashPage from 'pages/SplashPage'
 
 
 export default class Routes extends Component {
@@ -18,7 +17,6 @@ export default class Routes extends Component {
             <Route component={FilesPage}        exact path='/files/' />
             <Route component={PagesPage}        exact path='/pages/' />
             <Route component={PeoplePage}       exact path='/people/' />
-            <Route component={SplashPage}       exact path='/' />
             <Route component={NotFoundPage} />
         </Switch>
 

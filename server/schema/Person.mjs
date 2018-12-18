@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import db from '../db'
+import {Roles} from '../enums'
 
 export default {
     mutations: {
@@ -7,10 +8,7 @@ export default {
             const email = args.email.toLowerCase()
 
             // Fetch person and if doesn't exists return nothing, no error.
-            const person = db
-                .get('people')
-                .find({email})
-                .value()
+            const person = db.people.find({email}).value()
             if (!person) {
                 return null
             }
@@ -45,11 +43,10 @@ export default {
                 : null
         },
         people: async (root, args, req) => {
-            const {role} = req.session
-            if (['STAFF', 'ADMINISTRATOR'].includes(role)) {
-                return db.get('people').value()
+            if (req.session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
+                return db.people.value()
             } else {
-                throw new Error('Unauthorized')
+                return []
             }
         },
         person: async (root, {identifier}, {session}) => {
@@ -101,9 +98,9 @@ export default {
         }
 
         extend type Query {
+            currentUser: Person
             people: [Person]
             person(identifier:ID!): Person
-            currentUser: Person
         }
     `
 }

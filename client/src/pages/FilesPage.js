@@ -41,16 +41,14 @@ export default class FilesPage extends Page {
     }
 
     componentDidMount = () =>
-        this.listFiles()
+        this.query()
 
-    listFiles = async () => {
-        this.setState({
-            loading: true,
-        })
+    query = async () => {
+        this.setState({loading: true})
 
-        const {files} = await gql(`
+        const {dataSource} = await gql(`
             query {
-                files {
+                dataSource: files {
                     access
                     description
                     identifier
@@ -63,10 +61,7 @@ export default class FilesPage extends Page {
             }
         `)
 
-        this.setState({
-            dataSource: files,
-            loading: false,
-        })
+        this.setState({dataSource, loading: false})
     }
 
     onClickHelp = () =>
@@ -87,7 +82,7 @@ export default class FilesPage extends Page {
             case 'done':
                 message.success(`${file.name} successfully uploaded`)
                 this.setState({uploading: false})
-                this.listFiles()
+                this.query()
                 break
             case 'error':
                 message.error(`${file.name} failed to upload`)

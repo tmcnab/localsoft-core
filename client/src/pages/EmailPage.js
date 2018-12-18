@@ -1,33 +1,28 @@
-import {Button, Table, Tooltip} from 'antd'
-import {InfoButton, Page} from 'components'
-import {Roles} from 'enums'
+import {Button, Table, Tag, Tooltip} from 'antd'
+import {Formatter, InfoButton, Page} from 'components'
 import EmailEditDrawer from 'drawers/EmailEditDrawer'
 import EmailsInfoDrawer from 'drawers/EmailsInfoDrawer'
+import gql from 'gql'
 import React from 'react'
 
 
 export default class EmailPage extends Page {
 
-    static permissions = [
-        Roles.STAFF,
-        Roles.ADMINISTRATOR,
-    ]
-
     columns = [{
-        dataIndex: 'name',
+        dataIndex: 'title',
         sorter: (a, b) => a.name.length - b.name.length,
-        title: 'Name',
+        title: 'Title',
     }, {
-        dataIndex: 'date',
-        title: 'Send Date',
+        dataIndex: 'sendAt',
+        render: (sendAt) => <Formatter format='fromNow' value={sendAt} />,
+        title: 'Status',
     }, {
         dataIndex: 'targets',
+        render: (tags) => tags.map(tag => <Tag key={tag}>{tag}</Tag>),
         title: 'Targets',
     }, {
-        dataIndex: 'recipients',
-        title: 'Recipients',
-    }, {
         dataIndex: 'bounced',
+        render: (ids) => ids.length,    // TODO: if there's non-zero should an icon be added? [@tmcnab]
         title: 'Bounced',
     }]
 
@@ -43,24 +38,42 @@ export default class EmailPage extends Page {
         loading: false,
     }
 
-    fetchRecords = async () => {
-        // TODO:
-    }
+    componentDidMount = () =>
+        this.query()
 
     onClickCreate = () =>
-        this.setState({
-            editVisible: true,
-            identifier: null,
-        })
+        this.setState({editVisible: true, identifier: null})
 
     onClickInfo = () =>
-        this.setState({ infoVisible: true })
+        this.setState({infoVisible: true})
 
     onCloseEdit = () =>
-        this.setState({ editVisible: false })
+        this.setState({editVisible: false})
 
     onCloseInfo = () =>
-        this.setState({ infoVisible: false })
+        this.setState({infoVisible: false})
+
+    query = async () => {
+        this.setState({loading: true})
+
+        const {dataSource} = await gql(`
+            query {
+                dataSource: emails {
+                    identifier
+                    failures {
+                        identifier
+                    }
+                    sendAt
+                    sent
+                    tags
+                    targets
+                    title
+                }
+            }
+        `)
+
+        this.setState({dataSource, loading: false})
+    }
 
     render = () =>
         <main>

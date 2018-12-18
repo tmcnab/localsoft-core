@@ -46,54 +46,41 @@ export default class PeoplePage extends Page {
         loading: false,
     }
 
-    personList = async () => {
-        this.setState({
-            loading: true
-        })
+    query = async () => {
+        this.setState({loading: true})
 
-        const {people} = await gql(`
+        const {dataSource} = await gql(`
             query {
-                people {
+                dataSource: people {
+                    email
+                    identifier
                     name {
                         family
                         given
                     }
-                    identifier
-                    email
                     role
                     tags
                 }
             }
         `)
 
-        this.setState({
-            dataSource: people,
-            loading: false,
-        })
+        this.setState({dataSource, loading: false})
     }
 
     componentDidMount = () =>
-        this.personList()
+        this.query()
 
     onClickAdd = () =>
-        this.setState({
-            editVisible: true,
-        })
+        this.setState({editVisible: true})
 
     onClickHelp = () =>
-        this.setState({
-            infoVisible: true,
-        })
+        this.setState({infoVisible: true})
 
     onCloseEdit = () =>
-        this.setState({
-            editVisible: false,
-        }, () => this.personList())
+        this.setState({editVisible: false}, this.query)
 
     onCloseInfo = () =>
-        this.setState({
-            infoVisible: false,
-        })
+        this.setState({infoVisible: false})
 
     render = () =>
         <main>

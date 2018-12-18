@@ -34,13 +34,21 @@ const administrators = db
 if (!administrators.length) {
     db.get('people')
         .push({
+            address: null,
             email: 'user@domain.tld',
             identifier: uuid(),
             hash: bcrypt.hashSync('password', 10),
+            name: {
+                additional: 'Middle',
+                family: 'Family',
+                given: 'Given'
+            },
             preferences: {
                 email: false
             },
-            role: Roles.ADMINISTRATOR
+            role: Roles.ADMINISTRATOR,
+            tags: [],
+            telephone: '+1 123 456 7890'
         })
         .write()
 }

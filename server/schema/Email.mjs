@@ -1,10 +1,29 @@
+import db from '../db'
 import {Roles} from '../enums'
 
 export default {
     mutations: {
         saveEmail: async (root, args, req) => {
             if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
-                // TODO: implement.
+                const identifier = args.input.identifier
+                const record = identifier ? db.emails.find({identifier}).value() : null
+
+                if (record) {
+                    db.emails
+                        .find({identifier})
+                        .assign(record, args.input, {
+                            author: Array.from(new Set([record.author, req.session.identifier]))
+                        })
+                        .write()
+                } else {
+                    const newRecord = Object.assign({}, args.input, {
+                        author: [req.session.identifier],
+                        created: new Date().toISOString(),
+                        identifier: uuid()
+                    })
+                    db.emails.push(newRecord).write()
+                }
+
                 return true
             } else {
                 return false
@@ -14,14 +33,17 @@ export default {
     queries: {
         emails: async (root, args, req) => {
             if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
-                // TODO: implement.
-                return []
+                return db.emails.value()
             } else {
                 return []
             }
         }
     },
-    resolvers: {},
+    resolvers: {
+        failures: async obj => {
+            return db.people.intersectionBy(obj.failures.map(identifier => ({identifier})), 'identifier').value()
+        }
+    },
     schema: `
         type Email inherits Record {
             # The markdown content of this email.
