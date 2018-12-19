@@ -9,7 +9,7 @@
 import db from '../db'
 
 export default (request, response) => {
-    const email = request.query.trim().toLowerCase()
+    const email = request.query.email.trim().toLowerCase()
     const record = db
         .get('people')
         .find({email})

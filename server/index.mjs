@@ -3,6 +3,7 @@ import config from './config'
 import cookieSession from 'cookie-session'
 import download from './routes/download'
 import dynamicPages from './routes/dynamicPages'
+import email from './routes/email'
 import express from 'express'
 import expressGraphQL from 'express-graphql'
 import helmet from 'helmet'
@@ -49,6 +50,7 @@ app.use(
 
 // Register custom route handlers.
 app.patch('/:resource/', patch)
+app.get('/email/:identifier', email)
 app.get('/files/:identifier', download)
 app.post('/upload/', upload)
 app.get('/unsubscribe/', unsubscribe)
