@@ -51,8 +51,8 @@ export default class EmailPage extends Page {
     onClickInfo = () =>
         this.setState({infoVisible: true})
 
-    onCloseEdit = () =>
-        this.setState({editVisible: false})
+    onCloseEdit = (saved) =>
+        this.setState({editVisible: false}, this.query)
 
     onCloseInfo = () =>
         this.setState({infoVisible: false})
@@ -88,7 +88,6 @@ export default class EmailPage extends Page {
                 <InfoButton onClick={this.onClickInfo} />
             </Page.Header>
             <Table
-                bordered
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 loading={this.state.loading}

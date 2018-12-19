@@ -27,7 +27,7 @@ export default class Page extends Component {
                         {this.props.children}
                     </Col>
                 </Row>
-                <Divider />
+                <Divider className='mb0' />
             </>
 
     }

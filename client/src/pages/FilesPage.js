@@ -106,7 +106,6 @@ export default class FilesPage extends Page {
                 <InfoButton onClick={this.onClickHelp} />
             </Page.Header>
             <Table
-                bordered
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 loading={this.state.loading}
