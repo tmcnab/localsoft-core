@@ -1,4 +1,5 @@
 import db from '../db'
+import {reschedule} from '../misc/scheduling'
 import {Roles} from '../enums'
 import uuid from 'uuid/v4'
 
@@ -24,6 +25,7 @@ export default {
                     db.emails.push(newRecord).write()
                 }
 
+                reschedule()
                 return true
             } else {
                 return false
