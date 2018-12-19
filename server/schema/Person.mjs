@@ -35,16 +35,22 @@ export default {
         // TODO: this should return a person instead of null, but only field is role=ANONYMOUS [@tmcnab]
         currentUser: async (root, args, req) => {
             const {identifier} = req.session
-            return identifier
-                ? db
-                      .get('people')
-                      .find({identifier})
-                      .value()
-                : null
+            return identifier ? db.people.find({identifier}).value() : null
         },
         people: async (root, args, req) => {
             if (req.session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
                 return db.people.value()
+            } else {
+                return []
+            }
+        },
+        peopleTags: async (root, args, req) => {
+            if (req.session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
+                return db.people
+                    .map('tags')
+                    .flatten()
+                    .uniq()
+                    .value()
             } else {
                 return []
             }
@@ -100,6 +106,7 @@ export default {
         extend type Query {
             currentUser: Person
             people: [Person]
+            peopleTags: [String!]!
             person(identifier:ID!): Person
         }
     `

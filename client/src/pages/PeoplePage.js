@@ -1,7 +1,7 @@
 import {Button, Table, Tag, Tooltip} from 'antd'
 import {InfoButton, Page} from 'components'
-import {RoleTag} from 'components'
 import gql from 'gql'
+import {lowerCase, startCase} from 'lodash'
 import PersonEditDrawer from 'drawers/PersonEditDrawer'
 import PeopleInfoDrawer from 'drawers/PeopleInfoDrawer'
 import React from 'react'
@@ -25,7 +25,7 @@ export default class PeoplePage extends Page {
         title: 'Phone',
     }, {
         dataIndex: 'role',
-        render: (role) => <RoleTag role={role} />,
+        render: role => startCase(lowerCase(role)),
         sorter: (a, b) => a.role.length - b.role.length,
         title: 'Role',
     }, {

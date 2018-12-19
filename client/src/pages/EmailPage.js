@@ -14,16 +14,20 @@ export default class EmailPage extends Page {
         title: 'Title',
     }, {
         dataIndex: 'sendAt',
-        render: (sendAt) => <Formatter format='fromNow' value={sendAt} />,
-        title: 'Status',
+        render: sendAt => <Formatter format='fromNow' value={sendAt} />,
+        title: 'Sending',
     }, {
         dataIndex: 'targets',
         render: (tags) => tags.map(tag => <Tag key={tag}>{tag}</Tag>),
         title: 'Targets',
     }, {
-        dataIndex: 'bounced',
+        dataIndex: 'failures',
         render: (ids) => ids.length,    // TODO: if there's non-zero should an icon be added? [@tmcnab]
         title: 'Bounced',
+    }, {
+        dataIndex: 'tags',
+        render: (tags) => tags.map(tag => <Tag key={tag}>{tag}</Tag>),
+        title: 'Tags',
     }]
 
     locale = {

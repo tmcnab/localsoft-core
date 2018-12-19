@@ -1,5 +1,6 @@
 import db from '../db'
 import {Roles} from '../enums'
+import uuid from 'uuid/v4'
 
 export default {
     mutations: {
@@ -11,15 +12,14 @@ export default {
                 if (record) {
                     db.emails
                         .find({identifier})
-                        .assign(record, args.input, {
-                            author: Array.from(new Set([record.author, req.session.identifier]))
-                        })
+                        .assign(record, args.input)
                         .write()
                 } else {
                     const newRecord = Object.assign({}, args.input, {
-                        author: [req.session.identifier],
                         created: new Date().toISOString(),
-                        identifier: uuid()
+                        failures: [],
+                        identifier: uuid(),
+                        sent: false
                     })
                     db.emails.push(newRecord).write()
                 }
@@ -31,8 +31,14 @@ export default {
         }
     },
     queries: {
-        emails: async (root, args, req) => {
-            if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
+        email: async (root, {identifier}, {session}) => {
+            if (session.hasRole(Roles.ADMINISTRATOR, Roles.STAFF)) {
+                return db.emails.find({identifier}).value()
+            }
+            return null
+        },
+        emails: async (root, args, {session}) => {
+            if (session.hasRole(Roles.ADMINISTRATOR, Roles.STAFF)) {
                 return db.emails.value()
             } else {
                 return []
@@ -50,23 +56,23 @@ export default {
             content: String!
             # People who the email was targeted but failed to deliver to.
             failures: [Person!]!
-            # The title of the email.
-            title: String!
             # The date and time the email will be sent out.
             sendAt: Date!
             # Whether or not the email was batched-out.
             sent: Boolean!
             # Tagged people will receive this email.
             targets: [String!]!
+            # The title of the email.
+            title: String!
         }
 
         input EmailInput {
             content: String!
             identifier: ID
-            title: String!
             sendAt: Date
             tags: [String!]!
             targets: [String!]!
+            title: String!
         }
 
         extend type Mutation {
@@ -74,6 +80,7 @@ export default {
         }
 
         extend type Query {
+            email(identifier: ID!): Email
             emails: [Email!]!
         }
     `

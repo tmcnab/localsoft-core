@@ -25,6 +25,8 @@
 
 .font-large { font-size: 1rem }
 
+.full { width: 100% !important }
+
 .inline-block { display: inline-block !important }
 
 .mb0 { margin-bottom: 0rem !important }
