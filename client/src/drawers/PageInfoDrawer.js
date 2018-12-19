@@ -106,6 +106,7 @@ export default class PageInfoDrawer extends Component {
                 &nbsp;<a href='https://jekyllrb.com/'>Jekyll <Icon type='link' /></a> to render&nbsp;
                 <a href="https://kramdown.gettalong.org/quickref.html">Kramdown/Markdown <Icon type='link' /></a>.
             </p>
+            <br />
         {this.state.role === Roles.ADMINISTRATOR ? (
             <>
                 <h3>Site Settings</h3>

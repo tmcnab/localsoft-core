@@ -1,11 +1,9 @@
-import {Roles} from '../enums'
 import db from '../db'
-import jekyll from '../jekyll'
+import jekyll from '../misc/jekyll'
+import {Roles} from '../enums'
 import uuid from 'uuid/v4'
 
-
 const CRUD_ROLES = [Roles.STAFF, Roles.ADMINISTRATOR]
-
 
 export default {
     mutations: {
@@ -18,18 +16,20 @@ export default {
                 // https://www.npmjs.com/package/agenda
 
                 if (record) {
-                    db.pages.find({identifier}).assign({
-                        ...record,
-                        ...args.input,
-                        author: Array.from(new Set([record.author, req.session.identifier ]))
-                    }).write()
+                    const replacementRecord = Object.assign({}, record, args.input, {
+                        author: Array.from(new Set([record.author, req.session.identifier]))
+                    })
+                    db.pages
+                        .find({identifier})
+                        .assign(replacementRecord)
+                        .write()
                 } else {
-                    db.pages.push({
-                        ...args.input,
+                    const newRecord = Object.assign({}, args.input, {
                         author: [req.session.identifier],
                         created: new Date().toISOString(),
-                        identifier: uuid(),
-                    }).write()
+                        identifier: uuid()
+                    })
+                    db.pages.push(newRecord).write()
                 }
 
                 await jekyll()
@@ -48,10 +48,8 @@ export default {
         }
     },
     resolvers: {
-        author: async (obj) => {
-            return db.people.intersectionBy(
-                obj.author.map(identifier => ({identifier})), 'identifier'
-            ).value()
+        author: async obj => {
+            return db.people.intersectionBy(obj.author.map(identifier => ({identifier})), 'identifier').value()
         }
     },
     schema: `

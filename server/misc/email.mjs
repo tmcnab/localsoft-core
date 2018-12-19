@@ -1,8 +1,31 @@
+import __dirname from '../__dirname'
+import config from '../config'
+import fs from 'fs'
+import kramed from 'kramed'
 import nodemailer from 'nodemailer'
+import path from 'path'
+
+export const generateEmailContent = (content, email) => {
+    const file = path.join(__dirname, 'email-inlined.html')
+    const htmlContent = fs.readFileSync(file).toString()
+
+    // https://github.com/leemunroe/responsive-html-email-template
+    // <!-- CONTENT HERE -->
+    // <!-- ADDRESS HERE -->
+    // <!-- UNSUBSCRIBE HERE -->
+    let html = htmlContent.replace('<!-- CONTENT HERE -->', kramed(content))
+    if (email) {
+        html = html.replace('<!-- UNSUBSCRIBE HERE -->', `${config.SITE_URL}/unsubscribe?email=${email}`)
+    }
+
+    // TODO: also return a `text` member which is just plaintext
+    return {html}
+}
 
 export const sendEmail = identifier => {
-    console.log('sending email', identifier)
+    // TODO: implement.
 }
+
 //
 // // Generate test SMTP service account from ethereal.email
 // // Only needed if you don't have a real mail account for testing

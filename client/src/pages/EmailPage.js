@@ -45,14 +45,18 @@ export default class EmailPage extends Page {
     componentDidMount = () =>
         this.query()
 
-    onClickCreate = () =>
+    onClickAdd = () =>
         this.setState({editVisible: true, identifier: null})
 
     onClickInfo = () =>
         this.setState({infoVisible: true})
 
     onCloseEdit = (saved) =>
-        this.setState({editVisible: false}, this.query)
+        this.setState({editVisible: false}, () => {
+            if (saved) {
+                this.query()
+            }
+        })
 
     onCloseInfo = () =>
         this.setState({infoVisible: false})
@@ -83,7 +87,7 @@ export default class EmailPage extends Page {
         <main>
             <Page.Header title='Email'>
                 <Tooltip placement='right' title='Create a new email'>
-                    <Button className='mr1' icon='plus' onClick={this.onClickCreate} size='large' shape='circle' type='primary' />
+                    <Button className='mr1' icon='plus' onClick={this.onClickAdd} size='large' shape='circle' type='primary' />
                 </Tooltip>
                 <InfoButton onClick={this.onClickInfo} />
             </Page.Header>

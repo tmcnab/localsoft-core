@@ -1,6 +1,8 @@
 import config from '../config'
 import db from '../db'
 import multer from 'multer'
+import path from 'path'
+import {Roles} from '../enums'
 import uuid from 'uuid/v4'
 
 const upload = multer({
@@ -10,14 +12,25 @@ const upload = multer({
     })
 }).any()
 
-export default (request, response, next) => {
+export const fileDownload = (request, response, next) => {
+    const {identifier} = request.params
+
+    const record = db.files.find({identifier}).value()
+    if (!record) {
+        return next(new Error(404))
+    }
+
+    // TODO: restrict by role on record/request.session.role (404 to prevent leakage) [@tmcnab]
+    const file = path.join(config.DATA_DIR, identifier)
+    response.download(file, file.name)
+}
+
+export const fileUpload = (request, response, next) => {
     const {role} = request.session
 
-    // Only staff and admins are authorized to upload files.
-    if (!['STAFF', 'ADMINISTRATOR'].includes(role)) {
-        const error = new Error('Unauthorized')
-        error.statusCode = 401
-        return next(error)
+    // Only staff and admins are authorized to upload files (for now).
+    if (!request.session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
+        return next(new Error(401))
     }
 
     upload(request, response, err => {
@@ -28,7 +41,7 @@ export default (request, response, next) => {
         } else {
             const access = role === 'STAFF' ? 'STAFF' : 'ADMINISTRATOR'
             request.files.forEach(file => {
-                db.get('files')
+                db.files
                     .push({
                         access,
                         description: '',

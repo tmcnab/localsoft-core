@@ -67,8 +67,12 @@ export default class FilesPage extends Page {
     onClickHelp = () =>
         this.setState({ infoVisible: true })
 
-    onCloseEdit = () =>
-        this.setState({ editVisible: false })
+    onCloseEdit = (saved) =>
+        this.setState({editVisible: false}, () => {
+            if (saved) {
+                this.query()
+            }
+        })
 
     onCloseInfo = () =>
         this.setState({ infoVisible: false })

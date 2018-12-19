@@ -76,8 +76,12 @@ export default class PeoplePage extends Page {
     onClickHelp = () =>
         this.setState({infoVisible: true})
 
-    onCloseEdit = () =>
-        this.setState({editVisible: false}, this.query)
+    onCloseEdit = (saved) =>
+        this.setState({editVisible: false}, () => {
+            if (saved) {
+                this.query()
+            }
+        })
 
     onCloseInfo = () =>
         this.setState({infoVisible: false})

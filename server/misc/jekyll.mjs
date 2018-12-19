@@ -1,6 +1,6 @@
 // https://devhints.io/jekyll
-import config from './config'
-import db from './db'
+import config from '../config'
+import db from '../db'
 import {exec} from 'child_process'
 import fs from 'fs'
 import grayMatter from 'gray-matter'

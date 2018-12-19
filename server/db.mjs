@@ -11,6 +11,7 @@ const db = lowdb(adapter)
 Object.defineProperties(db, {
     account: {get: () => db.get('account')},
     emails: {get: () => db.get('emails')},
+    files: {get: () => db.get('files')},
     pages: {get: () => db.get('pages')},
     people: {get: () => db.get('people')}
 })
