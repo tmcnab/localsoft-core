@@ -13,6 +13,6 @@ export default {
         app.post('/upload/', fileUpload) // TODO: should this be different? [@tmcnab]
 
         app.patch('/:resource/', patch)
-        dynamicPages(app)
+        // dynamicPages(app)
     }
 }

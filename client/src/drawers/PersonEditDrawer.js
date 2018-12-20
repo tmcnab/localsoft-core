@@ -1,25 +1,22 @@
 import {bool, func, string} from 'propTypes'
-import {Button, Checkbox, Col, Drawer, Form, Input, Row, Select, Tooltip} from 'antd'
+import {Button, Checkbox, Col, Drawer, Form, Input, message, Row, Select, Tooltip} from 'antd'
 import {cloneDeep, get, set} from 'lodash'
-import gql, {patch} from 'gql'
+import {DrawerTitle} from 'components'
+import gql from 'gql'
 import React, {Component} from 'react'
 
-
-const BLANK_RECORD = Object.seal({
+const EMPTY_INPUT = Object.freeze({
+    additionalName: '',
     address: {
-        country: '',
-        locality: '',
+        addressCountry: '',
+        addressLocality: '',
+        addressRegion: '',
         postalCode: '',
-        region: '',
         streetAddress: '',
     },
-    affiliation: [],
     email: '',
-    name: {
-        additional: '',
-        family: '',
-        given: '',
-    },
+    familyName: '',
+    givenName: '',
     preferences: {
         email: true,
         telephone: true,
@@ -29,26 +26,6 @@ const BLANK_RECORD = Object.seal({
     telephone: '',
 })
 
-const PLACEHOLDERS = {
-    'address.country': 'Country',
-    'address.locality': 'Town / City',
-    'address.postalCode': 'Postal Code / ZIP',
-    'address.region': 'Province/State',
-    'address.streetAddress': 'Street',
-    'email': 'Email: user@domain.tld',
-    'name.additional': 'Additional',
-    'name.family': 'Given',
-    'name.given': 'Given',
-    'preferences.email': 'Contact via Email',
-    'preferences.telephone': 'Contact via Telephone',
-    'telephone': 'Phone +1 (123) 456-7890',
-}
-
-const INPUT_TYPES = {
-    email: 'email',
-    telephone: 'tel',
-}
-
 export default class PersonEditDrawer extends Component {
 
     static propTypes = {
@@ -57,91 +34,121 @@ export default class PersonEditDrawer extends Component {
         visible: bool.isRequired,
     }
 
-    constructor (props) {
-        super(props)
-        this.state = {
-            person: cloneDeep(BLANK_RECORD),
-            saving: false,
-        }
-        this.state.person.identifier = props.identifier
+    placeholders = {
+        'additionalName': 'Additional',
+        'address.addressCountry': 'Country',
+        'address.addressLocality': 'Town / City',
+        'address.addressRegion': 'Province/State',
+        'address.postalCode': 'Postal Code / ZIP',
+        'address.streetAddress': 'Street',
+        'email': 'Email: user@domain.tld',
+        'familyName': 'Given',
+        'givenName': 'Given',
+        'preferences.email': 'Contact via Email',
+        'preferences.telephone': 'Contact via Telephone',
+        'telephone': 'Phone +1 (123) 456-7890',
     }
 
-    title = () =>
-        <Row>
-            <Col span={8}>
-                <h3 className='mb0'>{this.props.identifier ? 'Editing' : 'Creating'} Person</h3>
-            </Col>
-            <Col className='align-r' span={16}>
-                <Tooltip placement='left' title='Save'>
-                    <Button className='mr1' icon='check' onClick={this.onClickSave} shape='circle' type='primary' />
-                </Tooltip>
-                <Tooltip placement='bottom' title='Abandon'>
-                    <Button icon='cross' onClick={this.props.onClose} shape='circle' type='danger' />
-                </Tooltip>
-            </Col>
-        </Row>
+    state = {
+        input: cloneDeep(EMPTY_INPUT),
+        saving: false,
+    }
 
-    checkboxFor = (path) => {
-        const checked = get(this.state.person, path, false)
-        const label = PLACEHOLDERS[path]
-        const onChange = ({target}) => this.update(path, target.checked)
-        return <Checkbox checked={checked} onChange={onChange}>{label}</Checkbox>
+    types = {
+        email: 'email',
+        telephone: 'tel',
     }
 
     componentDidUpdate = (prevProps) => {
         if (this.props.identifier !== prevProps.identifier) {
             if (this.props.identifier) {
-                this.retrieve()
+                this.query()
+            } else {
+                this.setState({input: cloneDeep(EMPTY_INPUT)})
             }
         }
     }
 
+    mutate = async () => {
+        this.setState({saving: true})
+        const {savePerson} = await gql(`
+            mutation ($input: PersonInput) {
+                savePerson(input: $input)
+            }
+        `, {input: this.state.input})
+
+        this.setState({saving: false}, () => {
+            if (savePerson) {
+                this.props.onClose(true)
+            } else {
+                message.error('There was an error saving.')
+            }
+        })
+    }
+
+    onClickSave = () =>
+        this.setState({saving: true}, this.mutate)
+
+    query = async () => {
+        this.setState({saving: true})
+        const {input} = await gql(`
+            query ($identifier: ID!) {
+                input: person(identifier: $identifier) {
+                    additionalName
+                    address {
+                        addressCountry
+                        addressLocality
+                        addressRegion
+                        postalCode
+                        streetAddress
+                    }
+                    email
+                    familyName
+                    givenName
+                    identifier
+                    preferences {
+                        email
+                        telephone
+                    }
+                    role
+                    tags
+                    telephone
+                }
+            }
+        `, {identifier: this.props.identifier})
+
+        this.setState({input, saving: false})
+    }
+
+    title = () =>
+        <DrawerTitle title={`${this.props.identifier ? 'Editing' : 'Creating'} Person`}>
+            <Tooltip placement='left' title='Save'>
+                <Button className='mr1' icon='check' onClick={this.onClickSave} shape='circle' type='primary' />
+            </Tooltip>
+            <Tooltip placement='bottom' title='Abandon'>
+                <Button icon='cross' onClick={() => this.props.onClose(false)} shape='circle' type='danger' />
+            </Tooltip>
+        </DrawerTitle>
+
+    checkboxFor = (path) => {
+        const checked = get(this.state.input, path, false)
+        const label = this.placeholders[path]
+        const onChange = ({target}) => this.update(path, target.checked)
+        return <Checkbox checked={checked} onChange={onChange}>{label}</Checkbox>
+    }
+
     inputFor = (path) => {
         const onChange = ({target}) => this.update(path, target.value)
-        const placeholder = PLACEHOLDERS[path]
-        const type = INPUT_TYPES[path] || 'text'
-        const value = get(this.state.person, path, '')
+        const placeholder = this.placeholders[path]
+        const type = this.types[path] || 'text'
+        const value = get(this.state.input, path, '')
         return <Input name={path} onChange={onChange} placeholder={placeholder} type={type} value={value} />
     }
 
-    onClickSave = async () => {
-        await patch('people', this.state.person)
-        this.props.onClose()
-    }
-
-    retrieve = async () => {
-        const {person} = await gql(`{
-            person(identifier:"${this.props.identifier}") {
-                address {
-                    country
-                    locality
-                    postalCode
-                    region
-                    streetAddress
-                }
-                email
-                identifier
-                name {
-                    additional
-                    family
-                    given
-                }
-                preferences {
-                    email
-                    telephone
-                }
-                role
-                tags
-                telephone
-            }
-        }`)
-        this.setState({person})
-    }
-
     update = (path, value) => {
-        const person = cloneDeep(this.state.person)
-        set(person, path, value)
-        this.setState({person})
+        const input = cloneDeep(this.state.input)
+        set(input, path, value)
+        this.setState({input})
     }
 
     render = () =>
@@ -149,9 +156,9 @@ export default class PersonEditDrawer extends Component {
             <Form layout='vertical' onSubmit={this.onSubmit} ref={this.formRef}>
                 <Form.Item label='Name'>
                     <Row gutter={8}>
-                        <Col span={8}>{this.inputFor('name.given')}</Col>
-                        <Col span={8}>{this.inputFor('name.additional')}</Col>
-                        <Col span={8}>{this.inputFor('name.family')}</Col>
+                        <Col span={8}>{this.inputFor('givenName')}</Col>
+                        <Col span={8}>{this.inputFor('additionalName')}</Col>
+                        <Col span={8}>{this.inputFor('familyName')}</Col>
                     </Row>
                 </Form.Item>
                 <Form.Item label='Contacts'>
@@ -163,18 +170,19 @@ export default class PersonEditDrawer extends Component {
                 <Form.Item label='Address'>
                     {this.inputFor('address.streetAddress')}
                     <Row className='mt1' gutter={8}>
-                        <Col span={12}>{this.inputFor('address.locality')}</Col>
-                        <Col span={12}>{this.inputFor('address.region')}</Col>
+                        <Col span={12}>{this.inputFor('address.addressLocality')}</Col>
+                        <Col span={12}>{this.inputFor('address.addressRegion')}</Col>
                     </Row>
                     <Row className='mt1' gutter={8}>
                         <Col span={12}>{this.inputFor('address.postalCode')}</Col>
-                        <Col span={12}>{this.inputFor('address.country')}</Col>
+                        {/* https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements */}
+                        <Col span={12}>{this.inputFor('address.addressCountry')}</Col>
                     </Row>
                 </Form.Item>
                 <Row className='mt1' gutter={16}>
                     <Col span={6}>
                         <Form.Item label='Role'>
-                            <Select name='role' onChange={value => this.update('role', value)} value={this.state.person.role}>
+                            <Select name='role' onChange={value => this.update('role', value)} value={this.state.input.role}>
                                 <Select.Option value='ANONYMOUS'>
                                     None
                                 </Select.Option>
@@ -192,8 +200,8 @@ export default class PersonEditDrawer extends Component {
                     </Col>
                     <Col span={18}>
                         <Form.Item label='Tags'>
-                            <Select mode='tags' onChange={value => this.update('tags', value)} value={this.state.person.tags}>
-                                {this.state.person.tags.map(tag => <Select.Option key={tag}>{tag}</Select.Option>)}
+                            <Select mode='tags' onChange={value => this.update('tags', value)} value={this.state.input.tags}>
+                                {this.state.input.tags.map(tag => <Select.Option key={tag}>{tag}</Select.Option>)}
                             </Select>
                         </Form.Item>
                     </Col>

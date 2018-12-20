@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import db from '../db'
 import {Roles} from '../enums'
+import uuid from 'uuid/v4'
 
 export default {
     mutations: {
@@ -29,13 +30,39 @@ export default {
         deauthenticate: async (root, args, req) => {
             req.session = null
             return true
+        },
+        savePerson: async (root, args, req) => {
+            if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
+                const identifier = args.input.identifier
+                const record = identifier ? db.people.find({identifier}).value() : null
+
+                if (record) {
+                    const replacementRecord = Object.assign({}, record, args.input)
+                    db.people
+                        .find({identifier})
+                        .assign(replacementRecord)
+                        .write()
+                } else {
+                    const newRecord = Object.assign({}, args.input, {
+                        created: new Date().toISOString(),
+                        identifier: uuid()
+                    })
+                    db.people.push(newRecord).write()
+                }
+                return true
+            } else {
+                return false
+            }
         }
     },
     queries: {
-        // TODO: this should return a person instead of null, but only field is role=ANONYMOUS [@tmcnab]
-        currentUser: async (root, args, req) => {
-            const {identifier} = req.session
-            return identifier ? db.people.find({identifier}).value() : null
+        currentUser: async (root, args, {session}) => {
+            const {identifier} = session
+            return identifier
+                ? db.people.find({identifier}).value()
+                : {
+                      role: Roles.ANONYMOUS
+                  }
         },
         people: async (root, args, req) => {
             if (req.session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
@@ -68,45 +95,61 @@ export default {
     },
     resolvers: {},
     schema: `
-        type Address {
-            country: String
-            locality: String
-            postalCode: String
-            region: String
-            streetAddress: String
-        }
-
-        type Name {
-            additional: String
-            family: String
-            given: String
-        }
-
         type Preferences {
             email: Boolean
             telephone: Boolean
         }
 
-        type Person {
-            address: Address
+        input PreferencesInput {
+            email: Boolean
+            telephone: Boolean
+        }
+
+        type Person inherits Record {
+            additionalName: String
+            address: PostalAddress
             email: String
-            identifier: ID!
-            name: Name
+            familyName: String
+            givenName: String
             preferences: Preferences!
+            role: Role!
+            telephone: String
+        }
+
+        input PersonInput {
+            additionalName: String
+            address: PostalAddressInput
+            email: String
+            familyName: String
+            givenName: String
+            preferences: PreferencesInput!
             role: Role!
             tags: [String!]!
             telephone: String
         }
 
         extend type Mutation {
+            # Generate credentials/session for the current user if successfully authenticated.
             authenticate (email: String!, password: String!): Person
+
+            # Revoke credentials/session for the current user.
             deauthenticate: Boolean
+
+            # Save a Person record.
+            savePerson(input:PersonInput): Boolean!
         }
 
         extend type Query {
+            # The current, logged-in Person.
             currentUser: Person
+
+            # All Person records.
             people: [Person]
+
+            # Unique list of tags that have been applied to all Person records.
             peopleTags: [String!]!
+
+            # Retrieve a single Person record.
             person(identifier:ID!): Person
         }
     `

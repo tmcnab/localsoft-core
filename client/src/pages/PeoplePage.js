@@ -10,10 +10,10 @@ import React from 'react'
 export default class PeoplePage extends Page {
 
     columns = [{
-        dataIndex: 'name.given',
+        dataIndex: 'givenName',
         title: 'Given Name',
     }, {
-        dataIndex: 'name.family',
+        dataIndex: 'familyName',
         sorter: (a, b) => a.name.family.length - b.name.family.length,
         title: 'Family Name',
     }, {
@@ -52,12 +52,11 @@ export default class PeoplePage extends Page {
         const {dataSource} = await gql(`
             query {
                 dataSource: people {
+                    additionalName
                     email
                     identifier
-                    name {
-                        family
-                        given
-                    }
+                    familyName
+                    givenName
                     role
                     tags
                 }
@@ -71,7 +70,7 @@ export default class PeoplePage extends Page {
         this.query()
 
     onClickAdd = () =>
-        this.setState({editVisible: true})
+        this.setState({editVisible: true, identifier: null})
 
     onClickHelp = () =>
         this.setState({infoVisible: true})

@@ -5,6 +5,7 @@ import expressGraphQL from 'express-graphql'
 import File from './File'
 import Page from './Page'
 import Person from './Person'
+import PostalAddress from './PostalAddress'
 import s2s from 'graphql-s2s'
 import tools from 'graphql-tools'
 
@@ -32,6 +33,8 @@ const customSchema = `
 	type Query {
 
 	}
+
+	${PostalAddress.schema}
 
 	${Account.schema}
 	${Email.schema}
