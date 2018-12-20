@@ -1,7 +1,6 @@
 import {emailPreview, emailRender, emailUnsubscribe} from './emails'
 import {fileDownload, fileUpload} from './files'
 import dynamicPages from './dynamicPages'
-import patch from './patch'
 
 export default {
     registerWith: app => {
@@ -12,7 +11,6 @@ export default {
         app.get('/files/:identifier', fileDownload)
         app.post('/upload/', fileUpload) // TODO: should this be different? [@tmcnab]
 
-        app.patch('/:resource/', patch)
         // dynamicPages(app)
     }
 }
