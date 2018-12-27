@@ -31,11 +31,19 @@ export default class PageEditDrawer extends Component {
 
     state = {
         autopath: true,
-        input: EMPTY_INPUT,
+        input: cloneDeep(EMPTY_INPUT),
         saving: false,
     }
 
     componentDidUpdate (prevProps, prevState, snapshot) {
+        if (this.props.identifier !== prevProps.identifier) {
+            if (this.props.identifier) {
+                this.query()
+            } else {
+                this.setState({input: cloneDeep(EMPTY_INPUT)})
+            }
+        }
+
         if (this.state.autopath) {
             const titleChanged = get(prevState, 'input.title', '') !== get(this.state, 'input.title', '')
             const postChanged = get(prevState, 'input.post') !== get(this.state, 'input.post')
@@ -43,22 +51,33 @@ export default class PageEditDrawer extends Component {
                 this.updatePath()
             }
         }
+    }
 
-        if (this.props.identifier !== prevProps.identifier) {
-            if (this.props.identifier) {
-                this.retrieve()
+    mutate = async () => {
+        this.setState({saving: true})
+        const {savePage} = await gql(`
+            mutation ($input: PageInput!) {
+                savePage(input: $input)
             }
-        }
+        `, {input: this.state.input})
+
+        this.setState({saving: false}, () => {
+            if (savePage) {
+                this.props.onClose(true)
+            } else {
+                message.error('There was an error saving.')
+            }
+        })
     }
 
-    onClickSave = async () => {
-        this.setState({saving: true}, async () => await this.save())
-    }
+    onClickSave = () =>
+        this.setState({saving: true}, this.mutate)
 
-    retrieve = async () => {
-        const {page} = await gql(`
-            query {
-                page(identifier:"ebc2124a-b81a-49b5-bbac-f03daffae288") {
+    query = async () => {
+        this.setState({loading: true})
+        const {input} = await gql(`
+            query ($identifier: ID!) {
+                input: page(identifier: $identifier) {
                 	content
                     identifier
                 	path
@@ -68,24 +87,8 @@ export default class PageEditDrawer extends Component {
                 	title
                 }
             }
-        `)
-        this.setState({input: page})
-    }
-
-    save = async () => {
-        const result = await gql(`
-            mutation ($input: PageInput!) {
-                savePage(input: $input)
-            }
-        `, {input: this.state.input})
-
-        this.setState({saving: false}, () => {
-            if (result.savePage) {
-                this.props.onClose(true)
-            } else {
-                message.error('There was an error saving.')
-            }
-        })
+        `, {identifier: this.props.identifier})
+        this.setState({input})
     }
 
     title = () =>
