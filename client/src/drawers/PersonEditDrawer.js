@@ -52,6 +52,7 @@ export default class PersonEditDrawer extends Component {
     state = {
         input: cloneDeep(EMPTY_INPUT),
         saving: false,
+        suggestedTags: [],
     }
 
     types = {
@@ -91,7 +92,7 @@ export default class PersonEditDrawer extends Component {
 
     query = async () => {
         this.setState({saving: true})
-        const {input} = await gql(`
+        const {input, suggestedTags} = await gql(`
             query ($identifier: ID!) {
                 input: person(identifier: $identifier) {
                     additionalName
@@ -114,10 +115,11 @@ export default class PersonEditDrawer extends Component {
                     tags
                     telephone
                 }
+                suggestedTags: peopleTags
             }
         `, {identifier: this.props.identifier})
 
-        this.setState({input, saving: false})
+        this.setState({input, saving: false, suggestedTags})
     }
 
     title = () =>
@@ -201,7 +203,7 @@ export default class PersonEditDrawer extends Component {
                     <Col span={18}>
                         <Form.Item label='Tags'>
                             <Select mode='tags' onChange={value => this.update('tags', value)} value={this.state.input.tags}>
-                                {this.state.input.tags.map(tag => <Select.Option key={tag}>{tag}</Select.Option>)}
+                                {this.state.suggestedTags.map(tag => <Select.Option key={tag}>{tag}</Select.Option>)}
                             </Select>
                         </Form.Item>
                     </Col>
