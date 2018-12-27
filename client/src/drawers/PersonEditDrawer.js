@@ -1,5 +1,5 @@
 import {bool, func, string} from 'propTypes'
-import {Button, Checkbox, Col, Drawer, Form, Input, message, Row, Select, Tooltip} from 'antd'
+import {Button, Checkbox, Col, Drawer, Form, Input, message, Popconfirm, Row, Select, Tooltip} from 'antd'
 import {cloneDeep, get, set} from 'lodash'
 import {DrawerTitle} from 'components'
 import gql from 'gql'
@@ -50,6 +50,7 @@ export default class PersonEditDrawer extends Component {
     }
 
     state = {
+        destroying: false,
         input: cloneDeep(EMPTY_INPUT),
         saving: false,
         suggestedTags: [],
@@ -68,6 +69,23 @@ export default class PersonEditDrawer extends Component {
                 this.setState({input: cloneDeep(EMPTY_INPUT)})
             }
         }
+    }
+
+    destroy = async () => {
+        this.setState({destroying: true})
+        const {destroyPerson} = await gql(`
+            mutation ($identifier: ID!) {
+                destroyPerson(identifier: $identifier)
+            }
+        `, {identifier: this.props.identifier})
+
+        this.setState({destroying: false}, () => {
+            if (destroyPerson) {
+                this.props.onClose(true)
+            } else {
+                message.error('There was a problem destroying this record.')
+            }
+        })
     }
 
     mutate = async () => {
@@ -124,7 +142,15 @@ export default class PersonEditDrawer extends Component {
 
     title = () =>
         <DrawerTitle title={`${this.props.identifier ? 'Editing' : 'Creating'} Person`}>
-            <Tooltip placement='left' title='Save'>
+        {this.props.identifier ? (
+            <Tooltip placement='left' title='Destroy'>
+                <Popconfirm onConfirm={this.destroy} title='Are you sure? This action cannot be undone.'>
+                    <Button className='mr1' icon='delete' shape='circle' type='danger' />
+                </Popconfirm>
+            </Tooltip>
+        ) : null
+        }
+            <Tooltip placement={this.props.identifier ? 'bottom' : 'left'} title='Save'>
                 <Button className='mr1' icon='check' onClick={this.onClickSave} shape='circle' type='primary' />
             </Tooltip>
             <Tooltip placement='bottom' title='Abandon'>
@@ -217,7 +243,6 @@ export default class PersonEditDrawer extends Component {
                 {this.props.identifier ? (
                 <Form.Item label='Actions'>
                     <Button className='mr1' disabled onClick={this.onClickResetPassword}>Reset Password</Button>
-                    <Button disabled onClick={this.onClickDelete} type='danger'>Delete Person</Button>
                 </Form.Item>
                 ) : null}
             </Form>

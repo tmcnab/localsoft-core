@@ -31,6 +31,36 @@ export default {
             req.session = null
             return true
         },
+        destroyPerson: async (root, {identifier}, {session}) => {
+            // No-one can destroy themselves.
+            if (identifier === session.identifier) {
+                return false
+            }
+
+            // Only authorized users may destroy other person records.
+            if (!session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
+                return false
+            }
+
+            // Ensure we don't delete the only administrator.
+            const administratorCount = db.people
+                .filter(['role', Roles.ADMINISTRATOR])
+                .size()
+                .value()
+            if (administratorCount <= 1) {
+                return false
+            }
+
+            // Staff cannot delete administrators.
+            const record = db.people.find({identifier}).value()
+            if (session.role === Roles.STAFF && record.role === Roles.ADMINISTRATOR) {
+                return false
+            }
+
+            // Finally destroy the record.
+            db.people.remove({identifier}).write()
+            return true
+        },
         savePerson: async (root, args, req) => {
             if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
                 const identifier = args.input.identifier
@@ -122,7 +152,7 @@ export default {
             email: String
             familyName: String
             givenName: String
-            identifier: ID!
+            identifier: ID
             preferences: PreferencesInput!
             role: Role!
             tags: [String!]!
@@ -136,8 +166,11 @@ export default {
             # Revoke credentials/session for the current user.
             deauthenticate: Boolean
 
+            # Destroy a Person record.
+            destroyPerson(identifier: ID!): Boolean!
+
             # Save a Person record.
-            savePerson(input:PersonInput): Boolean!
+            savePerson(input: PersonInput): Boolean!
         }
 
         extend type Query {
@@ -151,7 +184,7 @@ export default {
             peopleTags: [String!]!
 
             # Retrieve a single Person record.
-            person(identifier:ID!): Person
+            person(identifier: ID!): Person
         }
     `
 }
