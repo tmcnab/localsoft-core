@@ -122,6 +122,7 @@ export default {
             email: String
             familyName: String
             givenName: String
+            identifier: ID!
             preferences: PreferencesInput!
             role: Role!
             tags: [String!]!

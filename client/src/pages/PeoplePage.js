@@ -1,7 +1,7 @@
 import {Button, Table, Tag, Tooltip} from 'antd'
-import {InfoButton, Page} from 'components'
-import gql from 'gql'
+import {Formatter, InfoButton, Page} from 'components'
 import {lowerCase, startCase} from 'lodash'
+import gql from 'gql'
 import PersonEditDrawer from 'drawers/PersonEditDrawer'
 import PeopleInfoDrawer from 'drawers/PeopleInfoDrawer'
 import React from 'react'
@@ -9,34 +9,15 @@ import React from 'react'
 
 export default class PeoplePage extends Page {
 
-    columns = [{
-        dataIndex: 'givenName',
-        title: 'Given Name',
-    }, {
-        dataIndex: 'familyName',
-        sorter: (a, b) => a.name.family.length - b.name.family.length,
-        title: 'Family Name',
-    }, {
-        dataIndex: 'email',
-        sorter: (a, b) => a.email.length - b.email.length,
-        title: 'Email',
-    }, {
-        dataIndex: 'telephone',
-        title: 'Phone',
-    }, {
-        dataIndex: 'role',
-        render: role => startCase(lowerCase(role)),
-        sorter: (a, b) => a.role.length - b.role.length,
-        title: 'Role',
-    }, {
-        dataIndex: 'tags',
-        render: (tags) => tags.map(tag => <Tag key={tag}>{tag}</Tag>),
-        title: 'Tags',
-    }]
-
     locale = {
         emptyText: 'No-one on record. Perhaps try adding one?'
     }
+
+    // recordIncludesTerm = (record, term) => {
+    //     const fullName = `${record.additionalName} ${record.familyName} ${record.givenName}`.toLowerCase()
+    //     const lowerCaseTerm = term.toLowerCase().trim()
+    //     return fullName.includes(lowerCaseTerm)
+    // }
 
     state = {
         dataSource: [],
@@ -44,12 +25,40 @@ export default class PeoplePage extends Page {
         infoVisible: false,
         identifier: null,
         loading: false,
+        tags: [],
     }
+
+    columns = () => [{
+        key: 'name',
+        render: (record) => <Formatter format='name' value={record} />,
+        sorter: (recordA, recordB) => {
+            const nameA = Formatter.nameFormatter(recordA)
+            const nameB = Formatter.nameFormatter(recordB)
+            if (nameA < nameB) return -1
+            if (nameA > nameB) return +1
+            return 0
+        },
+        title: 'Name',
+    }, {
+        dataIndex: 'email',
+        title: 'Email',
+    }, {
+        dataIndex: 'role',
+        render: role => startCase(lowerCase(role)),
+        title: 'Role',
+    }, {
+        dataIndex: 'tags',
+        filterMultiple: true,
+        filters: this.state.tags,
+        onFilter: (value, record) => record.tags.includes(value),
+        render: (tags) => tags.map(tag => <Tag key={tag}>{tag}</Tag>),
+        title: 'Tags',
+    }]
 
     query = async () => {
         this.setState({loading: true})
 
-        const {dataSource} = await gql(`
+        const {dataSource, tags} = await gql(`
             query {
                 dataSource: people {
                     additionalName
@@ -60,10 +69,15 @@ export default class PeoplePage extends Page {
                     role
                     tags
                 }
+                tags: peopleTags
             }
         `)
 
-        this.setState({dataSource, loading: false})
+        this.setState({
+            dataSource,
+            loading: false,
+            tags: tags.map(value => ({ text: value, value })),
+        })
     }
 
     componentDidMount = () =>
@@ -94,7 +108,7 @@ export default class PeoplePage extends Page {
                 <InfoButton onClick={this.onClickHelp} />
             </Page.Header>
             <Table
-                columns={this.columns}
+                columns={this.columns()}
                 dataSource={this.state.dataSource}
                 loading={this.state.loading}
                 locale={this.locale}
