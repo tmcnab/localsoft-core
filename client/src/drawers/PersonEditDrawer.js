@@ -17,6 +17,7 @@ const EMPTY_INPUT = Object.freeze({
     email: '',
     familyName: '',
     givenName: '',
+    initializeAccount: false,
     preferences: {
         email: true,
         telephone: true,
@@ -44,6 +45,7 @@ export default class PersonEditDrawer extends Component {
         'email': 'Email: user@domain.tld',
         'familyName': 'Given',
         'givenName': 'Given',
+        'initializeAccount': 'Initialize a user account?',
         'preferences.email': 'Contact via Email',
         'preferences.telephone': 'Contact via Telephone',
         'telephone': 'Phone +1 (123) 456-7890',
@@ -239,6 +241,19 @@ export default class PersonEditDrawer extends Component {
                         <Col span={12}>{this.checkboxFor('preferences.email')}</Col>
                         <Col span={12}>{this.checkboxFor('preferences.telephone')}</Col>
                     </Row>
+                {this.props.identifier ? null : (
+                    <Row className='mt1' gutter={8}>
+                        <Col span={12}>
+                            <Checkbox
+                                disabled={this.state.input.email.length === 0}
+                                checked={this.state.input.initializeAccount}
+                                onChange={({target}) => this.update('initializeAccount', target.checked)}
+                            >
+                                {this.placeholders['initializeAccount']}
+                            </Checkbox>
+                        </Col>
+                    </Row>
+                )}
                 </Form.Item>
                 {this.props.identifier ? (
                 <Form.Item label='Actions'>

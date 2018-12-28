@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt'
+import config from '../config'
 import db from '../db'
+import {reschedule} from '../misc/scheduling'
 import {Roles} from '../enums'
 import uuid from 'uuid/v4'
 
@@ -43,16 +45,16 @@ export default {
             }
 
             // Ensure we don't delete the only administrator.
+            const record = db.people.find({identifier}).value()
             const administratorCount = db.people
                 .filter(['role', Roles.ADMINISTRATOR])
                 .size()
                 .value()
-            if (administratorCount <= 1) {
+            if (record.role === Roles.ADMINISTRATOR && administratorCount <= 1) {
                 return false
             }
 
             // Staff cannot delete administrators.
-            const record = db.people.find({identifier}).value()
             if (session.role === Roles.STAFF && record.role === Roles.ADMINISTRATOR) {
                 return false
             }
@@ -73,12 +75,39 @@ export default {
                         .assign(replacementRecord)
                         .write()
                 } else {
-                    const newRecord = Object.assign({}, args.input, {
+                    const {initializeAccount, ...input} = args.input
+                    const identifier = uuid()
+                    const password = uuid()
+                    const newRecord = Object.assign({}, input, {
                         created: new Date().toISOString(),
-                        identifier: uuid()
+                        hash: initializeAccount ? await bcrypt.hash(password, 10) : null,
+                        identifier,
                     })
                     db.people.push(newRecord).write()
+
+                    if (initializeAccount) {
+                        db.emails.push({
+                            content: `
+                                Hi there!
+
+                                You have a new account on ${config.SITE_URL}:
+
+                                > Email: \`${input.email}\`
+                                > Password: \`${password}\`
+
+                                You can sign into your account [here](${config.SITE_URL}/sign-in).
+
+                                - The ${db.account.get('site_title').value()} Team
+                            `,
+                            sendAt: new Date().toISOString(),
+                            sent: false,
+                            targets: [input.email],
+                            title: 'Your New Account on $DOMAIN',
+                        }).write()
+                        await reschedule()
+                    }
                 }
+                
                 return true
             } else {
                 return false
@@ -153,6 +182,7 @@ export default {
             familyName: String
             givenName: String
             identifier: ID
+            initializeAccount: Boolean
             preferences: PreferencesInput!
             role: Role!
             tags: [String!]!

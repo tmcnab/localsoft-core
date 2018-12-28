@@ -36,7 +36,6 @@ export default class PeopleInfoDrawer extends Component {
                 <ul>
                     <li>Can users manage their own contact data? y/N</li>
                 </ul>
-
             </>
         ) : null}
         </Drawer>
