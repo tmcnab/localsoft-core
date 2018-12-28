@@ -8,9 +8,8 @@ import React, { Component } from 'react';
 
 // NOTE: in the future these permissions will be more granular.
 // NOTE: some of these features will be reenabled in V2
-const { ANONYMOUS, MEMBER, STAFF, ADMINISTRATOR } = Roles
+const { ANONYMOUS, STAFF, ADMINISTRATOR } = Roles
 const MENU_ITEMS = [
-    { key: 'dashboard',     icon: 'appstore',     label: 'Dashboard',     viewers: [MEMBER, STAFF], },
     // { key: 'conversations', icon: 'message',      label: 'Conversations', viewers: [MEMBER, STAFF], },
     // { key: 'forums',        icon: 'solution',     label: 'Forums',        viewers: [MEMBER, STAFF], },
     // { key: 'events',        icon: 'calendar',     label: 'Events',        viewers: [MEMBER, STAFF], },
