@@ -1,13 +1,11 @@
-import {Button, Col, Input, Row, Select, Tooltip} from 'antd'
+import {Button, Input, Select, Tooltip} from 'antd'
 import {InfoButton, Page} from 'components'
 import React from 'react'
-import {Roles} from '../enums'
 
 // TODO: ACL for who can create conversations with 'create conversation button'
 export default class ConversationsPage extends Page {
 
     state = {
-        collapsed: false,
         conversations: [{
             description: 'A general channel for chatting',
             identifier: '343424221412',
