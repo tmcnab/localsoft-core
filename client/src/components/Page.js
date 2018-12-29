@@ -1,4 +1,4 @@
-import {Card, Col, Divider, Row} from 'antd'
+import {Card, Col, Row} from 'antd'
 import {string} from 'prop-types'
 import React, {Component} from 'react'
 
@@ -18,7 +18,7 @@ export default class Page extends Component {
         }
 
         render = () =>
-            <>
+            <header className='mb1'>
                 <Row>
                     <Col span={12}>
                         <h1 className='mb0'>{this.props.title}</h1>
@@ -27,8 +27,7 @@ export default class Page extends Component {
                         {this.props.children}
                     </Col>
                 </Row>
-                <Divider className='mb0' />
-            </>
+            </header>
 
     }
 

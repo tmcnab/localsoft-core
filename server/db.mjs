@@ -10,6 +10,9 @@ const db = lowdb(adapter)
 
 Object.defineProperties(db, {
     account: {get: () => db.get('account')},
+    conversations: {
+        get: () => lowdb(new FileSync(path.join(config.DATA_DIR, 'conversations.json')))
+    },
     emails: {get: () => db.get('emails')},
     files: {get: () => db.get('files')},
     pages: {get: () => db.get('pages')},

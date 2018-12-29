@@ -51,6 +51,7 @@ export default {
         input ConversationInput {
             access: [Role!]!
             description: String
+            icon: String
             name: String!
         }
 
