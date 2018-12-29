@@ -82,7 +82,7 @@ export default class Sidebar extends Component {
                     </Col>
                 </Row>
             </header>
-            <Menu mode='vertical'>
+            <Menu mode='vertical' style={{borderRight: 'none'}}>
             {MENU_ITEMS.map(item => {
                 const {viewerRole} = this.props
                 const canView = viewerRole === ADMINISTRATOR || item.viewers.includes(viewerRole)
