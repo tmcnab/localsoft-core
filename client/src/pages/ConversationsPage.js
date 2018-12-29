@@ -1,4 +1,6 @@
 import {Button, Input, Select, Tooltip} from 'antd'
+import ConversationEditDrawer from '../drawers/ConversationEditDrawer'
+import ConversationInfoDrawer from '../drawers/ConversationInfoDrawer'
 import {InfoButton, Page} from 'components'
 import React from 'react'
 
@@ -15,6 +17,8 @@ export default class ConversationsPage extends Page {
             identifier: '12312131231',
             name: 'Planning',
         }],
+        editVisible: false,
+        infoVisible: false,
         messages: [],
         selectedConversation: '343424221412',
 
@@ -22,6 +26,18 @@ export default class ConversationsPage extends Page {
             return true
         },
     }
+
+    onClickAdd = () =>
+        this.setState({ editVisible: true, identifier: null })
+
+    onClickInfo = () =>
+        this.setState({ infoVisible: true })
+
+    onCloseEdit = (updated) =>
+        this.setState({ editVisible: false })
+
+    onCloseInfo = () =>
+        this.setState({ infoVisible: false })
 
     render = () =>
         <main>
@@ -41,7 +57,14 @@ export default class ConversationsPage extends Page {
                 </Select>
             {this.state.canCreateConversations ? (
                 <Tooltip placement='bottom' title='Start a new conversation'>
-                    <Button className='mr1' icon='plus' onClick={this.onClickAdd} size='large' shape='circle' type='primary' />
+                    <Button
+                        className='mr1'
+                        icon='plus'
+                        onClick={this.onClickAdd}
+                        shape='circle'
+                        size='large'
+                        type='primary'
+                    />
                 </Tooltip>
             ) :null}
                 <InfoButton onClick={this.onClickInfo} />
@@ -50,6 +73,15 @@ export default class ConversationsPage extends Page {
                 Conversations Content
             </div>
             <Input autoFocus placeholder='Write your message here' size='large' />
+            <ConversationEditDrawer
+                identifier={this.state.identifier}
+                onClose={this.onCloseEdit}
+                visible={this.state.editVisible}
+            />
+            <ConversationInfoDrawer
+                onClose={this.onCloseInfo}
+                visible={this.state.infoVisible}
+            />
         </main>
 
 }
