@@ -1,5 +1,5 @@
 import {Route, Switch} from 'react-router-dom'
-import ConversationsPage from 'pages/ConversationsPage'
+// import ConversationsPage from 'pages/ConversationsPage'
 import EmailPage from 'pages/EmailPage'
 import FilesPage from 'pages/FilesPage'
 import NotFoundPage from 'pages/NotFoundPage'
@@ -12,7 +12,7 @@ export default class Routes extends Component {
 
     render = () =>
         <Switch>
-            <Route component={ConversationsPage} exact path='/conversations/' />
+            {/*<Route component={ConversationsPage} exact path='/conversations/' />*/}
             <Route component={EmailPage}         exact path='/email/' />
             <Route component={FilesPage}         exact path='/files/' />
             <Route component={PagesPage}         exact path='/pages/' />
