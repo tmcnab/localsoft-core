@@ -10,7 +10,7 @@
     "eslint-plugin-prettier": "^3.0.0",
     "prettier": "^1.15.3"
   },
-  "name": "localsoft",
+  "name": "localsoft-core",
   "private": true,
   "repository": "https://github.com/tmcnab/localsoft",
   "version": "0.0.0"
