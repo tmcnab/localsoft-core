@@ -1,0 +1,15 @@
+type File inherits Record {
+    access: Role!
+    mimeType: String!
+    name: String!
+    size: Int!
+}
+
+extend type Mutation {
+    fileDestroy (identifier: ID!): Boolean
+}
+
+extend type Query {
+    file (identifier: ID!): File
+    files: [File!]!
+}

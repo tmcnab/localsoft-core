@@ -1,0 +1,17 @@
+{
+    "localsoft": {
+        "client": {
+            "entry": "./client.js",
+            "icon": "cloud",
+            "route": "files"
+        },
+        "server": {
+            "entry": "./server.js",
+            "gql": "files.gql",
+            "route": "files"
+        }
+    },
+    "name": "localsoft-plugin-files",
+    "private": true,
+    "version": "0.0.1"
+}
