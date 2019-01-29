@@ -16,7 +16,7 @@ const MENU_ITEMS = [
     { key: 'people',        icon: 'team',         label: 'People',        viewers: [STAFF],         },
     { key: 'pages',         icon: 'book',         label: 'Pages',         viewers: [STAFF],         },
     // { key: 'updates',       icon: 'notification', label: 'Updates',       viewers: [STAFF],         },
-    { key: 'email',         icon: 'mail',         label: 'Email',         viewers: [STAFF],         },
+    // { key: 'email',         icon: 'mail',         label: 'Email',         viewers: [STAFF],         },
     { key: 'files',         icon: 'cloud',        label: 'Files',         viewers: [STAFF],         },
     // { key: 'settings',      icon: 'setting',      label: 'Settings',      viewers: [],              },
 ]

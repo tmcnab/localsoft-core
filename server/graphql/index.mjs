@@ -1,7 +1,7 @@
 import Account from './Account'
 import config from '../config'
-import Conversation from './Conversation'
-import Email from './Email'
+// import Conversation from './Conversation'
+// import Email from './Email'
 import expressGraphQL from 'express-graphql'
 import File from './File'
 import Page from './Page'
@@ -38,8 +38,6 @@ const customSchema = `
 	${PostalAddress.schema}
 
 	${Account.schema}
-	${Conversation.schema}
-	${Email.schema}
 	${File.schema}
 	${Page.schema}
 	${Person.schema}
@@ -52,8 +50,8 @@ const customSchema = `
 
 const resolvers = {
     Account: Account.resolvers,
-    Conversation: Conversation.resolvers,
-    Email: Email.resolvers,
+    // Conversation: Conversation.resolvers,
+    // Email: Email.resolvers,
     File: File.resolvers,
     Mutation: Object.assign({}, Account.mutations, Email.mutations, File.mutations, Page.mutations, Person.mutations),
     Page: Page.resolvers,
