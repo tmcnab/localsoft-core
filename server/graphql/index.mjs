@@ -53,10 +53,10 @@ const resolvers = {
     // Conversation: Conversation.resolvers,
     // Email: Email.resolvers,
     File: File.resolvers,
-    Mutation: Object.assign({}, Account.mutations, Email.mutations, File.mutations, Page.mutations, Person.mutations),
+    Mutation: Object.assign({}, Account.mutations, /*Email.mutations,*/ File.mutations, Page.mutations, Person.mutations),
     Page: Page.resolvers,
     Person: Person.resolvers,
-    Query: Object.assign({}, Account.queries, Email.queries, File.queries, Page.queries, Person.queries),
+    Query: Object.assign({}, Account.queries, /*Email.queries,*/ File.queries, Page.queries, Person.queries),
     Role: {
         ANONYMOUS: 'ANONYMOUS',
         MEMBER: 'MEMBER',

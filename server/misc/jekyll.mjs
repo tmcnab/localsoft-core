@@ -49,7 +49,8 @@ const writePages = async () => {
 }
 
 export default async (themeFile = null) => {
-    await deleteExisting()
-    await writePages()
-    await build()
+    // TODO: 
+    // await deleteExisting()
+    // await writePages()
+    // await build()
 }
