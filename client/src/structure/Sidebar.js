@@ -25,8 +25,7 @@ const MENU_ITEMS = [
 export default class Sidebar extends Component {
 
     static propTypes = {
-        instanceName: string.isRequired,
-        viewerRole: role.isRequired,
+        role: role.isRequired,
     }
 
     state = {
@@ -43,7 +42,7 @@ export default class Sidebar extends Component {
         const {deauthenticate} = await gql(`mutation { deauthenticate }`)
         if (deauthenticate) {
             window.application.setState({
-                viewerRole: Roles.ANONYMOUS,
+                role: Roles.ANONYMOUS,
             }, () => {
                 window.location.assign('/')
             })
@@ -66,7 +65,7 @@ export default class Sidebar extends Component {
         }
 
         window.application.setState({
-            viewerRole: authenticate.role,
+            role: authenticate.role,
         })
     }
 
@@ -74,18 +73,18 @@ export default class Sidebar extends Component {
         <Layout.Sider style={{minHeight: '100vh'}} theme='light' width={256}>
             <header className='font-large p1'>
                 <Row>
-                    <Col span={4}>
+                    <Col span={3}>
                         <Icon type='ant-design' />
                     </Col>
-                    <Col span={20}>
-                        {this.props.instanceName}
+                    <Col span={21}>
+                        localsoft
                     </Col>
                 </Row>
             </header>
             <Menu mode='vertical' style={{borderRight: 'none'}}>
             {MENU_ITEMS.map(item => {
-                const {viewerRole} = this.props
-                const canView = viewerRole === ADMINISTRATOR || item.viewers.includes(viewerRole)
+                const {role} = this.props
+                const canView = role === ADMINISTRATOR || item.viewers.includes(role)
                 return canView ? (
                     <Menu.Item key={item.key}>
                         <Link to={`/${item.key}/`}>
@@ -94,13 +93,13 @@ export default class Sidebar extends Component {
                     </Menu.Item>
                 ) : null
             })}
-            {this.props.viewerRole === ANONYMOUS ? null : (
+            {this.props.role === ANONYMOUS ? null : (
                 <Menu.Item key='exit' onClick={this.onClickExit}>
                     <Icon type='logout' /> Leave
                 </Menu.Item>
             )}
             </Menu>
-            {this.props.viewerRole === ANONYMOUS ? (
+            {this.props.role === ANONYMOUS ? (
                 <Form className='p1' hideRequiredMark onSubmit={this.onSubmit}>
                     <Form.Item colon={false} label='Email'>
                         <Input name='email' onChange={this.onChange} required type='email' />

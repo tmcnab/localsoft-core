@@ -16,35 +16,26 @@ export default class Application extends Component {
     }
 
     state = {
-        instanceName: "",
-        viewerRole: Roles.ANONYMOUS,
+        role: Roles.ANONYMOUS,
     }
 
     componentDidMount = async () => {
-        const {account, currentUser} = await gql(`{
-            account { site_title }
+        const {currentUser} = await gql(`{
             currentUser { role }
         }`)
 
         this.setState({
-            instanceName: account.site_title,
-            viewerRole: get(currentUser, 'role', Roles.ANONYMOUS)
+            role: get(currentUser, 'role', Roles.ANONYMOUS)
         })
-    }
-
-    componentDidUpdate = (prevProps, prevState, snapshot) => {
-        if (this.state.instanceName !== prevState.instanceName) {
-            window.document.title = `${this.state.instanceName} • localsoft`
-        }
     }
 
     render = () =>
         <BrowserRouter>
             <Layout>
-                <Sidebar instanceName={this.state.instanceName} viewerRole={this.state.viewerRole} />
+                <Sidebar role={this.state.role} />
                 <Layout>
                     <Layout.Content className='p1'>
-                        <Routes viewerRole={this.state.viewerRole} />
+                        <Routes role={this.state.role} />
                     </Layout.Content>
                 </Layout>
             </Layout>
