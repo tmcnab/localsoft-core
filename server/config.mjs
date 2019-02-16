@@ -9,6 +9,15 @@ const DATA_DIR = path.join(__dirname, '..', '.data')
 export default {
     CUSTOM_THEME: false,
     DATA_DIR,
+    EMAIL: {
+        auth: {
+            user: 'w4oixidgz4iqalws@ethereal.email',
+            pass: 'zBHUFWZNHE5QbsVEBY'
+        },
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false
+    },
     ENABLED_FEATURES: [Features.EMAIL, Features.FILES, Features.PAGES, Features.PEOPLE],
     JEKYLL_DIR: path.join(__dirname, '..', '.jekyll'),
     JEKYLL_BUILD_DIR: path.join(__dirname, '..', '.jekyll', '_site'),

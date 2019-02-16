@@ -10,17 +10,17 @@ export const reschedule = () => {
     jobs.clear()
 
     // Schedule all emails yet to be sent.
-    db.emails
-        .filter({sent: false})
-        .value()
-        .forEach(email => {
-            const date = new Date(email.sendAt)
-            const fn = () => sendEmail(email.identifier)
-
-            if (date < new Date()) {
-                fn()
-            } else {
-                jobs.add(schedule.scheduleJob(date, fn))
-            }
-        })
+    // db.emails
+    //     .filter({sent: false})
+    //     .value()
+    //     .forEach(email => {
+    //         const date = new Date(email.sendAt)
+    //         const fn = () => sendEmail(email.identifier)
+    //
+    //         if (date < new Date()) {
+    //             fn()
+    //         } else {
+    //             jobs.add(schedule.scheduleJob(date, fn))
+    //         }
+    //     })
 }

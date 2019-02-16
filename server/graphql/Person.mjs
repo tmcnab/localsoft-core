@@ -3,6 +3,7 @@ import config from '../config'
 import db from '../db'
 import {reschedule} from '../misc/scheduling'
 import {Roles} from '../enums'
+import {sendEmail} from '../misc/email'
 import uuid from 'uuid/v4'
 
 export default {
@@ -13,13 +14,13 @@ export default {
             // Fetch person and if doesn't exists return nothing, no error.
             const person = db.people.find({email}).value()
             if (!person) {
-                return null
+                return false
             }
 
             // If the password doesn't match, return nothing, no error.
             const challengeSucceeded = await bcrypt.compare(args.password, person.hash)
             if (!challengeSucceeded) {
-                return null
+                return false
             }
 
             // Set session+cookie and return record
@@ -27,7 +28,7 @@ export default {
                 identifier: person.identifier,
                 role: person.role
             }
-            return person
+            return true
         },
         deauthenticate: async (root, args, req) => {
             req.session = null
@@ -85,29 +86,32 @@ export default {
                     })
                     db.people.push(newRecord).write()
 
+                    const emailIdentifier = uuid()
                     if (initializeAccount) {
                         db.emails.push({
                             content: `
-                                Hi there!
+Hi there!
 
-                                You have a new account on ${config.SITE_URL}:
+You have a new account on ${config.SITE_URL}:
 
-                                > Email: \`${input.email}\`
-                                > Password: \`${password}\`
+> Email: \`${input.email}\`
+>
+> Password: \`${password}\`
 
-                                You can sign into your account [here](${config.SITE_URL}/sign-in).
+You can sign into your account [here](${config.SITE_URL}/sign-in).
 
-                                - The ${db.account.get('site_title').value()} Team
+- The ${db.account.get('site_title').value()} Team
                             `,
+                            identifier: emailIdentifier,
                             sendAt: new Date().toISOString(),
                             sent: false,
                             targets: [input.email],
                             title: 'Your New Account on $DOMAIN',
                         }).write()
-                        await reschedule()
+                        await sendEmail(emailIdentifier)
                     }
                 }
-                
+
                 return true
             } else {
                 return false
@@ -191,7 +195,7 @@ export default {
 
         extend type Mutation {
             # Generate credentials/session for the current user if successfully authenticated.
-            authenticate (email: String!, password: String!): Person
+            authenticate (email: String!, password: String!): Boolean!
 
             # Revoke credentials/session for the current user.
             deauthenticate: Boolean

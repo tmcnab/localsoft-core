@@ -1,5 +1,13 @@
 @import '~antd/dist/antd.css';
 
+body {
+    background-color: #e8e8e8 ;
+}
+
+.bg-transparent {
+    background-color: transparent;
+}
+
 .ant-breadcrumb {
     font-size: 21px;
 }
@@ -21,11 +29,19 @@
 .align-j { text-align: justify }
 .align-r { text-align: right   }
 
+.bg-white { background-color: white !important }
+
+.border-right { border: 1px solid #e8e8e8 !important }
+
 .bold { font-weight: bold }
 
 .font-large { font-size: 1rem }
 
 .full { width: 100% !important }
+.full-height {
+    height: 100% !important;
+    min-height: 100% !important;
+}
 
 .inline-block { display: inline-block !important }
 
