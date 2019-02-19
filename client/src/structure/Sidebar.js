@@ -12,6 +12,7 @@ const { ANONYMOUS, STAFF, ADMINISTRATOR } = Roles
 const MENU_ITEMS = [
     { key: 'people', icon: 'team',  label: 'People', viewers: [STAFF], },
     { key: 'pages',  icon: 'book',  label: 'Pages',  viewers: [STAFF], },
+    { key: 'email',  icon: 'mail',  label: 'Email',  viewers: [STAFF], },
     { key: 'files',  icon: 'cloud', label: 'Files',  viewers: [STAFF], },
 ]
 
@@ -20,13 +21,6 @@ export default class Sidebar extends Component {
 
     static propTypes = {
         role: role.isRequired,
-    }
-
-    onClickExit = async () => {
-        const {deauthenticate} = await gql(`mutation { deauthenticate }`)
-        if (deauthenticate) {
-            window.location.assign('/')
-        }
     }
 
     render = () =>
@@ -53,11 +47,6 @@ export default class Sidebar extends Component {
                     </Menu.Item>
                 ) : null
             })}
-            {this.props.role === ANONYMOUS ? null : (
-                <Menu.Item key='exit' onClick={this.onClickExit}>
-                    <Icon type='logout' /> Leave
-                </Menu.Item>
-            )}
             </Menu>
         </Layout.Sider>
 

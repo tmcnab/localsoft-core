@@ -1,7 +1,6 @@
 import Account from './Account'
 import config from '../config'
-// import Conversation from './Conversation'
-// import Email from './Email'
+import Email from './Email'
 import expressGraphQL from 'express-graphql'
 import File from './File'
 import Page from './Page'
@@ -39,6 +38,7 @@ const customSchema = `
 
 	${Account.schema}
 	${File.schema}
+	${Email.schema}
 	${Page.schema}
 	${Person.schema}
 
@@ -48,15 +48,18 @@ const customSchema = `
 	}
 `
 
+const Mutation = Object.assign({}, Account.mutations, Email.mutations, File.mutations, Page.mutations, Person.mutations)
+
+const Query = Object.assign({}, Account.queries, Email.queries, File.queries, Page.queries, Person.queries)
+
 const resolvers = {
     Account: Account.resolvers,
-    // Conversation: Conversation.resolvers,
-    // Email: Email.resolvers,
+    Email: Email.resolvers,
     File: File.resolvers,
-    Mutation: Object.assign({}, Account.mutations, /*Email.mutations,*/ File.mutations, Page.mutations, Person.mutations),
+    Mutation,
     Page: Page.resolvers,
     Person: Person.resolvers,
-    Query: Object.assign({}, Account.queries, /*Email.queries,*/ File.queries, Page.queries, Person.queries),
+    Query,
     Role: {
         ANONYMOUS: 'ANONYMOUS',
         MEMBER: 'MEMBER',

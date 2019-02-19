@@ -5,9 +5,9 @@ import uuid from 'uuid/v4'
 
 export default {
     mutations: {
-        saveEmail: async (root, args, req) => {
-            if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
-                const identifier = args.input.identifier
+        saveEmail: async (root, {input}, {session}) => {
+            if (session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
+                const identifier = input.identifier
                 const record = identifier ? db.emails.find({identifier}).value() : null
 
                 if (record) {
