@@ -1,6 +1,6 @@
 // import {emailPreview, emailRender, emailUnsubscribe} from './emails'
 import {fileDownload, fileUpload} from './files'
-import pages from './pages'
+// import pages from './pages'
 
 export default {
     registerWith: app => {
@@ -11,6 +11,6 @@ export default {
         app.get('/files/:identifier', fileDownload)
         app.post('/upload/', fileUpload) // TODO: should this be different? [@tmcnab]
 
-        pages(app)
+        // pages(app)
     }
 }

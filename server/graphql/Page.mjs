@@ -1,5 +1,4 @@
 import db from '../db'
-import jekyll from '../misc/jekyll'
 import {Roles} from '../enums'
 import uuid from 'uuid/v4'
 
@@ -32,7 +31,6 @@ export default {
                     db.pages.push(newRecord).write()
                 }
 
-                await jekyll()
                 return true
             } else {
                 return false
