@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt'
 import config from './config'
 import db from './db'
 import fsUtils from 'nodejs-fs-utils'
-import jekyll from './misc/jekyll'
 import {reschedule} from './misc/scheduling'
 import {Roles} from './enums'
 import uuid from 'uuid/v4'
@@ -108,11 +107,5 @@ if (pageCount === 0) {
         })
         .write()
 }
-
-//-------------------------------------------------------------------------------------------------------------------//
-// Rebuild jekyll static site:
-(async () => {
-    await jekyll()
-})()
 
 reschedule()

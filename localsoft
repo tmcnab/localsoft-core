@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-# Create runtime directories if not exist.
-mkdir -p .data .data
+# TODO: ensure node, yarn installed globally
 
-# If jekyll directory does not exist, create new jekyll install
-if [ ! -d "$DIRECTORY" ]; then
-    jekyll new .jekyll
-fi
+# Create runtime directories if not exist.
+mkdir -p .data
 
 # Install dependencies.
+yarn -s
 (cd client && yarn -s)
 (cd server && yarn -s)
 
@@ -16,7 +14,7 @@ fi
 if [ "$1" == "--production" ]
 then
     export NODE_ENV="production"
-    (cd client && yarn build && mv build ../.build)
+    (cd client && yarn build && mv build ../.build)     # move build dir to this path
     cd server
     yarn -s start
 else
