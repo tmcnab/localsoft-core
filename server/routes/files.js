@@ -1,9 +1,9 @@
-import config from '../config'
-import db from '../db'
+import config from '../config.js'
+import db from '../db.js'
 import multer from 'multer'
 import path from 'path'
-import {Roles} from '../enums'
-import uuid from 'uuid/v4'
+import {Roles} from '../enums.js'
+import uuid from 'uuid'
 
 const upload = multer({
     storage: multer.diskStorage({

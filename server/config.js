@@ -1,7 +1,7 @@
-import __dirname from './__dirname'
-import {Features} from './enums'
+import __dirname from './__dirname.js'
+import {Features} from './enums.js'
 import path from 'path'
-import uuid from 'uuid/v4'
+import uuid from 'uuid'
 
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const DATA_DIR = path.join(__dirname, '..', '.data')
@@ -20,7 +20,7 @@ export default {
     },
     ENABLED_FEATURES: [Features.EMAIL, Features.FILES, Features.PAGES, Features.PEOPLE],
     PRODUCTION,
-    PORT: 3001,
+    PORT: 42070,
     REACT_BUILD_DIR: path.join(__dirname, '..', '.build'),
     SECRET: PRODUCTION ? uuid() : 'secret',
     SITE_URL: 'https://test.site', // TODO: get from envfile

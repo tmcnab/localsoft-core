@@ -1,7 +1,7 @@
-import config from '../config'
-import db from '../db'
+import config from '../config.js'
+import db from '../db.js'
 import fsUtils from 'nodejs-fs-utils'
-import {Roles} from '../enums'
+import {Roles} from '../enums.js'
 
 export default {
     mutations: {

@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
-import config from './config'
-import db from './db'
+import config from './config.js'
+import db from './db.js'
 import fsUtils from 'nodejs-fs-utils'
-import {reschedule} from './misc/scheduling'
-import {Roles} from './enums'
-import uuid from 'uuid/v4'
+import {reschedule} from './misc/scheduling.js'
+import {Roles} from './enums.js'
+import uuid from 'uuid'
 
 // Create the data directory (if not exists).
 fsUtils.mkdirsSync(config.DATA_DIR)

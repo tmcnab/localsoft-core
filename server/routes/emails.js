@@ -1,6 +1,6 @@
-import db from '../db'
-import {generateEmailContent} from '../misc/email'
-import {Roles} from '../enums'
+import db from '../db.js'
+import {generateEmailContent} from '../misc/email.js'
+import {Roles} from '../enums.js'
 
 // Renders markdown the user is editing as it will appear in browser/email [POST:/email]
 export const emailPreview = async (request, response, next) => {

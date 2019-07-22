@@ -1,5 +1,5 @@
 // import {emailPreview, emailRender, emailUnsubscribe} from './emails'
-import {fileDownload, fileUpload} from './files'
+import {fileDownload, fileUpload} from './files.js'
 // import pages from './pages'
 
 export default {

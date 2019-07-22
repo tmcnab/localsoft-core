@@ -3,15 +3,15 @@
     "Tristan McNab <tristan.j.mcnab@gmail.com>"
   ],
   "dependencies": {
-    "concurrently": "^4.0.1"
+    "concurrently": "4.x"
   },
   "devDependencies": {
-    "eslint": "^5.10.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "prettier": "^1.15.3"
+    "eslint": "6.x",
+    "eslint-plugin-prettier": "3.x",
+    "prettier": "1.x"
   },
-  "name": "localsoft-core",
+  "name": "localsoft",
   "private": true,
-  "repository": "https://github.com/tmcnab/localsoft",
+  "repository": "https://github.com/localsoft/localsoft",
   "version": "0.0.0"
 }

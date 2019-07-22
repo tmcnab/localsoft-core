@@ -1,5 +1,5 @@
-import config from './config'
-import FileSync from 'lowdb/adapters/FileSync'
+import config from './config.js'
+import FileSync from 'lowdb/adapters/FileSync.js'
 import lowdb from 'lowdb'
 import path from 'path'
 

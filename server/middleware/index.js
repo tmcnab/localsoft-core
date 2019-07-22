@@ -1,5 +1,5 @@
 import compression from 'compression'
-import config from '../config'
+import config from '../config.js'
 import cookieSession from 'cookie-session'
 import express from 'express'
 import helmet from 'helmet'

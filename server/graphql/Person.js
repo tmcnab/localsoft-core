@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
-import config from '../config'
-import db from '../db'
-import {reschedule} from '../misc/scheduling'
-import {Roles} from '../enums'
-import {sendEmail} from '../misc/email'
-import uuid from 'uuid/v4'
+import config from '../config.js'
+import db from '../db.js'
+import {reschedule} from '../misc/scheduling.js'
+import {Roles} from '../enums.js'
+import {sendEmail} from '../misc/email.js'
+import uuid from 'uuid'
 
 export default {
     mutations: {

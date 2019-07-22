@@ -1,10 +1,10 @@
-import config from './config'
+import config from './config.js'
 import express from 'express'
-import graphql from './graphql'
+import graphql from './graphql/index.js'
 import http from 'http'
-import middleware from './middleware'
-import routes from './routes'
-import './init'
+import middleware from './middleware/index.js'
+import routes from './routes/index.js'
+import './init.js'
 
 // Create app and configure settings.
 const app = express()
