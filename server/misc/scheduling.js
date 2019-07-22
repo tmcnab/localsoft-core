@@ -1,6 +1,6 @@
-import db from '../db'
+import db from '../db.js'
 import schedule from 'node-schedule'
-import {sendEmail} from './email'
+import {sendEmail} from './email.js'
 
 const jobs = new Set()
 

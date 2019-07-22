@@ -6,18 +6,17 @@
 mkdir -p .data
 
 # Install dependencies.
-yarn -s
-(cd client && yarn -s)
-(cd server && yarn -s)
+npm install
+(cd client && npm install)
+(cd server && npm install)
 
 # Start either branch depending on production flag
 if [ "$1" == "--production" ]
 then
     export NODE_ENV="production"
-    (cd client && yarn build && mv build ../.build)     # move build dir to this path
+    (cd client && npm run build && mv build ../.build)     # move build dir to this path
     cd server
-    yarn -s start
+    npm start
 else
-    yarn -s
-    node_modules/.bin/concurrently "cd client && yarn start" "cd server && yarn start"
+    node_modules/.bin/concurrently "cd client && npm start" "cd server && npm start"
 fi

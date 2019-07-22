@@ -1,6 +1,6 @@
-import db from '../db'
-import {Roles} from '../enums'
-import uuid from 'uuid/v4'
+import db from '../db.js'
+import {Roles} from '../enums.js'
+import uuid from 'uuid'
 
 const CRUD_ROLES = [Roles.STAFF, Roles.ADMINISTRATOR]
 
