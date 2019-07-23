@@ -6,16 +6,7 @@ const toEnumObject = (...args) => {
     return Object.freeze(object)
 }
 
-export const Features = toEnumObject(
-    'CONVERSATIONS',
-    'EMAIL',
-    'EVENTS',
-    'FILES',
-    'FORUMS',
-    'PAGES',
-    'PEOPLE',
-    'SETTINGS'
-)
+export const Features = toEnumObject('CONVERSATIONS', 'EMAIL', 'EVENTS', 'FILES', 'PAGES', 'PEOPLE')
 
 export const FeaturePaths = {
     [Features.EMAIL]: '/email',

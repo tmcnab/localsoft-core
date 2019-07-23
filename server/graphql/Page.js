@@ -1,4 +1,3 @@
-import db from '../db.js'
 import {Roles} from '../enums.js'
 import uuid from 'uuid'
 

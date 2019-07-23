@@ -1,160 +1,24 @@
-import bcrypt from 'bcrypt'
-import config from '../config.js'
-import db from '../db.js'
-import {reschedule} from '../misc/scheduling.js'
-import {Roles} from '../enums.js'
-import {sendEmail} from '../misc/email.js'
-import uuid from 'uuid'
+import authenticate from './mutations/authenticate.js'
+import deauthenticate from './mutations/deauthenticate.js'
+import destroyPerson from './mutations/destroyPerson.js'
+import people from './queries/people.js'
+import peopleTags from './queries/peopleTags.js'
+import person from './queries/person.js'
+import savePerson from './mutations/savePerson.js'
+import user from './queries/user.js'
 
 export default {
     mutations: {
-        authenticate: async (root, args, req) => {
-            const email = args.email.toLowerCase()
-
-            // Fetch person and if doesn't exists return nothing, no error.
-            const person = db.people.find({email}).value()
-            if (!person) {
-                return false
-            }
-
-            // If the password doesn't match, return nothing, no error.
-            const challengeSucceeded = await bcrypt.compare(args.password, person.hash)
-            if (!challengeSucceeded) {
-                return false
-            }
-
-            // Set session+cookie and return record
-            req.session = {
-                identifier: person.identifier,
-                role: person.role
-            }
-            return true
-        },
-        deauthenticate: async (root, args, req) => {
-            req.session = null
-            return true
-        },
-        destroyPerson: async (root, {identifier}, {session}) => {
-            // No-one can destroy themselves.
-            if (identifier === session.identifier) {
-                return false
-            }
-
-            // Only authorized users may destroy other person records.
-            if (!session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
-                return false
-            }
-
-            // Ensure we don't delete the only administrator.
-            const record = db.people.find({identifier}).value()
-            const administratorCount = db.people
-                .filter(['role', Roles.ADMINISTRATOR])
-                .size()
-                .value()
-            if (record.role === Roles.ADMINISTRATOR && administratorCount <= 1) {
-                return false
-            }
-
-            // Staff cannot delete administrators.
-            if (session.role === Roles.STAFF && record.role === Roles.ADMINISTRATOR) {
-                return false
-            }
-
-            // Finally destroy the record.
-            db.people.remove({identifier}).write()
-            return true
-        },
-        savePerson: async (root, args, req) => {
-            if ([Roles.STAFF, Roles.ADMINISTRATOR].includes(req.session.role)) {
-                const identifier = args.input.identifier
-                const record = identifier ? db.people.find({identifier}).value() : null
-
-                if (record) {
-                    const replacementRecord = Object.assign({}, record, args.input)
-                    db.people
-                        .find({identifier})
-                        .assign(replacementRecord)
-                        .write()
-                } else {
-                    const {initializeAccount, ...input} = args.input
-                    const identifier = uuid()
-                    const password = uuid()
-                    const newRecord = Object.assign({}, input, {
-                        created: new Date().toISOString(),
-                        hash: initializeAccount ? await bcrypt.hash(password, 10) : null,
-                        identifier,
-                    })
-                    db.people.push(newRecord).write()
-
-                    const emailIdentifier = uuid()
-                    if (initializeAccount) {
-                        db.emails.push({
-                            content: `
-Hi there!
-
-You have a new account on ${config.SITE_URL}:
-
-> Email: \`${input.email}\`
->
-> Password: \`${password}\`
-
-You can sign into your account [here](${config.SITE_URL}/sign-in).
-
-- The ${db.account.get('site_title').value()} Team
-                            `,
-                            identifier: emailIdentifier,
-                            sendAt: new Date().toISOString(),
-                            sent: false,
-                            targets: [input.email],
-                            title: 'Your New Account on $DOMAIN',
-                        }).write()
-                        await sendEmail(emailIdentifier)
-                    }
-                }
-
-                return true
-            } else {
-                return false
-            }
-        }
+        authenticate,
+        deauthenticate,
+        destroyPerson,
+        savePerson
     },
     queries: {
-        currentUser: async (root, args, {session}) => {
-            const {identifier} = session
-            return identifier
-                ? db.people.find({identifier}).value()
-                : {
-                      role: Roles.ANONYMOUS
-                  }
-        },
-        people: async (root, args, req) => {
-            if (req.session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
-                return db.people.value()
-            } else {
-                return []
-            }
-        },
-        peopleTags: async (root, args, req) => {
-            if (req.session.hasRole(Roles.STAFF, Roles.ADMINISTRATOR)) {
-                return db.people
-                    .map('tags')
-                    .flatten()
-                    .uniq()
-                    .value()
-            } else {
-                return []
-            }
-        },
-        person: async (root, {identifier}, {session}) => {
-            if (['STAFF', 'ADMINISTRATOR'].includes(session.role)) {
-                return db
-                    .get('people')
-                    .find({identifier})
-                    .value()
-            } else {
-                throw new Error('Unauthorized')
-            }
-        }
+        people,
+        peopleTags,
+        person,
+		user,
     },
     resolvers: {},
     schema: `
@@ -208,9 +72,6 @@ You can sign into your account [here](${config.SITE_URL}/sign-in).
         }
 
         extend type Query {
-            # The current, logged-in Person.
-            currentUser: Person
-
             # All Person records.
             people: [Person]
 
@@ -219,6 +80,9 @@ You can sign into your account [here](${config.SITE_URL}/sign-in).
 
             # Retrieve a single Person record.
             person(identifier: ID!): Person
+
+			# The current, logged-in Person.
+			user: Person
         }
     `
 }

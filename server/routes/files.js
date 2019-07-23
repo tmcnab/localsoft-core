@@ -1,5 +1,4 @@
 import config from '../config.js'
-import db from '../db.js'
 import multer from 'multer'
 import path from 'path'
 import {Roles} from '../enums.js'

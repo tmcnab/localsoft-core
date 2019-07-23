@@ -12,6 +12,11 @@ body {
     font-size: 21px;
 }
 
+.ant-layout-header {
+	height: auto;
+	padding: inherit;
+}
+
 .ant-layout-sider .brand {
     color: rgba(255,255,255,.65);
     font-variant: small-caps;

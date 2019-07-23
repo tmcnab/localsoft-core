@@ -1,13 +1,11 @@
 import {BrowserRouter} from 'react-router-dom'
-import {get} from 'lodash'
 import {Layout} from 'antd'
 import {Roles} from './enums'
+import AuthenticationPage from 'pages/AuthenticationPage'
 import gql from 'gql'
+import Header from 'structure/Header'
 import React, { Component } from 'react';
 import Routes from 'structure/Routes'
-import Sidebar from 'structure/Sidebar'
-import AuthenticationPage from 'pages/AuthenticationPage'
-
 
 export default class Application extends Component {
 
@@ -24,13 +22,13 @@ export default class Application extends Component {
     componentDidMount = async () => {
         this.setState({loading: true})
 
-        const {currentUser} = await gql(`{
-            currentUser { role }
+        const {user} = await gql(`{
+            user { role }
         }`)
 
         this.setState({
             loading: false,
-            role: get(currentUser, 'role', Roles.ANONYMOUS),
+            role: user.role,
         })
     }
 
@@ -49,11 +47,13 @@ export default class Application extends Component {
 
         return (
             <BrowserRouter>
-                <Layout className='full-height' style={{margin: '0 auto 0 auto', maxWidth: 1200}}>
-                    <Sidebar role={role} />
-                    <Layout.Content className='bg-white p1'>
-                        <Routes role={role} />
-                    </Layout.Content>
+                <Layout className='full-height'>
+					<Header role={role} />
+					<Layout>
+	                    <Layout.Content className='bg-white p1'>
+	                        <Routes role={role} />
+	                    </Layout.Content>
+					</Layout>
                 </Layout>
             </BrowserRouter>
         )

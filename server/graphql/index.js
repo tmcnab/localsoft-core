@@ -1,11 +1,9 @@
-import Account from './Account.js'
 import config from '../config.js'
-import Email from './Email.js'
+import debug from 'debug'
 import expressGraphQL from 'express-graphql'
-import File from './File.js'
-import Page from './Page.js'
 import Person from './Person.js'
 import PostalAddress from './PostalAddress.js'
+import {Roles} from '../enums.js'
 import s2s from 'graphql-s2s'
 import tools from 'graphql-tools'
 
@@ -35,11 +33,6 @@ const customSchema = `
 	}
 
 	${PostalAddress.schema}
-
-	${Account.schema}
-	${File.schema}
-	${Email.schema}
-	${Page.schema}
 	${Person.schema}
 
 	schema {
@@ -48,16 +41,12 @@ const customSchema = `
 	}
 `
 
-const Mutation = Object.assign({}, Account.mutations, Email.mutations, File.mutations, Page.mutations, Person.mutations)
+const Mutation = Object.assign({}, Person.mutations)
 
-const Query = Object.assign({}, Account.queries, Email.queries, File.queries, Page.queries, Person.queries)
+const Query = Object.assign({}, Person.queries)
 
 const resolvers = {
-    Account: Account.resolvers,
-    Email: Email.resolvers,
-    File: File.resolvers,
     Mutation,
-    Page: Page.resolvers,
     Person: Person.resolvers,
     Query,
     Role: {
@@ -73,12 +62,19 @@ const schema = tools.makeExecutableSchema({
     typeDefs: [s2s.graphqls2s.transpileSchema(customSchema)]
 })
 
+// TODO until I work out dotenv
+debug.enable('localsoft')
+
 export default {
     registerWith: app =>
         app.use(
             '/graphql',
             expressGraphQL({
                 graphiql: !config.PRODUCTION,
+                rootValue: {
+                    debug: debug('localsoft'),
+                    Roles
+                },
                 schema
             })
         )

@@ -1,21 +1,37 @@
 import {Col, Icon, Layout, Menu, Row} from 'antd'
 import {Link} from 'react-router-dom'
+import React, {Component} from 'react';
 import {role} from 'propTypes'
 import {Roles} from 'enums'
-import gql from 'gql'
-import React, { Component } from 'react';
-
 
 // NOTE: in the future these permissions will be more granular.
 // NOTE: some of these features will be reenabled in V2
-const { ANONYMOUS, STAFF, ADMINISTRATOR } = Roles
 const MENU_ITEMS = [
-    { key: 'people', icon: 'team',  label: 'People', viewers: [STAFF], },
-    { key: 'pages',  icon: 'book',  label: 'Pages',  viewers: [STAFF], },
-    { key: 'email',  icon: 'mail',  label: 'Email',  viewers: [STAFF], },
-    { key: 'files',  icon: 'cloud', label: 'Files',  viewers: [STAFF], },
+    { key: 'people', icon: 'team',  label: 'People', viewers: [Roles.STAFF], },
 ]
 
+class MenuItem extends Component {
+
+	static propTypes = {
+
+	}
+
+	get canView () {
+		const {data, role} = this.props
+		return role === Roles.ADMINISTRATOR || data.viewers.includes(role)
+	}
+
+	render = () => {
+		const {icon, key, label} = this.props.data
+		return this.canView ? (
+			<Menu.Item key={key}>
+				<Link to={`/${key}/`}>
+					<Icon type={icon} /> {label}
+				</Link>
+			</Menu.Item>
+		) : null
+	}
+}
 
 export default class Sidebar extends Component {
 
@@ -23,8 +39,15 @@ export default class Sidebar extends Component {
         role: role.isRequired,
     }
 
+	state = {
+		collapsed: false,
+	}
+
+	onCollapse = (collapsed) =>
+		this.setState({collapsed})
+
     render = () =>
-        <Layout.Sider className='border-right' theme='light' width={192}>
+        <Layout.Sider className='border-right' collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} theme='light'>
             <header className='font-large p1'>
                 <Row>
                     <Col span={3}>
@@ -35,18 +58,8 @@ export default class Sidebar extends Component {
                     </Col>
                 </Row>
             </header>
-            <Menu mode='vertical' style={{borderRight: 'none'}}>
-            {MENU_ITEMS.map(item => {
-                const {role} = this.props
-                const canView = role === ADMINISTRATOR || item.viewers.includes(role)
-                return canView ? (
-                    <Menu.Item key={item.key}>
-                        <Link to={`/${item.key}/`}>
-                            <Icon type={item.icon} /> {item.label}
-                        </Link>
-                    </Menu.Item>
-                ) : null
-            })}
+            <Menu mode='vertical'>
+	            {MENU_ITEMS.map(data => <MenuItem collapsed={this.state.collapsed} data={data} role={this.props.role} />)}
             </Menu>
         </Layout.Sider>
 

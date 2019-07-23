@@ -1,4 +1,3 @@
-import db from '../db.js'
 
 const hasAccess = (role, minimum) => {
     const roles = ['ANONYMOUS', 'MEMBER', 'STAFF', 'ADMINISTRATOR']

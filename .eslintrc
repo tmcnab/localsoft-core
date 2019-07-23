@@ -1,13 +1,11 @@
 {
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2017,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": ["prettier"],
     "rules": {
         "no-extra-parens": "error",
-        "prettier/prettier": "error",
         "sort-imports": [2, {
             "ignoreCase": true,
             "ignoreMemberSort": false,

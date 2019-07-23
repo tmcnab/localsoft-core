@@ -1,4 +1,3 @@
-import db from '../db.js'
 import {generateEmailContent} from '../misc/email.js'
 import {Roles} from '../enums.js'
 
