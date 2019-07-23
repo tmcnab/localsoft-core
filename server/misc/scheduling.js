@@ -1,4 +1,3 @@
-import db from '../db.js'
 import schedule from 'node-schedule'
 import {sendEmail} from './email.js'
 

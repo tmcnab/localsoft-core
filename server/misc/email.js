@@ -1,6 +1,5 @@
 import __dirname from '../__dirname.js'
 import config from '../config.js'
-import db from '../db.js'
 import fs from 'fs'
 import kramed from 'kramed'
 import nodemailer from 'nodemailer'

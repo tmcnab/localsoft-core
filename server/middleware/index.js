@@ -1,8 +1,10 @@
 import compression from 'compression'
 import config from '../config.js'
 import cookieSession from 'cookie-session'
+import data from './data.js'
 import express from 'express'
 import helmet from 'helmet'
+import user from './user.js'
 
 export default {
     registerWith: app => {
@@ -18,11 +20,7 @@ export default {
             })
         )
 
-        app.use((req, res, next) => {
-            // Make sure every session has a role, even if ANONYMOUS
-            req.session.role = req.session.role || 'ANONYMOUS'
-            req.session.hasRole = (...roles) => roles.includes(req.session.role)
-            next()
-        })
+        app.use(data())
+        app.use(user())
     }
 }

@@ -4,7 +4,6 @@ import graphql from './graphql/index.js'
 import http from 'http'
 import middleware from './middleware/index.js'
 import routes from './routes/index.js'
-import './init.js'
 
 // Create app and configure settings.
 const app = express()
