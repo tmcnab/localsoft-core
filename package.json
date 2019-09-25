@@ -3,15 +3,30 @@
     "Tristan McNab <tristan.j.mcnab@gmail.com>"
   ],
   "dependencies": {
-    "concurrently": "4.x"
+    "antd": "^3.23.4",
+    "apollo-server-micro": "^2.9.4",
+    "graphql": "^14.5.7",
+    "isomorphic-unfetch": "^3.0.0",
+    "less": "^3.10.3",
+    "less-vars-to-js": "^1.3.0",
+    "next": "9.x",
+    "react": "16.x",
+    "react-dom": "16.x"
   },
   "devDependencies": {
+    "@zeit/next-less": "^1.0.1",
+    "babel-plugin-import": "^1.12.2",
+    "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "6.x",
-    "eslint-plugin-prettier": "3.x",
-    "prettier": "1.x"
+    "eslint-plugin-react": "^7.14.3"
   },
   "name": "localsoft",
   "private": true,
   "repository": "https://github.com/localsoft/localsoft",
-  "version": "0.0.0"
+  "scripts": {
+    "dev": "next dev -p 42069",
+    "build": "next build",
+    "start": "next start"
+  },
+  "version": "0.0.1"
 }

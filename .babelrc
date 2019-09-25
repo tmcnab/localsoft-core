@@ -1,0 +1,16 @@
+{
+	"plugins": [
+		["module-resolver", {
+			"root": ".",
+			"alias": {
+				"enums": "./enums",
+				"gql": "./gql"
+			}
+		}],
+		["import", {
+			"libraryName": "antd",
+			"style": true
+		}]
+	],
+	"presets": ["next/babel"]
+}

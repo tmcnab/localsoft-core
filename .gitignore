@@ -1,4 +1,3 @@
-.build
-.data
-.jekyll
+*.log
+.next
 node_modules
