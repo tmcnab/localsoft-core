@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = () => {
 	/* eslint-disable */
 	const withLess = require('@zeit/next-less')

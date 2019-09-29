@@ -6,9 +6,11 @@ export default class PeoplePage extends Component {
 
 	static getInitialProps = async ({res}) => {
 		if (res) {
+
+		}
+		return {
 			
 		}
-		return {}
 	}
 
 	render = () =>

@@ -8,7 +8,6 @@ export default class IndexPage extends Component {
 	static getInitialProps = async ({req}) => {
 		if (req) {
 			const url = `${req.headers.referer}api/graphql`
-			console.log(process.env.NODE_ENV)
 			const {users} = await gql(url, '{ users { name } }')
 			if (req) {
 				return {

@@ -10,19 +10,19 @@ const typeDefs = gql`
 `
 
 const resolvers = {
-  Query: {
-    users (parent, args, context) {
-      return [{ name: 'Nextjs' }]
-    }
-  }
+	Query: {
+		users (parent, args, context) {
+			return [{ name: 'Nextjs' }]
+		}
+	}
 }
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers })
 
 export const config = {
-  api: {
-    bodyParser: false
-  }
+	api: {
+		bodyParser: false
+	}
 }
 
 export default apolloServer.createHandler({ path: '/api/graphql' })
