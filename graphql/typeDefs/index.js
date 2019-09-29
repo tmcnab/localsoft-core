@@ -1,4 +1,4 @@
-import {gql} from 'apollo-server'
+import {gql} from 'apollo-server-micro'
 import User from './User'
 
 export default gql`

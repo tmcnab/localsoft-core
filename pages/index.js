@@ -1,14 +1,19 @@
 import {} from 'antd'
 import gql from 'gql'
 import Head from 'next/head'
+import {array, string} from 'prop-types'
 import React, {Component} from 'react'
 
 export default class IndexPage extends Component {
 
+	static propTypes = {
+		host: string.isRequired,
+		users: array
+	}
+
 	static getInitialProps = async ({req}) => {
 		if (req) {
-			const url = `${req.headers.referer}api/graphql`
-			const {users} = await gql(url, `{
+			const {users} = await gql.fromServer(req, `{
 				users: allUsers {
 					email
 				}

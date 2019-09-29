@@ -1,14 +1,20 @@
-import fetch from 'isomorphic-unfetch'
+import axios from 'axios'
 
-export default async (url, query, variables) => {
-	const response = await fetch(url, {
-		body: JSON.stringify({ query, variables }),
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-		},
-		method: 'POST',
-	})
-
-	return (await response.json()).data
+const buildUrl = (req) => {
+	if (req) {
+		const protocol = req.headers['x-forwarded-proto']
+		const host = req.headers['x-forwarded-host']
+		return `${protocol}://${host}/api/graphql`
+	}
+	return '/api/graphql'
 }
+
+const execute = async (url, query, variables) =>
+	(await axios.post(url, { query, variables })).data.data
+
+export default ({
+	fromClient: async (query, variables) =>
+		await execute(buildUrl(), query, variables),
+	fromServer: async (req, query, variables) =>
+		await execute(buildUrl(req), query, variables),
+})
