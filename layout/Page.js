@@ -1,11 +1,11 @@
 import {Layout} from 'antd'
-import {createEnum} from '../enums'
 import Header from './Header'
-import Link from 'next/link'
 import Head from 'next/head'
-import {bool, string} from 'prop-types'
+import {bool, node, string} from 'prop-types'
 import {Component} from 'react'
+import Sidebar from './Sidebar'
 import './Page.css'
+import './overrides.css'
 
 export default class Page extends Component {
 
@@ -16,6 +16,7 @@ export default class Page extends Component {
 	}
 
 	static propTypes = {
+		children: node.isRequired,
 		header: Header.Type.validator.isRequired,
 		footer: bool.isRequired,
 		sidebar: bool.isRequired,
@@ -32,7 +33,7 @@ export default class Page extends Component {
 			<Layout>
 				<Header type={this.props.header} />
 				<Layout>
-					{this.props.sidebar ? <Layout.Sider>Sider</Layout.Sider> : null}
+					{this.props.sidebar ? <Sidebar /> : null}
 					<Layout.Content>{this.props.children}</Layout.Content>
 				</Layout>
 				{this.props.footer ? <Layout.Footer>Footer</Layout.Footer> : null}

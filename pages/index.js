@@ -1,8 +1,14 @@
 import {} from 'antd'
 import gql from 'gql'
-import Head from 'next/head'
+import Page from '../layout/Page'
 import {array, string} from 'prop-types'
 import React, {Component} from 'react'
+
+const query  = `{
+	users: allUsers {
+		email
+	}
+}`
 
 export default class IndexPage extends Component {
 
@@ -13,27 +19,26 @@ export default class IndexPage extends Component {
 
 	static getInitialProps = async ({req}) => {
 		if (req) {
-			const {users} = await gql.fromServer(req, `{
-				users: allUsers {
-					email
-				}
-			}`)
+			const {users} = await gql.fromServer(req, query)
 			return {
 				host: req.headers.host,
+				users: users,
+			}
+		} else {
+			const {users} = await gql.fromClient(query)
+			return {
+				host: window.location.host,
 				users: users,
 			}
 		}
 	}
 
 	render = () =>
-		<>
-			<Head>
-				<title>Home - {this.props.host}</title>
-			</Head>
+		<Page title='Welcome' footer>
 			<h1>{this.props.host}</h1>
 			<ul>
 				{this.props.users.map((user, i) => <li key={i}>{user.email}</li>)}
 			</ul>
-		</>
+		</Page>
 
 }

@@ -1,0 +1,12 @@
+#__next {
+	height: 100%;
+}
+
+.ant-layout {
+	background: none;
+	height: 95vh;
+}
+
+main {
+	padding: 0;
+}
