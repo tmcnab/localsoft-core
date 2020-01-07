@@ -6,10 +6,6 @@
 				"enums": "./enums",
 				"gql": "./gql"
 			}
-		}],
-		["import", {
-			"libraryName": "antd",
-			"style": "css"
 		}]
 	],
 	"presets": ["next/babel"]
