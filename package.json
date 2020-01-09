@@ -5,12 +5,14 @@
   "dependencies": {
     "apollo-server-micro": "^2.9.4",
     "axios": "^0.19.0",
-    "bulma": "^0.8.0",
+    "bootstrap": "^4.4.1",
+    "bootstrap-icons-react": "^1.0.0-alpha2",
     "dotenv": "^8.1.0",
     "graphql": "^14.5.7",
     "next": "9.x",
     "prop-types": "^15.7.2",
     "react": "16.x",
+    "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "16.x"
   },
   "devDependencies": {

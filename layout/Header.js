@@ -1,7 +1,7 @@
 import {createEnum} from '../enums'
-import Link from 'next/link'
-import List from 'components/List'
 import {Component} from 'react'
+import SimpleHeader from './Header.Simple'
+
 
 export default class Header extends Component {
 
@@ -14,16 +14,6 @@ export default class Header extends Component {
 	render = () => ({
 		[Header.Type.Hero]: null,
 		[Header.Type.None]: <></>,
-		[Header.Type.Simple]:
-			<header className='header'>
-				<List>
-					<Link href='/'>
-						<a>Home</a>
-					</Link>
-					<Link href='/sign-in'>
-						<a>Sign In</a>
-					</Link>
-				</List>
-			</header>,
+		[Header.Type.Simple]: <SimpleHeader />,
 	})[this.props.type]
 }
