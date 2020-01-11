@@ -1,12 +1,20 @@
 import Router from 'next/router'
 
-export default (ctx) => ({
-	get isAuthenticated () {
-		return false
+export default ({ctx}) => ({
+
+	can: {
+		read: {
+			people: true,
+			settings: true,
+			signIn: true,
+		},
 	},
 
-	get isServer () {
-		return Boolean(ctx.req)
+	is: {
+		authenticated: true,
+		get server () {
+			return  Boolean(ctx.req)
+		},
 	},
 
 	redirect (path) {

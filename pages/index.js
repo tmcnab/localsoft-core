@@ -1,17 +1,15 @@
-import {} from 'prop-types'
 import {Component} from 'react'
-import Page from 'layout/Page'
-import Container from 'react-bootstrap/Container'
+import {Container} from 'react-bootstrap'
 
 export default class IndexPage extends Component {
 
+	static title = 'Welcome'
+
 	render = () =>
-		<Page title='Welcome' footer>
-			<Container fluid>
-				<p>
-					Home Page
-				</p>
-			</Container>
-		</Page>
+		<Container fluid>
+			<p>
+				Home Page
+			</p>
+		</Container>
 
 }
