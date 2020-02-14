@@ -1,6 +1,19 @@
+import axios from 'axios'
 import Router from 'next/router'
 
-export default ({ctx}) => ({
+const buildGraphQLUrl = (req) => {
+	if (req) {
+		const protocol = req.headers['x-forwarded-proto']
+		const host = req.headers.host || req.headers['x-forwarded-host']
+		return `${protocol}://${host}/api/graphql`
+	}
+	return '/api/graphql'
+}
+
+const executeGraphQL = async (url, query, variables) =>
+	(await axios.post(url, { query, variables })).data.data
+
+export default (ctx) => ({
 
 	can: {
 		read: {
@@ -15,6 +28,11 @@ export default ({ctx}) => ({
 		get server () {
 			return  Boolean(ctx.req)
 		},
+	},
+
+	async gql (query, variables) {
+		const url = buildGraphQLUrl(ctx.req)
+		return await executeGraphQL(url, query, variables)
 	},
 
 	redirect (path) {

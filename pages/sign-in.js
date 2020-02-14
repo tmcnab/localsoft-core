@@ -1,63 +1,32 @@
-import {} from 'prop-types'
-import {Button, Card, Col, Container, Form, Row} from 'react-bootstrap'
+import {Col, Row, Tabs} from 'antd'
 import {Component} from 'react'
-import Page from 'layout/Page'
+import contextualize from 'contextualize'
 
-export default class SignInPage extends Component {
+export default class IndexPage extends Component {
 
-	state = {
-		validated: false,
-	}
+	static getInitialProps = async (args) => {
+		const ctx = contextualize(args)
+		const {page} = await ctx.gql(`{
+			page: findPage(path: "/") {
+				content
+				contentType
+			}
+		}`)
 
-	onSubmit = async (event) => {
-		const form = event.currentTarget
-		if (!form.checkValidity()) {
-			event.preventDefault()
-			event.stopPropagation()
+		if (!page) {
+			ctx.redirect('/sign-in')
 		}
 
-		this.setState({validated: true})
+		return { page }
 	}
 
+	static title = 'Sign In'
+
 	render = () =>
-		<Page title='Sign In'>
-			<Container style={{paddingTop: '25vh'}}>
-				<Row>
-					<Col sm={{span:4, offset:4}}>
-						<Card>
-							<Card.Body>
-								<Form noValidate onSubmit={this.onSubmit} validated={this.state.validated}>
-									<Form.Group>
-										<Form.Label>Email Address</Form.Label>
-										<Form.Control name='email' placeholder='Email Address' required type='email' />
-										<Form.Control.Feedback type='invalid'>
-											Please provide a valid email.
-										</Form.Control.Feedback>
-									</Form.Group>
-									<Form.Group>
-										<Form.Label>Password</Form.Label>
-										<Form.Control name='password' placeholder='Password' required type='password' />
-										<Form.Control.Feedback type='invalid'>
-											Please provide a password.
-										</Form.Control.Feedback>
-									</Form.Group>
-									<Form.Row>
-										<Col>
-											Register?
-										</Col>
-										<Col>
-											Recover?
-										</Col>
-									</Form.Row>
-									<Button block type='submit' variant='primary'>
-										Sign In
-									</Button>
-								</Form>
-							</Card.Body>
-						</Card>
-					</Col>
-				</Row>
-			</Container>
-		</Page>
+		<Row>
+			<Col offset={8} span={8}>
+				Form
+			</Col>
+		</Row>
 
 }

@@ -3,26 +3,27 @@
     "Tristan McNab <tristan.j.mcnab@gmail.com>"
   ],
   "dependencies": {
+    "antd": "^3.26.9",
     "apollo-server-micro": "^2.9.4",
     "axios": "^0.19.0",
-    "bootstrap": "^4.4.1",
-    "bootstrap-icons-react": "^1.0.0-alpha2",
     "dotenv": "^8.1.0",
     "graphql": "^14.5.7",
+    "lowdb": "^1.0.0",
     "next": "9.x",
     "prop-types": "^15.7.2",
     "react": "16.x",
-    "react-bootstrap": "^1.0.0-beta.16",
-    "react-dom": "16.x"
+    "react-dom": "16.x",
+    "react-markdown": "^4.3.1"
   },
   "devDependencies": {
+    "@zeit/next-css": "^1.0.1",
     "babel-eslint": "^10.0.3",
-    "babel-plugin-import": "^1.12.2",
+    "babel-plugin-import": "^1.13.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "6.x",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
-    "lowdb": "^1.0.0"
+    "null-loader": "^3.0.0"
   },
   "name": "localsoft",
   "private": true,

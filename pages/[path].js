@@ -1,8 +1,10 @@
 import {Component} from 'react'
 import contextualize from 'contextualize'
+import Error from 'next/error'
 import ReactMarkdown from 'react-markdown'
+import {shape, string} from 'prop-types'
 
-export default class IndexPage extends Component {
+export default class DynamicPage extends Component {
 
 	static getInitialProps = async (args) => {
 		const ctx = contextualize(args)
@@ -13,17 +15,20 @@ export default class IndexPage extends Component {
 			}
 		}`)
 
-		if (!page) {
-			ctx.redirect('/sign-in')
-		}
-
 		return { page }
 	}
 
-	static title = 'Welcome'
+	static propTypes = {
+		page: shape({
+			content: string
+		})
+	}
 
 	render () {
-		return <ReactMarkdown source={this.props.page.content} />
+		const {page} = this.props
+		return page
+			?	<ReactMarkdown source={this.props.page.content} />
+			: <Error statusCode={404} />
 	}
 
 

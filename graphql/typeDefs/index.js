@@ -1,4 +1,5 @@
 import {gql} from 'apollo-server-micro'
+import Page from './Page'
 import User from './User'
 
 export default gql`
@@ -11,5 +12,6 @@ export default gql`
 		none(b: Boolean): Boolean
 	}
 
+	${Page}
 	${User}
 `
