@@ -1,3 +1,5 @@
+import {shape, string} from 'prop-types'
+
 export default `
 	type Page {
 		path: String!
@@ -14,3 +16,8 @@ export default `
 	}
 
 `
+export const propType = shape({
+	content: string,
+	contentType: string.isRequired,
+	path: string.isRequired,
+})

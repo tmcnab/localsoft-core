@@ -1,32 +1,52 @@
-import {Col, Row, Tabs} from 'antd'
+import {Card, Col, Icon, Row, Tooltip} from 'antd'
 import {Component} from 'react'
-import contextualize from 'contextualize'
+import Link from 'next/Link'
+import SignInForm from 'components/sign-in/SignInForm'
+import SimpleLayout from 'components/layouts/SimpleLayout'
 
-export default class IndexPage extends Component {
-
-	static getInitialProps = async (args) => {
-		const ctx = contextualize(args)
-		const {page} = await ctx.gql(`{
-			page: findPage(path: "/") {
-				content
-				contentType
-			}
-		}`)
-
-		if (!page) {
-			ctx.redirect('/sign-in')
-		}
-
-		return { page }
-	}
+export default class SignInPage extends Component {
 
 	static title = 'Sign In'
 
+	children = {
+		'1': <SignInForm onSuccess={this.onSignInSuccess} />,
+		'2': <p>Register</p>,
+		'3': <p>Recover</p>,
+	}
+
+	onSignInSuccess = () =>
+		window.alert('Signed in!')
+
+	onTabChange = (activeTabKey) =>
+		this.setState({activeTabKey})
+
+	state = {
+		activeTabKey: '1',
+	}
+
+	tabBarExtraContent =
+		<Link href='/help/sign-in'>
+			<Tooltip title='Help Article'>
+				<Icon type="question-circle" />
+			</Tooltip>
+		</Link>
+
+	tabList = [
+		{ key: '1', tab: 'Sign In' },
+		{ key: '2', tab: 'Register' },
+		{ key: '3', tab: 'Recover' },
+	]
+
 	render = () =>
-		<Row>
-			<Col offset={8} span={8}>
-				Form
-			</Col>
-		</Row>
+		<SimpleLayout title='Authenticate'>
+			<Row>
+				<Col offset={8} span={8}>
+					<Card activeTabKey={this.state.activeTabKey} bordered tabBarExtraContent={this.tabBarExtraContent} onTabChange={this.onTabChange} tabList={this.tabList}>
+						{this.children[this.state.activeTabKey]}
+					</Card>
+				</Col>
+			</Row>
+		</SimpleLayout>
+
 
 }

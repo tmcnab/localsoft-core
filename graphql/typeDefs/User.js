@@ -12,8 +12,15 @@ export default `
 		success: Boolean!
 	}
 
+	type AuthenticationResult {
+		authorization: String
+		error: Boolean!
+		errorMessage: String
+		success: Boolean!
+	}
+
 	extend type Mutation {
-		authenticateUser (email: String!, password: String!): MutationResult!
+		authenticate (email: String!, password: String!): AuthenticationResult!
 		saveUser(email: String!, password: String!): MutationResult!
 		deauthenticateUser: MutationResult!
 	}

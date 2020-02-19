@@ -1,6 +1,7 @@
 import {Component} from 'react'
 import contextualize from 'contextualize'
 import ReactMarkdown from 'react-markdown'
+import {shape, string} from 'prop-types'
 
 export default class IndexPage extends Component {
 
@@ -10,6 +11,7 @@ export default class IndexPage extends Component {
 			page: findPage(path: "/") {
 				content
 				contentType
+				path
 			}
 		}`)
 
@@ -20,11 +22,16 @@ export default class IndexPage extends Component {
 		return { page }
 	}
 
+	static propTypes = {
+		page: shape({
+			content: string
+		})
+	}
+
 	static title = 'Welcome'
 
 	render () {
 		return <ReactMarkdown source={this.props.page.content} />
 	}
-
 
 }

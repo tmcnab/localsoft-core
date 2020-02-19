@@ -1,22 +1,66 @@
+import bcrypt from 'bcrypt'
+import uuidv5 from 'uuid/v5'
+
+// TODO: replace with actual db lookups.
+const accounts = new Map()				// Email to Hash
+const authorizations = new Map()	// Auths to Email
+
 class Context {
 
-	constructor (req, res) {
-		this._req = req
-		this._res = res
+	#req = null
+	#res = null
 
+	constructor ({req, res}) {
+		this.#req = req
+		this.#res = res
 	}
 
-	get isDevelopmentEnvironment () {
-		return process.env.NODE_ENV === 'development'
-	}
-
-	get isProductionEnvironment () {
-		return process.env.NODE_ENV === 'production'
+	get authenticated () {
+		return this.authorization.has(this.token)
 	}
 
 	get domain () {
-		return this._req.headers.host
+		return this.#req.headers.host
 	}
+
+	get namespace () {
+		return uuidv5(this.domain, uuidv5.DNS)
+	}
+
+	get identity () {
+		return this.authenticated ? authorizations.get(this.token) : null
+	}
+
+	get token () {
+		return this.#req.headers.authorization || null
+	}
+
+	async authenticate (email, password) {
+		let authorization = null
+
+		const identity = email.trim().toLowerCase()
+		const recordedHash = accounts.get(identity)
+		const authenticated = await bcrypt.compare(password, recordedHash)
+
+		if (authenticated) {
+			authorization = uuidv5(identity, this.namespace)
+			authorizations.set(authorization, identity)
+		}
+
+		return authorization
+	}
+
+	async register (email, password) {
+		const identity = email.trim.toLowerCase()
+		const hash = await bcrypt.hash(password)
+		accounts.set(identity, hash)
+
+		const authorization = uuidv5(identity, this.namespace)
+		authorizations.set(authorization, identity)
+
+		return authorization
+	}
+
 }
 
-export default ({req, res}) => new Context(req, res)
+export default (integrationContext) => new Context(integrationContext)

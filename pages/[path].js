@@ -15,7 +15,9 @@ export default class DynamicPage extends Component {
 			}
 		}`)
 
-		return { page }
+		return {
+			page
+		}
 	}
 
 	static propTypes = {
@@ -30,6 +32,5 @@ export default class DynamicPage extends Component {
 			?	<ReactMarkdown source={this.props.page.content} />
 			: <Error statusCode={404} />
 	}
-
 
 }
