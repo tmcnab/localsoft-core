@@ -3,22 +3,15 @@ import {Component} from 'react'
 import Link from 'next/Link'
 import SignInForm from 'components/sign-in/SignInForm'
 import SimpleLayout from 'components/layouts/SimpleLayout'
+import Router from 'next/router'
 
 export default class SignInPage extends Component {
-
-	static title = 'Sign In'
 
 	children = {
 		'1': <SignInForm onSuccess={this.onSignInSuccess} />,
 		'2': <p>Register</p>,
 		'3': <p>Recover</p>,
 	}
-
-	onSignInSuccess = () =>
-		window.alert('Signed in!')
-
-	onTabChange = (activeTabKey) =>
-		this.setState({activeTabKey})
 
 	state = {
 		activeTabKey: '1',
@@ -37,8 +30,15 @@ export default class SignInPage extends Component {
 		{ key: '3', tab: 'Recover' },
 	]
 
+	onSignInSuccess () {
+		window.alert('Signed in!')
+	}
+
+	onTabChange = (activeTabKey) =>
+		this.setState({activeTabKey})
+
 	render = () =>
-		<SimpleLayout title='Authenticate'>
+		<SimpleLayout onBack={Router.back} title='Authenticate'>
 			<Row>
 				<Col offset={8} span={8}>
 					<Card activeTabKey={this.state.activeTabKey} bordered tabBarExtraContent={this.tabBarExtraContent} onTabChange={this.onTabChange} tabList={this.tabList}>

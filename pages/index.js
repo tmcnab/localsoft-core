@@ -1,5 +1,6 @@
 import {Component} from 'react'
 import contextualize from 'contextualize'
+import PublicLayout from 'components/layouts/PublicLayout'
 import ReactMarkdown from 'react-markdown'
 import {shape, string} from 'prop-types'
 
@@ -8,10 +9,10 @@ export default class IndexPage extends Component {
 	static getInitialProps = async (args) => {
 		const ctx = contextualize(args)
 		const {page} = await ctx.gql(`{
-			page: findPage(path: "/") {
+			page (path: "/") {
 				content
 				contentType
-				path
+				title
 			}
 		}`)
 
@@ -28,10 +29,9 @@ export default class IndexPage extends Component {
 		})
 	}
 
-	static title = 'Welcome'
-
-	render () {
-		return <ReactMarkdown source={this.props.page.content} />
-	}
+	render = () =>
+		<PublicLayout title={this.props.page.title}>
+			<ReactMarkdown source={this.props.page.content} />
+		</PublicLayout>
 
 }
