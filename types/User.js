@@ -55,30 +55,3 @@ export const resolvers = ({
 	},
 	Query: {}
 })
-
-export const table = {
-	indexes: {
-		'email:string': {
-			ignore_case: true,
-			unique: true,
-		}
-	},
-	model: {
-		'created:date': {
-			default: () => new Date(),
-			notNull: true,
-			immutable: true,
-		},
-		'domains:string[]': {
-			default: [],
-		},
-		'email:string': {
-			notNull: true,
-			pk: true,
-		},
-		'hash': {
-			notNull: true,
-		},
-	},
-	name: 'users'
-}

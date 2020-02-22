@@ -1,15 +1,16 @@
 import bcrypt from 'bcrypt'
-import NeDB from 'nedb'
+import lowdb from 'lowdb'
+import FileSync from 'lowdb/adapters/FileSync'
 import uuidv5 from 'uuid/v5'
 
 // TODO: replace with actual db lookups.
 const accounts = new Map()				// Email to Hash
 const authorizations = new Map()	// Auths to Email
-const customers = new NeDB({
-	autoload: true,
-	corruptAlertThreshold: 0,
-	filename: '.data/customers'
-})
+const admindb = lowdb(new FileSync('.data/customers.json'))
+admindb.defaults({
+	customers: [],
+	users: [],
+}).write()
 
 class Context {
 
@@ -19,6 +20,9 @@ class Context {
 	constructor ({req, res}) {
 		this.#req = req
 		this.#res = res
+		this.domain = req.headers.host === 'localhost:42069'
+			? 'localhost.dev'
+			: req.headers.host
 	}
 
 	get authenticated () {
@@ -26,13 +30,18 @@ class Context {
 	}
 
 	get db () {
-		return {
-			customers,
-		}
-	}
+		const filename = `.data/${this.domain}.json`
+		const adapter = new FileSync(filename)
+		const sitedb = lowdb(adapter)
 
-	get domain () {
-		return this.#req.headers.host
+		sitedb.defaults({
+			people: []
+		}).write()
+
+		return {
+			admin: admindb,
+			site: sitedb,
+		}
 	}
 
 	get namespace () {

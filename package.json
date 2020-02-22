@@ -10,7 +10,7 @@
     "dotenv": "^8.1.0",
     "formattr": "^1.0.11",
     "graphql": "^14.5.7",
-    "nedb": "^1.8.0",
+    "lowdb": "^1.0.0",
     "next": "9.x",
     "prop-types": "^15.7.2",
     "react": "16.x",

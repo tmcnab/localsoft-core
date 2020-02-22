@@ -26,9 +26,8 @@ export const gql = `
 export const resolvers = {
 	Mutation: {},
 	Query: {
-		customers: async (root, args, ctx) => {
-			console.log('customers', await ctx.db.customers.find({}))
-			return []
+		customers: (root, args, ctx) => {
+			return ctx.db.admin.get('customers').value()
 		}
 	},
 }

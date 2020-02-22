@@ -8,8 +8,6 @@ export default ({
 	context,
 	resolvers,
 	resolverValidationOptions: {
-		requireResolversForArgs: true,
-		requireResolversForAllFields: true,
 		requireResolversForResolveType: false,
 	},
 	typeDefs,
