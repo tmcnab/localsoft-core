@@ -30,19 +30,21 @@ export const gql = `
 
 `
 
-const people = async () => {
-	return [{
-		additionalName: 'John',
-		familyName: 'McNab',
-		givenName: 'Tristan',
-		identifier: '1234567890',
-		tags: ['DSA', 'IWW'],
-	}]
-}
-
 export const resolvers = ({
 	Mutation: {},
 	Query: {
-		people,
+		people: async () => {
+			return [{
+				additionalName: 'John',
+				familyName: 'McNab',
+				givenName: 'Tristan',
+				identifier: '1234567890',
+				tags: ['DSA', 'IWW'],
+			}]
+		}
 	},
 })
+
+export const table = {
+	name: 'people'
+}

@@ -1,4 +1,3 @@
-*.log
-.env
+.data
 .next
 node_modules

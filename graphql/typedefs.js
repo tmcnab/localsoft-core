@@ -1,8 +1,9 @@
 import {gql} from 'apollo-server-micro'
-import {gql as Page} from './types/Page'
-import {gql as Person} from './types/Person'
-import {gql as Settings} from './types/Settings'
-import {gql as User} from './types/User'
+import {gql as Customer} from 'types/Customer'
+import {gql as Page} from 'types/Page'
+import {gql as Person} from 'types/Person'
+import {gql as Settings} from 'types/Settings'
+import {gql as User} from 'types/User'
 
 export default gql`
 
@@ -18,6 +19,7 @@ export default gql`
 		tags: [String!]!
 	}
 
+	${Customer}
 	${Page}
 	${Person}
 	${Settings}

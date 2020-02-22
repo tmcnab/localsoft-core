@@ -1,9 +1,15 @@
 import bcrypt from 'bcrypt'
+import NeDB from 'nedb'
 import uuidv5 from 'uuid/v5'
 
 // TODO: replace with actual db lookups.
 const accounts = new Map()				// Email to Hash
 const authorizations = new Map()	// Auths to Email
+const customers = new NeDB({
+	autoload: true,
+	corruptAlertThreshold: 0,
+	filename: '.data/customers'
+})
 
 class Context {
 
@@ -17,6 +23,12 @@ class Context {
 
 	get authenticated () {
 		return this.authorization.has(this.token)
+	}
+
+	get db () {
+		return {
+			customers,
+		}
 	}
 
 	get domain () {
