@@ -6,9 +6,9 @@ import uuidv5 from 'uuid/v5'
 // TODO: replace with actual db lookups.
 const accounts = new Map()				// Email to Hash
 const authorizations = new Map()	// Auths to Email
-const admindb = lowdb(new FileSync('.data/customers.json'))
+const admindb = lowdb(new FileSync('.data/accounts.json'))
 admindb.defaults({
-	customers: [],
+	accounts: [],
 	users: [],
 }).write()
 

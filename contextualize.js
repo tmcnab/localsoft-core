@@ -23,6 +23,10 @@ export default (ctx) => ({
 		},
 	},
 
+	get path () {
+		return ctx.req.url
+	},
+
 	is: {
 		authenticated: true,
 		get server () {

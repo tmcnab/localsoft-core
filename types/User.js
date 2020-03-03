@@ -1,10 +1,27 @@
+/**
+	A User corresponds to a single human in meatspace that has access to one or
+	more domains.
+
+	User: {
+		created: Date!
+		domains: [String!]!
+		id: ID!
+		schemes: {
+			email: {
+				email: String!
+				hash: String!
+				verified: Date
+			}
+		}
+	}
+**/
+
 export const gql = `
 
 	type User {
 		created: Date!
 		domains: [String!]!
-		email: String!
-		hash: String!
+		id: ID!
 	}
 
 	interface MutationResult {
@@ -21,37 +38,56 @@ export const gql = `
 	}
 
 	extend type Mutation {
-		authenticate (email: String!, password: String!): AuthenticationResult!
-		saveUser(email: String!, password: String!): MutationResult!
-		deauthenticateUser: MutationResult!
+		authenticate (email: String, password: String): AuthenticationResult!
+		deauthenticate: Boolean!
 	}
 
 	extend type Query {
-		allUsers: [User]!
-		currentUser: User
-		findUsers (keywords: String, verified: Boolean): [User]!
+		findUser (byID: ID, byDomain: String): User
+		users: [User!]!
 	}`
+
+// eslint-disable-next-line
+const findUser = async (root, args, ctx) => {
+	return null
+}
+
+// eslint-disable-next-line
+const users = async (root, args, ctx) => {
+	return []
+}
+
+const authenticate = async (root, args, ctx) => {
+	// If user is already authenticated just return authorization.
+	if (ctx.authenticated) {
+		return {
+			authorization: ctx.authorization,
+			error: false,
+			errorMessage: '',
+			success: true,
+		}
+	}
+
+	return {
+		authorization: null,
+		error: true,
+		errorMessage: 'Not Implemented',
+		success: false,
+	}
+}
+
+// eslint-disable-next-line
+const deauthenticate = async (root, args, ctx) =>  {
+	return false
+}
 
 export const resolvers = ({
 	Mutation: {
-		authenticate: async (root, args, ctx) => {
-			// If user is already authenticated just return authorization.
-			if (ctx.authenticated) {
-				return {
-					authorization: ctx.authorization,
-					error: false,
-					errorMessage: '',
-					success: true,
-				}
-			}
-
-			return {
-				authorization: null,
-				error: true,
-				errorMessage: 'Not Implemented',
-				success: false,
-			}
-		}
+		authenticate,
+		deauthenticate,
 	},
-	Query: {}
+	Query: {
+		findUser,
+		users,
+	}
 })

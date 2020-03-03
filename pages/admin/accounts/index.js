@@ -3,19 +3,19 @@ import {Button, PageHeader, Table} from 'antd'
 import {Component} from 'react'
 import contextualize from 'contextualize'
 import DashboardLayout from 'components/layouts/DashboardLayout'
-import Link from 'next/link'
+import Router from 'next/router'
 
 export default class AdminCustomersPage extends Component {
 
 	static getInitialProps = async (args) => {
 		const ctx = contextualize(args)
-		const props = await ctx.gql(`{
-		  dataSource: customers {
+		return await ctx.gql(`{
+		  dataSource: accounts {
 		    domain
+				id
+				name
 		  }
 		}`)
-
-		return props
 	}
 
 	static defaultProps = {
@@ -27,13 +27,20 @@ export default class AdminCustomersPage extends Component {
 	}
 
 	columns = [{
-		key: 'Domain',
-		render: record => <Link href={record.domain}>{record.domain}</Link>,
+		dataIndex: 'name',
+		key: 'name',
 		title: 'Name',
+	}, {
+		key: 'domain',
+		render: record =>
+			<a href={`http://${record.domain}`} rel='noopener noreferrer' target='_blank'>
+				{record.domain}
+			</a>,
+		title: 'Domain'
 	}]
 
 	extra = [
-		<Button disabled icon='plus' key='1' shape='circle' />,
+		<Button icon='plus' key='1' onClick={() => Router.push('/admin/accounts/new')} shape='circle' />,
 		<Button disabled icon='question' key='4' shape='circle' />,
 	]
 
@@ -41,13 +48,18 @@ export default class AdminCustomersPage extends Component {
 		dataSource: this.props.dataSource,
 	}
 
+	onRow = (record) => ({
+		onClick: () => Router.push(`/admin/accounts/${record.id}`)
+	})
+
 	render = () =>
-		<DashboardLayout path='/admin/customers'>
+		<DashboardLayout path='/admin/accounts'>
 			<PageHeader extra={this.extra} title='Customers' />
 			<Table
 				columns={this.columns}
 				dataSource={this.state.dataSource}
-				rowKey='identifier'
+				onRow={this.onRow}
+				rowKey='id'
 				showHeader={this.state.dataSource.length > 0}
 			/>
 		</DashboardLayout>

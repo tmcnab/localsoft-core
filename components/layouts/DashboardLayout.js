@@ -56,16 +56,15 @@ export default class DashboardLayout extends Component {
 							<span>People</span>
 						</Menu.Item>
 						<Menu.SubMenu key='/admin' title={this.title}>
-							<Menu.Item key='/admin/customers'>
+							<Menu.Item key='/admin/accounts'>
 								<Icon type='team' />
-								<span>Customers</span>
+								<span>Accounts</span>
 							</Menu.Item>
 						</Menu.SubMenu>
 						<Menu.Item key='/sign-out'>
 							<Icon type='logout' />
 							<span>Sign Out</span>
 						</Menu.Item>
-
 					</Menu>
 				</Layout.Sider>
 				<Layout>
