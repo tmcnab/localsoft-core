@@ -1,5 +1,6 @@
 import AccountForm from 'components/admin/accounts/AccountForm'
-import {Button, PageHeader, Tabs} from 'antd'
+import AccountEventsTable from 'components/admin/accounts/AccountEventsTable'
+import {Button, PageHeader, Tabs, Tooltip} from 'antd'
 import {CheckOutlined, DeleteOutlined, QuestionOutlined} from '@ant-design/icons'
 import {Component} from 'react'
 import contextualize from 'contextualize'
@@ -28,7 +29,7 @@ export default class AdminCustomersPage extends Component {
 			    events {
 			      content
 			      date
-			      userVisible
+			      tags
 			    }
 			    id
 			    name
@@ -50,9 +51,15 @@ export default class AdminCustomersPage extends Component {
 	}
 
 	extra = [
-		<Button disabled icon={<CheckOutlined />} key='save' shape='circle' type='primary' />,
-		<Button danger disabled icon={<DeleteOutlined />} key='delete' shape='circle' type='primary' />,
-		<Button disabled icon={<QuestionOutlined />} key='help' shape='circle' />,
+		<Tooltip key='save' title='Save Account'>
+			<Button disabled icon={<CheckOutlined />} shape='circle' type='primary' />
+		</Tooltip>,
+		<Tooltip key='delete' title='Delete Account'>
+			<Button danger disabled icon={<DeleteOutlined />} shape='circle' type='primary' />
+		</Tooltip>,
+		<Tooltip key='help' title='Help'>
+			<Button disabled icon={<QuestionOutlined />} key='help' shape='circle' />
+		</Tooltip>,
 	]
 
 	onAccountFormChange = (account) =>
@@ -65,11 +72,14 @@ export default class AdminCustomersPage extends Component {
 				<AccountForm account={this.state.account} onChange={this.onAccountFormChange} />
 			</Tabs.TabPane>
 			<Tabs.TabPane disabled={!this.props.account.id}  key='events' tab='Events'>
-				Events Here
+				<br />
+				<AccountEventsTable events={this.props.account.events} />
 			</Tabs.TabPane>
 			<Tabs.TabPane key='developer' tab='Developers'>
 				<br />
-				<pre>{JSON.stringify(this.props.account, null, 2)}</pre>
+				<pre>
+					{JSON.stringify(this.props.account, null, 2)}
+				</pre>
 			</Tabs.TabPane>
 		</Tabs>
 

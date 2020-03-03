@@ -1,5 +1,5 @@
 import {ApolloServer} from 'apollo-server-micro'
-import graphqlConfiguration from '../../graphql'
+import graphqlConfiguration from 'graphql'
 
 const server = new ApolloServer(graphqlConfiguration)
 

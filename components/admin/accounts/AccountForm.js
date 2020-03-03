@@ -23,10 +23,10 @@ export default class AccountForm extends Component {
 	render = () =>
 		<Form colon={false} layout='vertical'>
 			<Form.Item label='Name'>
-				<Input name='name' onChange={this.onChange} placeholder='Acme, Inc.' required type='text' />
+				<Input name='name' onChange={this.onChange} placeholder='Acme, Inc.' required type='text' value={this.props.account.name} />
 			</Form.Item>
 			<Form.Item label='Domain'>
-				<Input name='domain' onChange={this.onChange} placeholder='acme.com' required type='text' />
+				<Input name='domain' onChange={this.onChange} placeholder='acme.com' required type='text' value={this.props.account.domain} />
 			</Form.Item>
 		</Form>
 

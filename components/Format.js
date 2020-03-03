@@ -1,8 +1,8 @@
 import {Component} from 'react'
 import en from 'javascript-time-ago/locale/en'
 import formattr from 'formattr'
+import {instanceOf, number, object, oneOf, oneOfType, string} from 'prop-types'
 import JavascriptTimeAgo from 'javascript-time-ago'
-import {number, object, oneOf, oneOfType, string} from 'prop-types'
 import ReactTimeAgo from 'react-time-ago'
 import {Tag} from 'antd'
 
@@ -17,6 +17,7 @@ export default class Format extends Component {
 			'timeago',
 		]).isRequired,
 		value: oneOfType([
+			instanceOf(Date),
 			number,
 			object,
 			string,

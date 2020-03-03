@@ -1,5 +1,6 @@
 import {Component} from 'react'
-import {Icon, Layout, Menu} from 'antd'
+import {Layout, Menu} from 'antd'
+import {LogoutOutlined, TeamOutlined, ToolOutlined, UserOutlined} from '@ant-design/icons'
 import {node, string} from 'prop-types'
 import Router from 'next/router'
 
@@ -24,7 +25,7 @@ export default class DashboardLayout extends Component {
 
 	title =
 		<span>
-			<Icon type='tool' />
+			<ToolOutlined />
 			<span>Administration</span>
 		</span>
 
@@ -51,18 +52,18 @@ export default class DashboardLayout extends Component {
 						<img alt='' src='https://via.placeholder.com/80' style={{height: 80}} />
 					</div>
 					<Menu defaultSelectedKeys={[this.props.path]} onSelect={this.onSelect} theme='dark'>
-						<Menu.Item key='/people' style={{marginTop: 0}}>
-							<Icon type='user' />
+						<Menu.Item key='/people'>
+							<UserOutlined />
 							<span>People</span>
 						</Menu.Item>
 						<Menu.SubMenu key='/admin' title={this.title}>
 							<Menu.Item key='/admin/accounts'>
-								<Icon type='team' />
+								<TeamOutlined />
 								<span>Accounts</span>
 							</Menu.Item>
 						</Menu.SubMenu>
 						<Menu.Item key='/sign-out'>
-							<Icon type='logout' />
+							<LogoutOutlined />
 							<span>Sign Out</span>
 						</Menu.Item>
 					</Menu>

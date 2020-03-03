@@ -5,7 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.x",
     "antd": "^4.x",
-    "apollo-server-micro": "^2.c",
+    "apollo-server-micro": "^2.10.1",
     "axios": "^0.x",
     "bcrypt": "^3.x",
     "dotenv": "^8.x",
