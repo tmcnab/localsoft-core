@@ -1,73 +1,45 @@
-import {array} from 'prop-types'
-import {Button, PageHeader, Table} from 'antd'
+import {Button, PageHeader, Tooltip} from 'antd'
 import {Component} from 'react'
 import contextualize from 'contextualize'
 import DashboardLayout from 'components/layouts/DashboardLayout'
-import Format from 'components/Format'
+import PersonTable from 'components/people/PersonTable'
+import {PlusOutlined, QuestionOutlined, UploadOutlined} from '@ant-design/icons'
 
-export default class PeoplePage extends Component {
+export default class PeopleIndexPage extends Component {
 
 	static getInitialProps = async (args) => {
-		const ctx = contextualize(args)
-		const props = ctx.gql(`{
-		  dataSource: people {
-		    additionalName
-		    familyName
-		    givenName
-		    identifier
-		    tags
-		  }
-		}`)
-
-		return props
-	}
-
-	static defaultProps = {
-		dataSource: [],
+		// const ctx = contextualize(args)
+		// return await ctx.gql(`{
+		//   ${PersonTable.query}
+		// }`)
+		return {
+			dataSource: []
+		}
 	}
 
 	static propTypes = {
-		dataSource: array,
+		dataSource: PersonTable.propTypes.dataSource,
 	}
 
-	columns = [{
-		key: 'name',
-		render: record => <Format type='shortname' value={record} />,
-		title: 'Name',
-	}, {
-		key: 'lastTouch',
-		render: record => <Format type='timeago' value={record.lastTouch} />,
-		title: 'Last Touch',
-	}, {
-		key: 'role',
-		render: () => <span>TBA</span>,
-		title: 'Role',
-	}, {
-		key: 'tags',
-		render: record => <Format type='tags' value={record} />,
-		title: 'Tags',
-	}]
+	extra =
+		<>
+			<Tooltip title='New Person'>
+				<Button disabled icon={<PlusOutlined />} shape='circle' />
+			</Tooltip>
+			<Tooltip title='Upload Data'>
+				<Button disabled icon={<UploadOutlined />} shape='circle' />
+			</Tooltip>
+			<Tooltip title='Help'>
+				<Button disabled icon={<QuestionOutlined />} shape='circle' />
+			</Tooltip>
+		</>
 
-	extra = [
-		<Button disabled icon='plus' key='1' shape='circle' />,
-		<Button disabled icon='upload' key='2' shape='circle' />,
-		<Button disabled icon='setting' key='3' shape='circle' />,
-		<Button disabled icon='question' key='4' shape='circle' />,
-	]
-
-	state = {
-		dataSource: this.props.dataSource,
-	}
+	footer =
+		<PersonTable dataSource={this.props.dataSource} />
 
 	render = () =>
 		<DashboardLayout path='/people'>
-			<PageHeader extra={this.extra} title='People' />
-			<Table
-				columns={this.columns}
-				dataSource={this.state.dataSource}
-				rowKey='identifier'
-				showHeader={this.state.dataSource.length > 0}
-			/>
+			<PageHeader extra={this.extra} footer={this.footer} title='People' />
 		</DashboardLayout>
 
 }

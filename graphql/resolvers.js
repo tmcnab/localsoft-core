@@ -1,3 +1,4 @@
+import {AuthenticationScheme} from 'types/AuthenticationScheme'
 import {resolvers as Account} from 'types/Account'
 import {resolvers as Page} from 'types/Page'
 import {resolvers as Person} from 'types/Person'
@@ -5,6 +6,7 @@ import {resolvers as Settings} from 'types/Settings'
 import {resolvers as User} from 'types/User'
 
 export default {
+	AuthenticationScheme,
 	Mutation: {
 		...Account.Mutation,
 		...Page.Mutation,
@@ -19,4 +21,5 @@ export default {
 		...Settings.Query,
 		...User.Query,
 	},
+
 }

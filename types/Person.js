@@ -1,3 +1,5 @@
+import uuidv4 from 'uuid/v4'
+
 export const gql = `
 
 	type PostalAddress {
@@ -9,42 +11,40 @@ export const gql = `
 		streetAddress: String
 	}
 
-	type Person implements Record {
-			created: Date!
-			description: String
-			identifier: ID!
-			tags: [String!]!
-
-			additionalName: String
-			address: PostalAddress
-			email: String
-			familyName: String
-			givenName: String
-			lastTouch: Date
-			telephone: String
+	type Person {
+		additionalName: String
+		address: PostalAddress
+		created: Date!
+		description: String
+		email: String
+		familyName: String
+		givenName: String
+		id: ID!
+		lastTouch: Date
+		telephone: String
+		tags: [String!]!
 	}
 
 	extend type Query {
 		people: [Person]!
 	}
-
 `
+
+
 
 export const resolvers = ({
 	Mutation: {},
 	Query: {
 		people: async () => {
 			return [{
+				id: uuidv4(),
 				additionalName: 'John',
 				familyName: 'McNab',
 				givenName: 'Tristan',
 				identifier: '1234567890',
+				lastTouch: new Date().toISOString(),
 				tags: ['DSA', 'IWW'],
 			}]
 		}
 	},
 })
-
-export const table = {
-	name: 'people'
-}

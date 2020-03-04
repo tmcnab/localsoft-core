@@ -22,6 +22,7 @@ export const gql = `
 		created: Date!
 		domains: [String!]!
 		id: ID!
+		schemes: [AuthenticationScheme]!
 	}
 
 	interface MutationResult {

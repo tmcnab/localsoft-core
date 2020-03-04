@@ -11,7 +11,8 @@ Record Structure
 Account: {
 	domain: String!
 	events: [AccountEvent!]!
-	visibility: Role!
+	id: ID!
+	name: String!
 }
 
 AccountEvent {
@@ -41,6 +42,11 @@ export const gql = `
 		domain: String!
 		id: ID
 		name: String!
+	}
+
+	type AccountStatistics {
+		people: Int!
+		users: Int!
 	}
 
 	extend type Mutation {
