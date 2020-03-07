@@ -4,6 +4,7 @@ import {
 	WalletOutlined,
 } from '@ant-design/icons'
 import {Component} from 'react'
+import Head from 'next/head'
 import {Layout, Menu} from 'antd'
 import {node, string} from 'prop-types'
 import Router from 'next/router'
@@ -13,6 +14,7 @@ export default class DashboardLayout extends Component {
 	static propTypes = {
 		children: node.isRequired,
 		path: string.isRequired,
+		title: string.isRequired,
 	}
 
 	headerStyle = {
@@ -50,6 +52,15 @@ export default class DashboardLayout extends Component {
 
 	render = () =>
 		<>
+			<Head>
+				<meta content='width=device-width, initial-scale=1' name='viewport' />
+				<title>{this.props.title}</title>
+				<style>{`
+					#__next, #__next > .ant-layout {
+						min-height: 100vh;
+					}
+				`}</style>
+			</Head>
 			<Layout hasSider>
 				<Layout.Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} style={this.siderStyle}>
 					<div>
