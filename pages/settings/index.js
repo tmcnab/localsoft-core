@@ -1,10 +1,9 @@
-import NotImplemented from 'components/NotImplemented'
 import SettingsLayout from 'layouts/SettingsLayout'
 
-export default function SettingsIndex () {
+export default function SettingsPage ({}) {	
 	return (
 		<SettingsLayout title='Settings'>
-			<NotImplemented />
+			<p>Settings Go Here</p>
 		</SettingsLayout>
 	)
 }

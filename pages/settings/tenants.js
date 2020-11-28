@@ -1,16 +1,16 @@
 import { Button, Table, Tooltip } from 'antd'
-import { PlusOutlined, QuestionOutlined } from '@ant-design/icons'
-import AddDomainAction from 'components/settings/domains/AddDomainAction'
+import { QuestionOutlined } from '@ant-design/icons'
+import AddDomainAction from 'components/settings/tenants/AddDomainAction'
 import SettingsLayout from 'layouts/SettingsLayout'
 
-export default function DomainsIndex ({}) {
+export default function TenantsIndex ({}) {
 	const actions = [
 		<AddDomainAction />,
 		<Tooltip placement='bottom' title='Help'>
 		  <Button disabled icon={<QuestionOutlined />} shape='circle' />
 		</Tooltip>,
 	]
-	const title = 'Domains'
+	const title = 'Tenants'
 	const settingsLayout = { actions, title }
 	
 	const dataSource = []

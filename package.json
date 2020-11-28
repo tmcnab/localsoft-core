@@ -26,8 +26,9 @@
   "name": "localsoft",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
+	"dev": "next dev",
+	"migrate": "prisma db push --preview-feature",
     "start": "next start"
   },
   "version": "0.0.1"

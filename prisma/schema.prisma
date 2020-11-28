@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "sqlite"
-  url = "file:../localsoft.sqlite"
+  url      = "file:../localsoft.sqlite"
   // url      = env("file:./dev.db")
 }
 
@@ -11,11 +11,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  hash      String
-  createdAt DateTime @default(now())
+// A Tenant is an "instance" of Localsoft per Organization
+model Tenant {
+  createdAt DateTime     @default(now())
+  domain    String       @unique
+  id        String       @id @default(uuid())
+  roles     TenantRole[]
+  subdomain String       @unique
+  userId    String
+}
 
-  @@index([email])
+model TenantRole {
+  id       Int    @id @default(autoincrement())
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+  role     String
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+}
+
+model User {
+  createdAt  DateTime     @default(now())
+  email      String       @unique
+  hash       String
+  id         String       @id @default(uuid())
+  TenantRole TenantRole[]
 }

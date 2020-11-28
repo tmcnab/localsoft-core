@@ -9,11 +9,7 @@ const borderBottom = '1px solid rgb(240, 242, 245)'
 
 export default function SettingsLayout ({ actions, children, title }) {
 	const router = useRouter()
-	
-	// We don't want to show the back arrow on the root settings page.
-	const onBack = router.pathname.startsWith('/settings/') ? () => router.push('/settings') : null
-	
-	const onSelect = ({key}) => router.push(`/settings/${key}`)
+	const onClick = ({key}) => router.push(`/settings/${key}`)
 
 	return (
 		<>
@@ -21,28 +17,24 @@ export default function SettingsLayout ({ actions, children, title }) {
 				<title>{title ? `${title} - Domain` : 'Domain'}</title>
 			</Head>
 			<Layout>
-				<Layout.Sider defaultCollapsed collapsible>
+				<Layout.Sider defaultCollapsed>
 					<div style={{ backgroundColor: 'white',  borderBottom, padding: 25, textAlign: 'center' }}>
 						<MehOutlined />
 					</div>
-					<Menu onClick={onSelect} selectable={false} style={{height: '100%'}}>
-						<Menu.Item key='pages' icon={<DesktopOutlined />}>
-							Pages
-						</Menu.Item>
-						<Menu.Item key='people' icon={<IdcardOutlined />}>
-							People
-						</Menu.Item>
-						<Menu.Item key='domains' icon={<ClusterOutlined />}>
-							Domains
-						</Menu.Item>
+					<Menu onClick={onClick} selectable={false} style={{height: '100%'}}>
 						<Menu.Item key='users' icon={<LockOutlined />}>
 							Users
 						</Menu.Item>
+						<Menu.Item key='tenants' icon={<ClusterOutlined />}>
+							Tenants
+						</Menu.Item>
 					</Menu>
 				</Layout.Sider>
-				<Layout.Content>
-					<PageHeader extra={actions} ghost={false} onBack={onBack} style={{borderBottom}} title={title} />
-					{children}
+				<Layout.Content style={{backgroundColor: 'white'}}>
+					<PageHeader extra={actions} ghost={false} style={{borderBottom}} title={title} />
+					<div style={{padding: '16px 24px'}}>
+						{children}
+					</div>
 				</Layout.Content>
 			</Layout>
 		</>
