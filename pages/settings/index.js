@@ -1,10 +1,10 @@
 import NotImplemented from 'components/NotImplemented'
-import PrivateLayout from 'layouts/PrivateLayout'
+import SettingsLayout from 'layouts/SettingsLayout'
 
 export default function SettingsIndex () {
 	return (
-		<PrivateLayout title='Settings'>
+		<SettingsLayout title='Settings'>
 			<NotImplemented />
-		</PrivateLayout>
+		</SettingsLayout>
 	)
 }

@@ -1,4 +1,4 @@
-import { ContactsFilled, LockOutlined } from '@ant-design/icons'
+import { ClusterOutlined, DesktopOutlined, IdcardOutlined, LockOutlined } from '@ant-design/icons'
 import { Layout, Menu, PageHeader } from 'antd'
 import { MehOutlined } from '@ant-design/icons'
 import Head from 'next/head'
@@ -9,7 +9,10 @@ const borderBottom = '1px solid rgb(240, 242, 245)'
 
 export default function SettingsLayout ({ actions, children, title }) {
 	const router = useRouter()
-	const onBack = () => router.push('/settings')
+	
+	// We don't want to show the back arrow on the root settings page.
+	const onBack = router.pathname.startsWith('/settings/') ? () => router.push('/settings') : null
+	
 	const onSelect = ({key}) => router.push(`/settings/${key}`)
 
 	return (
@@ -23,12 +26,22 @@ export default function SettingsLayout ({ actions, children, title }) {
 						<MehOutlined />
 					</div>
 					<Menu onClick={onSelect} selectable={false} style={{height: '100%'}}>
-						<Menu.Item key='people' icon={<ContactsFilled />}>People</Menu.Item>
-						<Menu.Item key='users' icon={<LockOutlined />}>Users</Menu.Item>
+						<Menu.Item key='pages' icon={<DesktopOutlined />}>
+							Pages
+						</Menu.Item>
+						<Menu.Item key='people' icon={<IdcardOutlined />}>
+							People
+						</Menu.Item>
+						<Menu.Item key='domains' icon={<ClusterOutlined />}>
+							Domains
+						</Menu.Item>
+						<Menu.Item key='users' icon={<LockOutlined />}>
+							Users
+						</Menu.Item>
 					</Menu>
 				</Layout.Sider>
 				<Layout.Content>
-					<PageHeader ghost={false} onBack={onBack} style={{borderBottom}} title={title} />
+					<PageHeader extra={actions} ghost={false} onBack={onBack} style={{borderBottom}} title={title} />
 					{children}
 				</Layout.Content>
 			</Layout>

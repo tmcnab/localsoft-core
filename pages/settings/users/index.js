@@ -1,8 +1,8 @@
 import { Button, Table, Tooltip } from 'antd'
 import { PlusOutlined, QuestionOutlined } from '@ant-design/icons'
-import PrivateLayout from 'layouts/PrivateLayout'
 import TimeSince from 'components/TimeSince'
 import { useRouter } from 'next/router'
+import SettingsLayout from 'layouts/SettingsLayout'
 
 export default function UserIndex ({}) {
 	const router = useRouter()
@@ -48,7 +48,7 @@ export default function UserIndex ({}) {
 	const sticky = true
 
 	return (
-		<PrivateLayout extra={extra} onBack={onBack} title='Users'>
+		<SettingsLayout extra={extra} onBack={onBack} title='Users'>
 			<Table 
 				columns={columns} 
 				dataSource={dataSource} 
@@ -58,6 +58,6 @@ export default function UserIndex ({}) {
 				size='small'
 				sticky={sticky}
 			/>
-		</PrivateLayout>
+		</SettingsLayout>
 	)
 }
