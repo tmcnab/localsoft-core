@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Localsoft",
+            "database": "${workspaceFolder:localsoft}/localsoft.sqlite"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

@@ -1,37 +1,26 @@
-import { ApolloServer, gql, makeExecutableSchema } from "apollo-server-micro"
+import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro'
+import { PrismaClient } from '@prisma/client'
+import schema from '../../schema'
 
-const resolvers = {
-    Query: {
-        async person (parnt, args, context, info) {
-            return []
-        },
-    }
+const prismaClient = new PrismaClient()
+
+const context = ({ req, res }) => {
+	return {
+		data: prismaClient,
+	}
 }
 
-const typeDefs = gql`
-
-    type Person {
-        familyName: String
-        givenName: String
-        id: ID!
-    }
-
-    type Query {
-        person(id: ID!): Person
-    }
-
-`
-
-const schema = makeExecutableSchema({
-    resolvers,
-    typeDefs,
+const apolloServer = new ApolloServer({
+	context,
+	schema,
 })
 
-const context = (ctx) {
-    return ctx
+export const config = {
+	api: {
+		bodyParser: false,
+	},
 }
 
-const apollo = new ApolloServer({
-    context,
-    schema,
+export default apolloServer.createHandler({
+	path: '/api/graphql',
 })

@@ -1,19 +1,27 @@
 {
   "dependencies": {
     "@ant-design/icons": "^4.x",
+    "@apollo/client": "^3.2.9",
+    "@prisma/client": "^2.12.1",
     "@zeit/next-less": "^1.x",
     "antd": "^4.x",
     "apollo-server-micro": "^2.19.0",
     "babel-plugin-import": "^1.x",
     "bcrypt": "^5.0.0",
+    "deepmerge": "^4.2.2",
     "graphql": "^15.4.0",
     "less": "^3.x",
     "less-vars-to-js": "^1.x",
+    "moment": "^2.29.1",
     "next": "10.x",
     "null-loader": "^4.x",
+    "prop-types": "^15.7.2",
     "react": "17.x",
     "react-dom": "17.x",
     "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.12.1"
   },
   "name": "localsoft",
   "private": true,
