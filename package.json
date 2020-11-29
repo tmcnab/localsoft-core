@@ -9,6 +9,7 @@
     "babel-plugin-import": "^1.x",
     "bcrypt": "^5.0.0",
     "deepmerge": "^4.2.2",
+    "faker": "^5.1.0",
     "graphql": "^15.4.0",
     "less": "^3.x",
     "less-vars-to-js": "^1.x",
@@ -27,8 +28,8 @@
   "private": true,
   "scripts": {
     "build": "next build",
-	"dev": "next dev",
-	"migrate": "prisma db push --preview-feature",
+    "dev": "next dev",
+    "migrate": "prisma db push --preview-feature",
     "start": "next start"
   },
   "version": "0.0.1"

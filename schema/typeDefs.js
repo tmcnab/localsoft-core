@@ -1,4 +1,5 @@
 import {typeDefs as users} from './users'
+import {typeDefs as tenants}  from './tenants'
 
 export default [
     `
@@ -8,5 +9,6 @@ export default [
             none: String
         }
     `,
-    users
+	users,
+	tenants,
 ]

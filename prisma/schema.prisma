@@ -18,7 +18,6 @@ model Tenant {
   id        String       @id @default(uuid())
   roles     TenantRole[]
   subdomain String       @unique
-  userId    String
 }
 
 model TenantRole {
