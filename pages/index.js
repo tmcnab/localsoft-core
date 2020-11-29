@@ -1,9 +1,10 @@
-import PublicLayout from '../components/PublicLayout'
+import NotImplemented from 'components/NotImplemented'
+import PublicLayout from 'layouts/PublicLayout'
 
 export default function RootIndex () {
 	return (
-		<PublicLayout>
-			<p>Home Page</p>
+		<PublicLayout title='Home'>
+			<NotImplemented />
 		</PublicLayout>
 	)
 }
