@@ -1,4 +1,0 @@
-.env
-*.sqlite
-.next/
-/node_modules
