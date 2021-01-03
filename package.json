@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "next": "10.0.4",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  },
+  "name": "localsoft",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+	"dev": "next dev",
+	"heroku-postbuild": "npm run build",
+    "start": "next start -p $PORT"
+  }
+}
