@@ -1,26 +1,47 @@
 // https://www.prisma.io/docs/concepts/components/prisma-schema
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
-}
-
-model Tenant {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  slug String @unique
+    provider = "prisma-client-js"
 }
 
 model Account {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    authorizations Authorization[]
+    email          String          @unique
+    id             String          @id @default(cuid())
+    passwordHash   String
+}
 
-  email String @unique
+model Authorization {
+    account   Account @relation(fields: [accountId], references: [id])
+    accountId String
+    id        Int     @id @default(autoincrement())
+    role      Role    @default(NONE)
+    tenant    Tenant  @relation(fields: [tenantId], references: [id])
+    tenantId  String
+}
+
+enum Role {
+    ADMINISTRATOR
+    MANAGER
+    MEMBER
+    NONE
+    SUSPENDED
+}
+
+model SystemEvent {
+    id          Int      @id @default(autoincrement())
+    observation Json
+    observedAt  DateTime @default(now())
+}
+
+model Tenant {
+    authorizations Authorization[]
+    id             String          @id @default(cuid())
+    name           String          @unique
+    slug           String          @unique
 }
