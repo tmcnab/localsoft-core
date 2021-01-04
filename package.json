@@ -1,14 +1,17 @@
 {
   "dependencies": {
+    "@prisma/cli": "^2.13.1",
     "@prisma/client": "^2.13.1",
+    "apollo-server-micro": "^2.19.1",
+    "graphql": "^15.4.0",
     "next": "10.0.4",
     "react": "17.0.1",
     "react-dom": "17.0.1"
   },
-  "devDependencies": {
-    "@prisma/cli": "^2.13.1"
-  },
   "name": "localsoft",
+  "prisma": {
+    "schema": "data/schema.prisma"
+  },
   "private": true,
   "scripts": {
     "build": "next build",
