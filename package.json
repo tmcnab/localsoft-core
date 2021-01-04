@@ -1,12 +1,19 @@
 {
   "dependencies": {
-    "@prisma/cli": "^2.13.1",
-    "@prisma/client": "^2.13.1",
-    "apollo-server-micro": "^2.19.1",
-    "graphql": "^15.4.0",
-    "next": "10.0.4",
-    "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "@ant-design/icons": "^4.x",
+    "@prisma/cli": "^2.x",
+    "@prisma/client": "^2.x",
+    "@zeit/next-less": "^1.x",
+    "antd": "^4.x",
+    "apollo-server-micro": "^2.x",
+    "babel-plugin-import": "^1.x",
+    "graphql": "^15.x",
+    "less": "^4.0.0",
+    "next": "10.x",
+    "null-loader": "^4.x",
+    "prop-types": "^15.7.2",
+    "react": "17.x",
+    "react-dom": "17.x"
   },
   "name": "localsoft",
   "prisma": {

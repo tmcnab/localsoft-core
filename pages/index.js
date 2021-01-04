@@ -1,5 +1,9 @@
+import Layout from 'components/Layout'
+
 export default function Index () {
   return (
-    <div>Localsoft</div>
+	  <Layout>
+		  <div>Localsoft</div>
+	  </Layout>
   )
 }
