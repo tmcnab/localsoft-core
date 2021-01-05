@@ -1,5 +1,5 @@
-import { ClusterOutlined } from '@ant-design/icons'
-import { Layout, Menu, PageHeader } from 'antd'
+import { Avatar, Layout, Menu, PageHeader } from 'antd'
+import { ClusterOutlined, ShopOutlined } from '@ant-design/icons'
 import Head from 'next/head'
 
 export default function CustomLayout ({ children, ...props }) {
@@ -17,6 +17,7 @@ export default function CustomLayout ({ children, ...props }) {
 			</Head>
 			<Layout id='root'>
 				<Layout.Sider collapsible defaultCollapsed>
+					<Avatar icon={<ShopOutlined />} shape='square' size='large' style={{margin: 20}} />
 					<Menu mode='inline' theme='dark'>
 						<Menu.Item icon={<ClusterOutlined />} key='/!/tenants'>Tenants</Menu.Item>
 					</Menu>
@@ -27,9 +28,6 @@ export default function CustomLayout ({ children, ...props }) {
 							{children}
 						</PageHeader>
 					</Layout.Content>
-					<Layout.Footer>
-						Footer
-					</Layout.Footer>
 				</Layout>
 			</Layout>
 		</>

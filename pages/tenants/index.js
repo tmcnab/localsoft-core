@@ -1,38 +1,41 @@
-import { Button, Table, Tooltip } from 'antd'
 import { gql } from '@apollo/client'
-import { PlusOutlined, QuestionOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/router'
+import IndexActions from 'components/IndexActions'
 import Layout from 'components/Layout'
-import Moment from 'react-moment'
 import QueryTable from 'components/QueryTable'
-import TenantStatusTag from 'components/TenantStatusTag'
 import SubdomainLink from 'components/SubdomainLink'
+import TenantStatusTag from 'components/TenantStatusTag'
 
-export default function Index () {
+export default function TenantIndex () {
+	const router = useRouter()
 	
 	const columns = [{
 		dataIndex: 'subdomain',
 		render: (subdomain) => <SubdomainLink subdomain={subdomain}>{subdomain}</SubdomainLink>,
+		sorter: (a, b) => a.subdomain.localeCompare(b.subdomain),
 		title: 'Subdomain',
+		width: '20%',
 	}, {
 		dataIndex: 'name',
+		sorter: (a, b) => a.name.localeCompare(b.name),
 		title: 'Name',
 	}, {
 		title: 'Accounts',
-		render: (record) => <div>{record.metrics.accountCount}</div>
+		render: (record) => record.metrics.accountCount,
+		sorter: (a, b) => a.metrics.accountCount - b.metrics.accountCount,
+		width: '20%',
 	}, {
 		dataIndex: 'status',
 		render: status => <TenantStatusTag status={status} />,
 		title: 'Status',
+		width: '1%',
 	}]
 
-	const extra = [
-		<Tooltip key='add' placement='left' title='Add Tenant'>
-			<Button icon={<PlusOutlined />} shape='circle' />
-		</Tooltip>,
-		<Tooltip key='help' placement='bottom' title='Help'>
-			<Button icon={<QuestionOutlined />} shape='circle' />
-		</Tooltip>,
-	]
+	const extra = <IndexActions />
+
+	const onRow = (record, rowIndex) => ({
+		onClick: (event) => router.push(`/tenants/${record.id}`),	
+	})
 
 	const query = gql`
 		query {
@@ -51,7 +54,7 @@ export default function Index () {
 
 	return (
 		<Layout extra={extra} title='Tenants'>
-			<QueryTable columns={columns} query={query} />
+			<QueryTable columns={columns} onRow={onRow} query={query} />
 		</Layout>
 	)
 }
