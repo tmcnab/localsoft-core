@@ -41,7 +41,8 @@ model SystemEvent {
 
 model Tenant {
     authorizations Authorization[]
+    createdAt      DateTime        @default(now())
     id             String          @id @default(cuid())
     name           String          @unique
-    slug           String          @unique
+    subdomain      String          @unique
 }

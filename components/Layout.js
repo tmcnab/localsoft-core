@@ -1,6 +1,8 @@
-import { Layout } from 'antd'
+import { ClusterOutlined } from '@ant-design/icons'
+import { Layout, Menu, PageHeader } from 'antd'
+import Head from 'next/head'
 
-export default function CustomLayout ({ children }) {
+export default function CustomLayout ({ children, ...props }) {
 	return (
 		<>
 			<style type='text/css'>
@@ -10,13 +12,20 @@ export default function CustomLayout ({ children }) {
 				}
 			`}
 			</style>
+			<Head>
+				<title>{props.title}</title>
+			</Head>
 			<Layout id='root'>
-				<Layout.Sider>
-					Sider
+				<Layout.Sider collapsible defaultCollapsed>
+					<Menu mode='inline' theme='dark'>
+						<Menu.Item icon={<ClusterOutlined />} key='/!/tenants'>Tenants</Menu.Item>
+					</Menu>
 				</Layout.Sider>
 				<Layout>
 					<Layout.Content>
-						{children}
+						<PageHeader {...props}>
+							{children}
+						</PageHeader>
 					</Layout.Content>
 					<Layout.Footer>
 						Footer

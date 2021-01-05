@@ -1,5 +1,7 @@
 import { ApolloServer } from 'apollo-server-micro'
-import { context, resolvers, typeDefs } from '../../data/schema.js'
+import context from 'data/context'
+import resolvers from 'data/resolvers'
+import typeDefs from 'data/typeDefs'
 
 const apolloServer = new ApolloServer({ 
 	context,

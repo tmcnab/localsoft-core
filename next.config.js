@@ -7,6 +7,9 @@ module.exports = withLess({
 	lessLoaderOptions: {
 		javascriptEnabled: true,
 	},
+	publicRuntimeConfig: {
+		env: process.env.NODE_ENV,
+	},
 	webpack: (config, { isServer }) => {
 		if (isServer) {
 			const antStyles = /antd\/.*?\/style.*?/

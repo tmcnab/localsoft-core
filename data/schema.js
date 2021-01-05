@@ -1,23 +1,9 @@
-import { gql } from "apollo-server-micro";
+import { makeExecutableSchema } from 'graphql-tools'
+import resolvers from  './resolvers'
+import typeDefs	from './typeDefs'
 
-export const context = async () => {
-	return {}
-}
-
-export const resolvers = {
-	Query: {
-		users(parent, args, context) {
-			return [{ name: 'Nextjs' }]
-		},
-	},
-}
-
-export const typeDefs = gql`
-	type Query {
-		users: [User!]!
-	}
-	type User {
-		name: String
-	}
-`
-
+export default makeExecutableSchema({
+	resolvers,
+	typeDefs,
+})
+  
